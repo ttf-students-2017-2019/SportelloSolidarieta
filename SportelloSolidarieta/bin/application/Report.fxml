@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="621.0" prefWidth="654.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="182.00000610351563" minHeight="10.0" prefHeight="124.80000152587891" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="403.1999694824218" minHeight="10.0" prefHeight="391.1999694824218" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="141.5999877929687" minHeight="10.0" prefHeight="82.4000305175781" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <GridPane maxHeight="-Infinity" prefHeight="95.0" prefWidth="654.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Dal" textAlignment="CENTER">
+               <padding>
+                  <Insets left="55.0" />
+               </padding>
+            </Label>
+            <DatePicker fx:id="to" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <Label text="Al" textAlignment="CENTER" GridPane.columnIndex="1">
+               <padding>
+                  <Insets left="60.0" />
+               </padding>
+            </Label>
+            <DatePicker fx:id="from" GridPane.halignment="CENTER" />
+         </children>
+      </GridPane>
+      <TableView fx:id="table" minHeight="-Infinity" prefHeight="392.0" prefWidth="654.0" GridPane.rowIndex="1">
+        <columns>
+          <TableColumn fx:id="name" prefWidth="165.60000306367874" text="Nome" />
+          <TableColumn fx:id="surname" prefWidth="178.3999786376953" text="Cognome" />
+            <TableColumn fx:id="date" prefWidth="176.0" text="Data" />
+            <TableColumn fx:id="amount" prefWidth="136.800048828125" text="Importo" />
+        </columns>
+      </TableView>
+      <Button fx:id="print" mnemonicParsing="false" text="Stampa" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+      <Label text="Importo totale" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets bottom="60.0" left="480.0" />
+         </GridPane.margin>
+      </Label>
+      <Label fx:id="total" prefHeight="18.0" prefWidth="71.0" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets bottom="60.0" left="570.0" />
+         </GridPane.margin>
+      </Label>
+      <Button fx:id="back" mnemonicParsing="false" onAction="#toRegistry" text="Indietro" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </Button>
+   </children>
+</GridPane>
