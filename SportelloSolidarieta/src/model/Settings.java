@@ -22,33 +22,33 @@ public class Settings implements Serializable {
 	
 	// Flags for default meeting day in the week. Only one per week. Currently Thursday.
 	@Column(name="f_lunedi")
-	private byte fMonday;
+	private boolean fMonday;
 
 	@Column(name="f_martedi")
-	private byte fTuesday;
+	private boolean fTuesday;
 
 	@Column(name="f_mercoledi")
-	private byte fWednesday;
+	private boolean fWednesday;
 	
 	@Column(name="f_giovedi")
-	private byte fThursday;
+	private boolean fThursday;
 
 	@Column(name="f_venerdi")
-	private byte fFriday;
+	private boolean fFriday;
 	
 	@Column(name="f_sabato")
-	private byte fSaturday;
+	private boolean fSaturday;
 	
 	@Column(name="f_domenica")
-	private byte fSunday;
+	private boolean fSunday;
 
-	// Date of execution of Appointment Meeting Control: it is checked if an appointment turned into 
+	// Date of execution of ObservableAppointment Meeting Control: it is checked if an appointment turned into 
 	// a meeting.
 	@Temporal(TemporalType.DATE)
 	@Column(name="d_controllo_appuntamenti")
 	private Date dateAppointmentsMeetingsControl;
 	
-	// Appointment length minutes. Currently 10 minutes
+	// ObservableAppointment length minutes. Currently 10 minutes
 	@Column(name="durata")
 	private int appointmentLength;
 	
@@ -116,59 +116,59 @@ public class Settings implements Serializable {
 		this.maxDailyAppointments = maxDailyAppointments;
 	}
 		
-	public byte getMonday() {
+	public boolean getFMonday() {
 		return this.fMonday;
 	}
 
-	public void setMonday(byte fMonday) {
+	public void setFMonday(boolean fMonday) {
 		this.fMonday = fMonday;
 	}
 	
-	public byte getFTuesday() {
+	public boolean getFTuesday() {
 		return this.fTuesday;
 	}
 
-	public void setFTuesday(byte fTuesday) {
+	public void setFTuesday(boolean fTuesday) {
 		this.fTuesday = fTuesday;
 	}
 	
-	public byte getFWednesday() {
+	public boolean getFWednesday() {
 		return this.fWednesday;
 	}
 
-	public void setFWednesday(byte fWednesday) {
+	public void setFWednesday(boolean fWednesday) {
 		this.fWednesday = fWednesday;
 	}
 	
-	public byte getFThursday() {
+	public boolean getFThursday() {
 		return this.fThursday;
 	}
 
-	public void setFThursday(byte fThursday) {
+	public void setFThursday(boolean fThursday) {
 		this.fThursday = fThursday;
 	}
 
-	public byte getFFriday() {
+	public boolean getFFriday() {
 		return this.fFriday;
 	}
 
-	public void setFFriday(byte fFriday) {
+	public void setFFriday(boolean fFriday) {
 		this.fFriday = fFriday;
 	}
 
-	public byte getFSaturday() {
+	public boolean getFSaturday() {
 		return this.fSaturday;
 	}
 
-	public void setFSaturday(byte fSaturday) {
+	public void setFSaturday(boolean fSaturday) {
 		this.fSaturday = fSaturday;
 	}
 	
-	public byte getFSunday() {
+	public boolean getFSunday() {
 		return this.fSunday;
 	}
 
-	public void setFSunday(byte fSunday) {
+	public void setFSunday(boolean fSunday) {
 		this.fSunday = fSunday;
 	}
 
@@ -189,5 +189,13 @@ public class Settings implements Serializable {
 		
 		return null;
 	}
-
+	
+	@Override
+	public String toString() 
+	{
+		return "Durata appuntamenti: " + getAppointmentLength() + " minuti "
+				+ " F Lunedi: " + getFMonday() + "F Martedi: " + getFTuesday()
+				+ " F Mercoledi: " + getFWednesday() + " F Giovedi: " + getFThursday()
+				+ " ... " + " Max appuntamenti: " + getMaxDailyAppointments();
+	}
 }

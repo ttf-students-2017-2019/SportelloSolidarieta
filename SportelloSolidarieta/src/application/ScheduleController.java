@@ -8,7 +8,7 @@ import java.util.Locale;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import schedule.DailyPlan;
+import schedule.ObservableDailyPlan;
 import model.Settings;
 
 public class ScheduleController {
@@ -33,7 +33,7 @@ public class ScheduleController {
     	 DateTimeFormatter italianFormatter = DateTimeFormatter.ofLocalizedDate(
     		        FormatStyle.MEDIUM).withLocale(Locale.ITALIAN);
     	 LocalDate day = LocalDate.parse("04.03.2019", italianFormatter);
-    	 new DailyPlan(day);
+    	 new ObservableDailyPlan(day);
     		    
     }
     
@@ -54,6 +54,7 @@ public class ScheduleController {
 	// returned
 	//		none
 	//
+    
     public ScheduleController(MainCallback interfaceMain)
     {
     	this.interfaceMain = interfaceMain;   

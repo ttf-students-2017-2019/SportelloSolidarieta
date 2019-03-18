@@ -33,20 +33,22 @@ public class Assisted implements Serializable {
 	private Date dNascita;
 
 	@Column(name="f_deleted")
-	private byte fDeleted;
+	private boolean fDeleted;
 
 	@Column(name="f_ricongiungimento")
-	private byte fRicongiungimento;
+	private boolean fRicongiungimento;
 
 	@Column(name="f_rifiutato")
-	private byte fRifiutato;
-
+	private boolean fRifiutato;
+	
+	@Column(name="foto")
 	private String foto;
 
+	@Column(name="nome")
 	private String nome;
 
 	//bi-directional many-to-one association to Appuntamento
-	@OneToMany(mappedBy="assistito")
+	@OneToMany(mappedBy="assisted")
 	private List<Appointment> appuntamentos;
 
 	public Assisted() {
@@ -92,27 +94,27 @@ public class Assisted implements Serializable {
 		this.dNascita = dNascita;
 	}
 
-	public byte getFDeleted() {
+	public boolean getFDeleted() {
 		return this.fDeleted;
 	}
 
-	public void setFDeleted(byte fDeleted) {
+	public void setFDeleted(boolean fDeleted) {
 		this.fDeleted = fDeleted;
 	}
 
-	public byte getFRicongiungimento() {
+	public boolean getFRicongiungimento() {
 		return this.fRicongiungimento;
 	}
 
-	public void setFRicongiungimento(byte fRicongiungimento) {
+	public void setFRicongiungimento(boolean fRicongiungimento) {
 		this.fRicongiungimento = fRicongiungimento;
 	}
 
-	public byte getFRifiutato() {
+	public boolean getFRifiutato() {
 		return this.fRifiutato;
 	}
 
-	public void setFRifiutato(byte fRifiutato) {
+	public void setFRifiutato(boolean fRifiutato) {
 		this.fRifiutato = fRifiutato;
 	}
 
@@ -142,14 +144,14 @@ public class Assisted implements Serializable {
 
 	public Appointment addAppuntamento(Appointment appuntamento) {
 		getAppuntamentos().add(appuntamento);
-		appuntamento.setAssistito(this);
+		appuntamento.setAssisted(this);
 
 		return appuntamento;
 	}
 
 	public Appointment removeAppuntamento(Appointment appuntamento) {
 		getAppuntamentos().remove(appuntamento);
-		appuntamento.setAssistito(null);
+		appuntamento.setAssisted(null);
 
 		return appuntamento;
 	}

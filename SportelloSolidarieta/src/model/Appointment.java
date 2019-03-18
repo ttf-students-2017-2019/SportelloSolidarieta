@@ -17,53 +17,58 @@ public class Appointment implements Serializable {
 
 	@Id
 	@Column(name="id_appuntamento")
-	private int idAppuntamento;
+	private int idAppointment;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="data_ora_appuntamento")
-	private Date dataOraAppuntamento;
+	private Date appointmentDateTime;
 
 	@Column(name="f_effettuato")
-	private byte fEffettuato;
+	private boolean fDone;
 
 	//bi-directional many-to-one association to Assistito
 	@ManyToOne
 	@JoinColumn(name="id_assistito")
-	private Assisted assistito;
+	private Assisted assisted;
 
 	public Appointment() {
 	}
 
-	public int getIdAppuntamento() {
-		return this.idAppuntamento;
+	public int getIdAppointment() {
+		return this.idAppointment;
 	}
 
-	public void setIdAppuntamento(int idAppuntamento) {
-		this.idAppuntamento = idAppuntamento;
+	public void setIdAppointment(int idAppointment) {
+		this.idAppointment = idAppointment;
 	}
 
-	public Date getDataOraAppuntamento() {
-		return this.dataOraAppuntamento;
+	public Date getAppointmentDateTime() {
+		return this.appointmentDateTime;
 	}
 
-	public void setDataOraAppuntamento(Date dataOraAppuntamento) {
-		this.dataOraAppuntamento = dataOraAppuntamento;
+	public void setAppointmentDateTime(Date appointmentDateTime) {
+		this.appointmentDateTime = appointmentDateTime;
 	}
 
-	public byte getFEffettuato() {
-		return this.fEffettuato;
+	public boolean getFDone() {
+		return this.fDone;
 	}
 
-	public void setFEffettuato(byte fEffettuato) {
-		this.fEffettuato = fEffettuato;
+	public void setFDone(boolean fDone) {
+		this.fDone = fDone;
 	}
 
-	public Assisted getAssistito() {
-		return this.assistito;
+	public Assisted getAssisted() {
+		return this.assisted;
 	}
 
-	public void setAssistito(Assisted assistito) {
-		this.assistito = assistito;
+	public void setAssisted(Assisted assisted) {
+		this.assisted = assisted;
 	}
-
+	
+	@Override
+	public String toString() 
+	{
+		return getIdAppointment() + " " + getAppointmentDateTime().toString();
+	}
 }
