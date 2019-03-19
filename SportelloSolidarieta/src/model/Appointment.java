@@ -1,8 +1,10 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -64,6 +66,25 @@ public class Appointment implements Serializable {
 
 	public void setAssisted(Assisted assisted) {
 		this.assisted = assisted;
+	}
+	
+	// Other methods
+	public static List<Appointment> findAllAppointments() {
+		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
+		EntityManager em = emf.createEntityManager();
+		Query query =  em.createNamedQuery("Appointment.findAll");
+
+		em.getTransaction().begin();
+		List<Appointment> appointments = (List<Appointment>) query.getResultList();
+		em.getTransaction().commit();
+		em.close();
+		
+		if (appointments != null) {
+			return appointments;			
+		}
+		
+		return null;
 	}
 	
 	@Override

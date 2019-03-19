@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import schedule.ObservableDailyPlan;
+import model.Appointment;
 import model.Settings;
 
 public class ScheduleController {
@@ -42,7 +43,8 @@ public class ScheduleController {
     {
     
     	System.out.println(Settings.findAllSettings().toString());
-    	
+    	Appointment app = Appointment.findAllAppointments().get(0);
+    	System.out.println(app.toString());
     }	
 	
 	//

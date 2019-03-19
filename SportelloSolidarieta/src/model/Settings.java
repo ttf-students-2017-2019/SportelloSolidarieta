@@ -171,7 +171,8 @@ public class Settings implements Serializable {
 	public void setFSunday(boolean fSunday) {
 		this.fSunday = fSunday;
 	}
-
+	
+	// Other methods
 	public static Settings findAllSettings() {
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
