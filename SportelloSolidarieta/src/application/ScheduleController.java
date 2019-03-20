@@ -3,6 +3,10 @@ package application;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 import javafx.event.ActionEvent;
@@ -14,27 +18,39 @@ import model.Settings;
 
 public class ScheduleController {
 	
-	// Page elements
-	 @FXML
-	    private Button shedule_ok_button;
-
-	    @FXML
-	    private Button shedule_back_button;
-	
+    // Interface to callback the main class
+    private MainCallback interfaceMain;	
+    
+    // Page elements
     @FXML
-    void toRegistry(ActionEvent event) 
+    private Button shedule_ok_button;
+
+    @FXML
+    private Button shedule_back_button;
+	   
+    @FXML
+    void toAssistedDetail(ActionEvent event) 
     {
-    	interfaceMain.switchScene(MainCallback.Pages.Registry);
+    	interfaceMain.switchScene(MainCallback.Pages.AssistedDetail);
     }
+    
+    @FXML
+    private void initialize() {
+    	// Loading the 
+    	Date date = new GregorianCalendar(2019, Calendar.APRIL, 25).getTime();
+    	List<Appointment> dailyAppointments = Appointment.findAppointmentsByDate(date);
+    	
+    	for (Appointment app :dailyAppointments) {
+    		System.out.println(app.toString());
+    	}
+    	
+	}
     
     // To do
     @FXML
     void saveAppointment(ActionEvent event) 
     {
-    	 DateTimeFormatter italianFormatter = DateTimeFormatter.ofLocalizedDate(
-    		        FormatStyle.MEDIUM).withLocale(Locale.ITALIAN);
-    	 LocalDate day = LocalDate.parse("04.03.2019", italianFormatter);
-    	 new ObservableDailyPlan(day);
+    	 
     		    
     }
     
@@ -47,6 +63,8 @@ public class ScheduleController {
     	System.out.println(app.toString());
     }	
 	
+   
+    
 	//
     // Instance constructor
 	//
@@ -62,6 +80,4 @@ public class ScheduleController {
     	this.interfaceMain = interfaceMain;   
     } 
     
-    // Interface to callback the main class
-    private MainCallback interfaceMain;	
 }

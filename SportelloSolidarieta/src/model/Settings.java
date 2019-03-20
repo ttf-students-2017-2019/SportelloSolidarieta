@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Time;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -189,6 +190,40 @@ public class Settings implements Serializable {
 		}
 		
 		return null;
+	}
+	
+	public static int findDefaultWeekDay() {
+		
+		Settings settings = findAllSettings();
+		 
+		int defaultWeekDay = 0;
+		
+		if (settings.fMonday==true)
+			defaultWeekDay = Calendar.MONDAY;
+		
+		if (settings.fTuesday==true)
+			defaultWeekDay = Calendar.TUESDAY;
+		
+		if (settings.fWednesday==true)
+			defaultWeekDay = Calendar.WEDNESDAY;
+		
+		if (settings.fThursday==true)
+			defaultWeekDay = Calendar.THURSDAY;
+		
+		if (settings.fThursday==true)
+			defaultWeekDay = Calendar.THURSDAY;
+		
+		if (settings.fFriday==true)
+			defaultWeekDay = Calendar.FRIDAY;
+		
+		if (settings.fSaturday==true)
+			defaultWeekDay = Calendar.SATURDAY;
+		
+		if (settings.fSunday==true)
+			defaultWeekDay = Calendar.SUNDAY;
+		
+		return defaultWeekDay;
+		
 	}
 	
 	@Override
