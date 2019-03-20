@@ -46,6 +46,12 @@ public class RegistryController {
     	interfaceMain.switchScene(MainCallback.Pages.AssistedDetail);
     }
     
+    @FXML
+    void toSettings(ActionEvent event) 
+    {
+    	interfaceMain.switchScene(MainCallback.Pages.Settings);
+    }
+    
 	//
     // Instance constructor
 	//

@@ -9,7 +9,8 @@ public interface MainCallback
 		Registry,			// User interface page where search for a person
 		Report,				// User interface page to create reports
 		Schedule,			// User interface page to schedule an appointment
-		AssistedDetail		// User interface page to show person details
+		AssistedDetail,		// User interface page to show person details
+		Settings			// User interface page to show settings detail
 	}
 	
 	//

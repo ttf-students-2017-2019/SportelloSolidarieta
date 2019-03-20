@@ -51,7 +51,11 @@ public class Main extends Application implements MainCallback {
 					
 				case AssistedDetail:
 					showScene(createAssistedDetailsLayout());
-					break;					
+					break;
+					
+				case Settings:
+					showScene(createSettingsLayout());
+					break;
 				}
 			} 
 			catch (IOException e) 
@@ -114,6 +118,18 @@ public class Main extends Application implements MainCallback {
 	private Scene createAssistedDetailsLayout() throws IOException
 	{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AssistedDetailsLayout.fxml"));
+		AssistedDetailsController fxmlController = new AssistedDetailsController(this);	
+		fxmlLoader.setController(fxmlController);
+		GridPane pane = fxmlLoader.load();
+		Scene scene = new Scene(pane, 1024, 768);
+		
+		return scene;
+	}	
+	
+	// Create scene Settings page
+	private Scene createSettingsLayout() throws IOException
+	{
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Settings.fxml"));
 		AssistedDetailsController fxmlController = new AssistedDetailsController(this);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
