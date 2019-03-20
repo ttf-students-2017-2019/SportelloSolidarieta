@@ -1,20 +1,25 @@
 package application;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import schedule.ObservableDailyPlan;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import model.Appointment;
 import model.Settings;
+import schedule.DailyPlan;
+import schedule.Slot;
 
 public class ScheduleController {
 	
@@ -23,10 +28,40 @@ public class ScheduleController {
     
     // Page elements
     @FXML
+    private GridPane idAssistedNameLabel;
+
+    @FXML
+    private DatePicker idDatePicker;
+
+    @FXML
+    private TextField idStartTimeTextField;
+
+    @FXML
+    private TextField idEndTimeTextField;
+
+    @FXML
     private Button shedule_ok_button;
 
     @FXML
     private Button shedule_back_button;
+
+    @FXML
+    private TableView<Slot> idTableView;
+
+    @FXML
+    private TableColumn<Slot, String> idColumnTime;
+
+    @FXML
+    private TableColumn<Slot, String> idColumnStatus;
+
+    @FXML
+    private TableColumn<Slot, String> idColumAssisted;
+
+    @FXML
+    private Button idPreviousWeekButton;
+
+    @FXML
+    private Button idNextWeekButton;
 	   
     @FXML
     void toAssistedDetail(ActionEvent event) 
@@ -36,14 +71,20 @@ public class ScheduleController {
     
     @FXML
     private void initialize() {
-    	// Loading the 
-    	Date date = new GregorianCalendar(2019, Calendar.APRIL, 25).getTime();
-    	List<Appointment> dailyAppointments = Appointment.findAppointmentsByDate(date);
     	
-    	for (Appointment app :dailyAppointments) {
-    		System.out.println(app.toString());
-    	}
+    	// Getting the next month defaultAppointmentDay
+    	Date defaultDayPlan = getNextMonthDefaultAppointmentDay();
     	
+    	// Logging 
+    	System.out.println(defaultDayPlan.toString());
+    	
+    	// Getting settings
+    	Settings settings = Settings.findAllSettings();
+    	DailyPlan defaultDailyplan = new DailyPlan(defaultDayPlan, settings);
+       	
+    	ObservableList<Slot> slotObservable = FXCollections.<Slot>observableArrayList();
+    	slotObservable.addAll(defaultDailyplan.dailyPlan);
+    	       	
 	}
     
     // To do
@@ -63,7 +104,29 @@ public class ScheduleController {
     	System.out.println(app.toString());
     }	
 	
+
+    @FXML
+    void checkTimeFormatting(ActionEvent event) {
+
+    }
+
+    @FXML
+    void previousWeekDailyPlan(ActionEvent event) {
+
+    }
+
+    @FXML
+    void updateDailyPlan(ActionEvent event) {
+
+    }
    
+    public void Bind(ObservableList<Slot> slotObservable)
+    {
+    	idColumnTime.setCellValueFactory(cellData -> cellData.getValue().dateTimeString);
+    	idColumnStatus.setCellValueFactory(cellData -> cellData.getValue().status);
+    	idColumAssisted.setCellValueFactory(cellData -> cellData.getValue().assisted);
+    	idTableView.setItems(slotObservable);
+    } 
     
 	//
     // Instance constructor
@@ -75,9 +138,28 @@ public class ScheduleController {
 	//		none
 	//
     
+    // Other methods
     public ScheduleController(MainCallback interfaceMain)
     {
     	this.interfaceMain = interfaceMain;   
     } 
+    
+    private Date getNextMonthDefaultAppointmentDay () {
+    	
+    	// Getting the same day in the next month, selecting from that week the default weekday
+    	Calendar cal = Calendar.getInstance(); 
+    	cal.add(Calendar.MONTH, 1);
+    	cal.set(Calendar.DAY_OF_WEEK, Settings.findDefaultWeekDay());
+    	
+    	// Setting time to 00:00:00
+    	cal.set(Calendar.HOUR_OF_DAY, 0);
+    	cal.set(Calendar.MINUTE, 0);
+    	cal.set(Calendar.SECOND, 0);
+    	cal.set(Calendar.MILLISECOND, 0);	
+    	
+    	//Return the date
+    	return cal.getTime();   	
+    }
+    
     
 }

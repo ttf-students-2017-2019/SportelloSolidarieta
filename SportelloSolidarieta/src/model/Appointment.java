@@ -32,6 +32,9 @@ public class Appointment implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="data_ora_appuntamento")
 	private Date appointmentDateTime;
+	
+	@Column(name="durata")
+	private int appointmentLength;
 
 	@Column(name="f_effettuato")
 	private boolean fDone;
@@ -58,6 +61,14 @@ public class Appointment implements Serializable {
 
 	public void setAppointmentDateTime(Date appointmentDateTime) {
 		this.appointmentDateTime = appointmentDateTime;
+	}
+	
+	public int getAppointmentLength() {
+		return appointmentLength;
+	}
+
+	public void setAppointmentLength(int appointmentLength) {
+		this.appointmentLength = appointmentLength;
 	}
 
 	public boolean getFDone() {
@@ -127,6 +138,6 @@ public class Appointment implements Serializable {
 	@Override
 	public String toString() 
 	{
-		return getIdAppointment() + " " + getAppointmentDateTime().toString();
+		return getIdAppointment() + " " + getAppointmentDateTime().toString() + " Durata: " + getAppointmentLength() + " minuti";
 	}
 }
