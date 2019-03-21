@@ -114,7 +114,6 @@ public class ScheduleController {
     	System.out.println(app.toString());
     }	
 	
-
     @FXML
     void checkTimeFormatting(ActionEvent event) {
 
@@ -127,7 +126,7 @@ public class ScheduleController {
 
     @FXML
     void updateDailyPlan(ActionEvent event) {
-
+    	
     }
    
 	//

@@ -66,7 +66,7 @@ public class DailyPlan {
 		
 	}
 	
-	private Date addMinutesToDate(Date date, int minutes ) {
+	private Date addMinutesToDate(Date date, int minutes) {
 		
 		// Calendar for date
 		Calendar cal = Calendar.getInstance();

@@ -1,6 +1,5 @@
 package schedule;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.util.converter.DateTimeStringConverter;
 
@@ -10,7 +9,6 @@ public class ObservableSlot {
 	private static final String TAKEN_SLOT = "Assegnato";
 	private static final String EMPTY_STRING = "";
 	
-	public SimpleIntegerProperty appointmentLength;
 	public SimpleStringProperty status;
 	public SimpleStringProperty appointmentTimeDate;
 	public SimpleStringProperty assistedOwner;
@@ -18,8 +16,6 @@ public class ObservableSlot {
 	private Slot associatedSlot;
 	
 	public ObservableSlot(Slot currentSlot) {
-		
-		this.appointmentLength = new SimpleIntegerProperty(currentSlot.getAppointmentLength());
 				
 		if (currentSlot.getAppointmentAssistedOwner()==null) {
 			this.status = new SimpleStringProperty(FREE_SLOT);
