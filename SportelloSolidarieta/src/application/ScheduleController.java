@@ -1,18 +1,14 @@
 package application;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
 
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -22,13 +18,17 @@ import javafx.scene.layout.GridPane;
 import model.Appointment;
 import model.Settings;
 import schedule.DailyPlan;
-import schedule.Slot;
 import schedule.ObservableSlot;
 
 public class ScheduleController {
 	
     // Interface to callback the main class
     private MainCallback interfaceMain;	
+    
+    // Settings loaded from the database
+    private Settings settings = Settings.findAllSettings();
+    
+    public static final int SKIP_DAYS = 7;
     
     // Page elements
     @FXML
@@ -79,11 +79,13 @@ public class ScheduleController {
 		// Getting the next month defaultAppointmentDay
     	Date defaultDayPlan = getNextMonthDefaultAppointmentDay();
     	
+    	// Setting that day in the datePicker
+    	LocalDate calendarDate = defaultDayPlan.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    	idDatePicker.setValue(calendarDate);
+    	
     	// Logging 
     	System.out.println(defaultDayPlan.toString());
     	
-    	// Getting settings
-    	Settings settings = Settings.findAllSettings();
     	DailyPlan defaultDailyplan = new DailyPlan(defaultDayPlan, settings);
        	
     	ObservableList<ObservableSlot> slotObservableList = FXCollections.<ObservableSlot>observableArrayList();
@@ -108,8 +110,7 @@ public class ScheduleController {
     @FXML
     void showSettings(ActionEvent event) 
     {
-    
-    	System.out.println(Settings.findAllSettings().toString());
+       	System.out.println(Settings.findAllSettings().toString());
     	Appointment app = Appointment.findAllAppointments().get(0);
     	System.out.println(app.toString());
     }	
@@ -120,25 +121,49 @@ public class ScheduleController {
     }
 
     @FXML
-    void previousWeekDailyPlan(ActionEvent event) {
-
+    void previousWeekDailyPlan(ActionEvent event) 
+    {
+    	// Getting the datePickerDate and adding one week
+    	LocalDate datePickerLocalDate = idDatePicker.getValue();
+    	Calendar cal = Calendar.getInstance();
+    	Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+    	cal.setTime(datePickerDate);
+    	cal.add(Calendar.DATE, - SKIP_DAYS);
+    	Date dateToGo = cal.getTime();
+    	
+    	updateDailyPlan(dateToGo);
+    	updateDatePicker(dateToGo);
     }
 
     @FXML
-    void updateDailyPlan(ActionEvent event) {
+    void nextWeekDailyPlan(ActionEvent event) 
+    {
+       	// Getting the datePickerDate and adding one week
+    	LocalDate datePickerLocalDate = idDatePicker.getValue();
+    	Calendar cal = Calendar.getInstance();
+    	Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+    	cal.setTime(datePickerDate);
+    	cal.add(Calendar.DATE, SKIP_DAYS);
+    	Date dateToGo = cal.getTime();
     	
+    	updateDailyPlan(dateToGo);
+    	updateDatePicker(dateToGo);   	
+    }
+    
+    @FXML
+    void updateDailyPlanFromDatePicker(ActionEvent event) 
+    {
+    	// Getting the datePickerDate
+    	LocalDate datePickerLocalDate = idDatePicker.getValue();
+    	Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+    	
+    	// Logging 
+    	System.out.println(datePickerDate.toString());
+    	
+    	// Updating the dailyPlan displayed
+    	updateDailyPlan(datePickerDate);	
     }
    
-	//
-    // Instance constructor
-	//
-	// parameters	
-	//		interfaceMain 		interface to callback the main class
-	//
-	// returned
-	//		none
-	//
-    
     // Other methods
     public ScheduleController(MainCallback interfaceMain)
     {
@@ -146,9 +171,9 @@ public class ScheduleController {
     }
     
 	// Get next month default day appointment
-	public Date getNextMonthDefaultAppointmentDay () {
-	    	
-		// Getting the same day in the next month, selecting from that week the default weekday
+	public Date getNextMonthDefaultAppointmentDay () 
+	{
+	   	// Getting the same day in the next month, selecting from that week the default weekday
 		Calendar cal = Calendar.getInstance(); 
 		cal.add(Calendar.MONTH, 1);
 		cal.set(Calendar.DAY_OF_WEEK, Settings.findDefaultWeekDay());
@@ -162,5 +187,23 @@ public class ScheduleController {
 		//Return the date
 		return cal.getTime();   	
 	}
-       
+	
+	// Update the dailyPan displayed
+	public void updateDailyPlan(Date date) 
+	{	
+		// Getting the new dailyPlan and updating the TableView
+    	DailyPlan currentDailyplan = new DailyPlan(date, settings);
+    	ObservableList<ObservableSlot> slotObservableList = FXCollections.<ObservableSlot>observableArrayList();
+    	slotObservableList.addAll(currentDailyplan.dailyPlan);
+    	idTableView.setItems(slotObservableList);
+    	
+    	updateDatePicker(date);
+	}
+	
+	// Update the datePicker   
+	public void updateDatePicker(Date date) 
+	{
+    	LocalDate calendarDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    	idDatePicker.setValue(calendarDate);
+	}
 }
