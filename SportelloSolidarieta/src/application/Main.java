@@ -1,11 +1,20 @@
 package application;
 	
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import application.MainCallback.Pages;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.stage.Stage;
+import model.Settings;
+import schedule.DailyPlan;
+import schedule.Slot;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -110,7 +119,7 @@ public class Main extends Application implements MainCallback {
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, 1024, 768);
-		
+	
 		return scene;
 	}	
 	
@@ -147,4 +156,5 @@ public class Main extends Application implements MainCallback {
 	
 	// Application stage
 	private Stage primaryStage;
+	
 }

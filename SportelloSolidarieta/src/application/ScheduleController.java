@@ -1,15 +1,18 @@
 package application;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -20,6 +23,7 @@ import model.Appointment;
 import model.Settings;
 import schedule.DailyPlan;
 import schedule.Slot;
+import schedule.ObservableSlot;
 
 public class ScheduleController {
 	
@@ -46,16 +50,16 @@ public class ScheduleController {
     private Button shedule_back_button;
 
     @FXML
-    private TableView<Slot> idTableView;
+    private TableView<ObservableSlot> idTableView;
 
     @FXML
-    private TableColumn<Slot, String> idColumnTime;
+    private TableColumn<ObservableSlot, String> idColumnTime;
 
     @FXML
-    private TableColumn<Slot, String> idColumnStatus;
+    private TableColumn<ObservableSlot, String> idColumnStatus;
 
     @FXML
-    private TableColumn<Slot, String> idColumAssisted;
+    private TableColumn<ObservableSlot, String> idColumAssisted;
 
     @FXML
     private Button idPreviousWeekButton;
@@ -72,7 +76,7 @@ public class ScheduleController {
     @FXML
     private void initialize() {
     	
-    	// Getting the next month defaultAppointmentDay
+		// Getting the next month defaultAppointmentDay
     	Date defaultDayPlan = getNextMonthDefaultAppointmentDay();
     	
     	// Logging 
@@ -82,9 +86,15 @@ public class ScheduleController {
     	Settings settings = Settings.findAllSettings();
     	DailyPlan defaultDailyplan = new DailyPlan(defaultDayPlan, settings);
        	
-    	ObservableList<Slot> slotObservable = FXCollections.<Slot>observableArrayList();
-    	slotObservable.addAll(defaultDailyplan.dailyPlan);
-    	       	
+    	ObservableList<ObservableSlot> slotObservableList = FXCollections.<ObservableSlot>observableArrayList();
+
+    	slotObservableList.addAll(defaultDailyplan.dailyPlan);
+		
+    	idColumnTime.setCellValueFactory(cellData -> cellData.getValue().appointmentTimeDate);
+    	idColumnStatus.setCellValueFactory(cellData -> cellData.getValue().status);
+    	idColumAssisted.setCellValueFactory(cellData -> cellData.getValue().assistedOwner);
+    	idTableView.setItems(slotObservableList);
+    		
 	}
     
     // To do
@@ -120,14 +130,6 @@ public class ScheduleController {
 
     }
    
-    public void Bind(ObservableList<Slot> slotObservable)
-    {
-    	idColumnTime.setCellValueFactory(cellData -> cellData.getValue().dateTimeString);
-    	idColumnStatus.setCellValueFactory(cellData -> cellData.getValue().status);
-    	idColumAssisted.setCellValueFactory(cellData -> cellData.getValue().assisted);
-    	idTableView.setItems(slotObservable);
-    } 
-    
 	//
     // Instance constructor
 	//
@@ -142,24 +144,24 @@ public class ScheduleController {
     public ScheduleController(MainCallback interfaceMain)
     {
     	this.interfaceMain = interfaceMain;   
-    } 
-    
-    private Date getNextMonthDefaultAppointmentDay () {
-    	
-    	// Getting the same day in the next month, selecting from that week the default weekday
-    	Calendar cal = Calendar.getInstance(); 
-    	cal.add(Calendar.MONTH, 1);
-    	cal.set(Calendar.DAY_OF_WEEK, Settings.findDefaultWeekDay());
-    	
-    	// Setting time to 00:00:00
-    	cal.set(Calendar.HOUR_OF_DAY, 0);
-    	cal.set(Calendar.MINUTE, 0);
-    	cal.set(Calendar.SECOND, 0);
-    	cal.set(Calendar.MILLISECOND, 0);	
-    	
-    	//Return the date
-    	return cal.getTime();   	
     }
     
-    
+	// Get next month default day appointment
+	public Date getNextMonthDefaultAppointmentDay () {
+	    	
+		// Getting the same day in the next month, selecting from that week the default weekday
+		Calendar cal = Calendar.getInstance(); 
+		cal.add(Calendar.MONTH, 1);
+		cal.set(Calendar.DAY_OF_WEEK, Settings.findDefaultWeekDay());
+		
+		// Setting time to 00:00:00
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);	
+	    	
+		//Return the date
+		return cal.getTime();   	
+	}
+       
 }

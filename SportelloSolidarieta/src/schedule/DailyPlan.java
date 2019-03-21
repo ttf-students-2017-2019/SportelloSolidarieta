@@ -10,10 +10,7 @@ import model.Settings;
 
 public class DailyPlan {
 	
-	private static final String FREE_SLOT = "Libero";
-	private static final String TAKEN_SLOT = "Assegnato";
-	
-	public List<Slot> dailyPlan = new ArrayList<Slot>();
+	public List<ObservableSlot> dailyPlan = new ArrayList<ObservableSlot>();
 	
 	public DailyPlan(Date date, Settings settings) {
 		
@@ -31,19 +28,23 @@ public class DailyPlan {
 		
 		while (currentTime.before(end)) {
 			
-			if (dailyAppointments == null) {
+			if (dailyAppointments.isEmpty()) {
 				
-				Slot currentSlot = new Slot(currentTime, FREE_SLOT); 
-				dailyPlan.add(currentSlot);
-				currentTime = addMinutesToDate(currentTime, appointmentLenght);
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(currentTime);
+				
+				Slot currentSlot = new Slot(cal,null,settings.getAppointmentLength()); 
+				ObservableSlot observableSlot = new ObservableSlot(currentSlot);
+				dailyPlan.add(observableSlot);
+				
 				
 			} else {
 				
 			}
+			
+			currentTime = addMinutesToDate(currentTime, appointmentLenght);
 		} 
 		
-		
-	
 	}
 	
 	private Date updateSettingsDate(Date settingsDate, Date dateForDay ) {
