@@ -77,20 +77,20 @@ public class ScheduleController {
     private void initialize() {
     	
 		// Getting the next month defaultAppointmentDay
-    	Date defaultDayPlan = getNextMonthDefaultAppointmentDay();
+    	Date defaultDay = getNextMonthDefaultAppointmentDay();
     	
     	// Setting that day in the datePicker
-    	LocalDate calendarDate = defaultDayPlan.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    	LocalDate calendarDate = defaultDay.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     	idDatePicker.setValue(calendarDate);
     	
     	// Logging 
-    	System.out.println(defaultDayPlan.toString());
+    	System.out.println(defaultDay.toString());
     	
-    	DailyPlan defaultDailyplan = new DailyPlan(defaultDayPlan, settings);
+    	DailyPlan defaultDailyplan = new DailyPlan(defaultDay, settings);
        	
     	ObservableList<ObservableSlot> slotObservableList = FXCollections.<ObservableSlot>observableArrayList();
 
-    	slotObservableList.addAll(defaultDailyplan.dailyPlan);
+    	slotObservableList.addAll(defaultDailyplan.getDailyPlan());
 		
     	idColumnTime.setCellValueFactory(cellData -> cellData.getValue().appointmentTimeDate);
     	idColumnStatus.setCellValueFactory(cellData -> cellData.getValue().status);
@@ -194,7 +194,7 @@ public class ScheduleController {
 		// Getting the new dailyPlan and updating the TableView
     	DailyPlan currentDailyplan = new DailyPlan(date, settings);
     	ObservableList<ObservableSlot> slotObservableList = FXCollections.<ObservableSlot>observableArrayList();
-    	slotObservableList.addAll(currentDailyplan.dailyPlan);
+    	slotObservableList.addAll(currentDailyplan.getDailyPlan());
     	idTableView.setItems(slotObservableList);
     	
     	updateDatePicker(date);
