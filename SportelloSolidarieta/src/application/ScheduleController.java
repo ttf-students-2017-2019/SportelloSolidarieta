@@ -101,15 +101,29 @@ public class ScheduleController {
     	idColumnStatus.setCellValueFactory(cellData -> cellData.getValue().status);
     	idColumAssisted.setCellValueFactory(cellData -> cellData.getValue().assistedOwner);
     	idTableView.setItems(slotObservableList);
-    		
+ 		
 	}
     
     // To do
     @FXML
     void saveAppointment(ActionEvent event) 
     {
-    	 
-    		    
+    	ObservableSlot selectedSlot = idTableView.getSelectionModel().getSelectedItem(); 
+    	
+    	// Only if the selected slot is free save the appointment to the database
+    	if (selectedSlot != null && selectedSlot.getAssociatedSlot().getAppointmentAssistedOwner() == null) 
+    	{
+    		// To do sava appointment
+    	}
+    	else if (selectedSlot != null && 
+    				selectedSlot.getAssociatedSlot().getAppointmentAssistedOwner() != null) // Slot already taken
+    	{
+    		// To do warning
+    	}
+    	else // Nothing selected 
+    	{
+    		// To do warning
+    	}
     }
     
     @FXML
