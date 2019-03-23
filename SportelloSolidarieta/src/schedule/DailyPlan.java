@@ -1,5 +1,6 @@
 package schedule;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -117,6 +118,37 @@ public class DailyPlan
 				currentTime = addMinutesToDate(currentTime, appointmentLenghtFromSettings);	
 			}
 			
+			Calendar startOfDay = Calendar.getInstance();
+			startOfDay.setTime(start);
+			startOfDay.add(Calendar.SECOND, -1);
+	
+			Calendar endOfDay = Calendar.getInstance();
+			endOfDay.setTime(end);
+			endOfDay.add(Calendar.SECOND, +1);
+		
+			// Filling the gaps of free time with appointments with different length (not default one)
+			for (Iterator iterator = dailyFreeTime.iterator(); iterator.hasNext();) {
+				FreeTimeSlot currentFreeSlot = (FreeTimeSlot) iterator.next();
+								
+				if (currentFreeSlot.getStartTime().after(startOfDay) && currentFreeSlot.getEndTime().before(endOfDay)) 
+				{
+					
+					int appLength = (int) Duration.between(currentFreeSlot.getStartTime().toInstant(),
+									  	currentFreeSlot.getEndTime().toInstant()).toMinutes();
+					System.out.println(appLength + "minuti");
+					
+					if (appLength > 0) {
+						Slot currentSlot = new Slot(currentFreeSlot.getStartTime(),null, appLength); 
+												
+						//Adding the slot to the dailyPlan
+						ObservableSlot observableSlot = new ObservableSlot(currentSlot);
+						dailyPlan.add(observableSlot);
+					}
+				}
+					
+				
+			}
+				
 			// Sorting the dailyPlan list
 			Collections.sort(dailyPlan, new Comparator<ObservableSlot>() 
 			{
@@ -228,11 +260,6 @@ public class DailyPlan
 			dailyFreeTime.remove(slotToModify);
 			
 		}
-			
-			for (Iterator<FreeTimeSlot> iterator = dailyFreeTime.iterator(); iterator.hasNext();) {
-				FreeTimeSlot currentSlot = iterator.next();
-				System.out.println(currentSlot.toString());
-			}
 	}
 	
 }
