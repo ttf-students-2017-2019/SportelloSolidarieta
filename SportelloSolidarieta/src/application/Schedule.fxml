@@ -100,9 +100,10 @@
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="457.0" text="Giorno" textAlignment="JUSTIFY" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
             <TableView fx:id="idTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
               <columns>
-                <TableColumn fx:id="idColumnTime" prefWidth="317.0" text="Orario" />
-                <TableColumn fx:id="idColumnStatus" prefWidth="217.0" text="Stato" />
-                  <TableColumn fx:id="idColumAssisted" prefWidth="239.0" text="Assistito" />
+                <TableColumn fx:id="idColumnTime" prefWidth="300.0" text="Orario" />
+                  <TableColumn fx:id="idColumnLength" prefWidth="125.0" text="Durata" />
+                <TableColumn fx:id="idColumnStatus" prefWidth="175.0" text="Stato" />
+                  <TableColumn fx:id="idColumAssisted" prefWidth="175.0" text="Assistito" />
               </columns>
             </TableView>
             <Button fx:id="idPreviousWeekButton" mnemonicParsing="false" onAction="#previousWeekDailyPlan" prefHeight="31.0" prefWidth="125.0" text="Sett. Precedente" />

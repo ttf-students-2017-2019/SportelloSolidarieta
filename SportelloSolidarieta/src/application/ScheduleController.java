@@ -54,6 +54,10 @@ public class ScheduleController {
 
     @FXML
     private TableColumn<ObservableSlot, String> idColumnTime;
+    
+
+    @FXML
+    private TableColumn<ObservableSlot, String> idColumnLength;
 
     @FXML
     private TableColumn<ObservableSlot, String> idColumnStatus;
@@ -77,7 +81,7 @@ public class ScheduleController {
     private void initialize() {
     	
 		// Getting the next month defaultAppointmentDay
-    	Date defaultDay = getNextMonthDefaultAppointmentDay();
+    	Date defaultDay = getNextWeekDefaultAppointmentDay();
     	
     	// Setting that day in the datePicker
     	LocalDate calendarDate = defaultDay.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -93,6 +97,7 @@ public class ScheduleController {
     	slotObservableList.addAll(defaultDailyplan.getDailyPlan());
 		
     	idColumnTime.setCellValueFactory(cellData -> cellData.getValue().appointmentTimeDate);
+    	idColumnLength.setCellValueFactory(cellData -> cellData.getValue().appointmentLength);
     	idColumnStatus.setCellValueFactory(cellData -> cellData.getValue().status);
     	idColumAssisted.setCellValueFactory(cellData -> cellData.getValue().assistedOwner);
     	idTableView.setItems(slotObservableList);
@@ -171,11 +176,11 @@ public class ScheduleController {
     }
     
 	// Get next month default day appointment
-	public Date getNextMonthDefaultAppointmentDay () 
+	public Date getNextWeekDefaultAppointmentDay () 
 	{
 	   	// Getting the same day in the next month, selecting from that week the default weekday
 		Calendar cal = Calendar.getInstance(); 
-		cal.add(Calendar.MONTH, 1);
+		cal.add(Calendar.DATE, SKIP_DAYS);
 		cal.set(Calendar.DAY_OF_WEEK, Settings.findDefaultWeekDay());
 		
 		// Setting time to 00:00:00
@@ -185,7 +190,7 @@ public class ScheduleController {
 		cal.set(Calendar.MILLISECOND, 0);	
 	    	
 		//Return the date
-		return cal.getTime();   	
+		return cal.getTime();
 	}
 	
 	// Update the dailyPan displayed

@@ -1,6 +1,7 @@
 package schedule;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.css.CssParser.ParseError.StringParsingError;
 import javafx.util.converter.DateTimeStringConverter;
 
 public class ObservableSlot {
@@ -11,12 +12,27 @@ public class ObservableSlot {
 	
 	public SimpleStringProperty status;
 	public SimpleStringProperty appointmentTimeDate;
+	public SimpleStringProperty appointmentLength;
 	public SimpleStringProperty assistedOwner;
 	
 	private Slot associatedSlot;
 	
+	public Slot getAssociatedSlot() {
+		return associatedSlot;
+	}
+
+	public void setAssociatedSlot(Slot associatedSlot) {
+		this.associatedSlot = associatedSlot;
+	}
+
 	public ObservableSlot(Slot currentSlot) {
-				
+		
+		DateTimeStringConverter converter = new DateTimeStringConverter();		
+		this.appointmentTimeDate = new SimpleStringProperty(converter.toString(currentSlot.getDateTime().getTime()));
+		
+		this.appointmentLength = new SimpleStringProperty(String.valueOf(currentSlot.getAppointmentLength()) + " minuti");
+		
+		// Assigning the appointment owner only if the slot is taken
 		if (currentSlot.getAppointmentAssistedOwner()==null) {
 			this.status = new SimpleStringProperty(FREE_SLOT);
 			this.assistedOwner = new SimpleStringProperty(EMPTY_STRING);
@@ -26,11 +42,7 @@ public class ObservableSlot {
 			this.status = new SimpleStringProperty(TAKEN_SLOT);
 			this.assistedOwner = new SimpleStringProperty(currentSlot.getAppointmentAssistedOwner().getNome() + " " + currentSlot.getAppointmentAssistedOwner().getCognome());
 		}
-		
-		DateTimeStringConverter converter = new DateTimeStringConverter();
-		
-		this.appointmentTimeDate = new SimpleStringProperty(converter.toString(currentSlot.getDateTime().getTime()));
-		
+
 		this.associatedSlot= currentSlot;
 	}
 	

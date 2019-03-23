@@ -4,6 +4,7 @@
 		<class>model.Appointment</class>
 		<class>model.Assisted</class>
 		<class>model.Settings</class>
+		<validation-mode>NONE</validation-mode>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/assistiti?useTimezone=true&amp;serverTimezone=CET"/>
