@@ -24,7 +24,7 @@ import java.util.List;
 
 public class Appointment implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@Column(name="id_appuntamento")
 	private int idAppointment;
@@ -46,11 +46,19 @@ public class Appointment implements Serializable {
 
 	public Appointment() {
 	}
-
+	
+	public Appointment(Assisted assisted, Date appointmentDateTime, int appointmentLength) {
+		setAssisted(assisted);
+		setAppointmentDateTime(appointmentDateTime);
+		setAppointmentLength(appointmentLength);
+	}
+	
+	@Column(name="id_appuntamento")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public int getIdAppointment() {
 		return this.idAppointment;
 	}
-
+	
 	public void setIdAppointment(int idAppointment) {
 		this.idAppointment = idAppointment;
 	}
@@ -133,6 +141,26 @@ public class Appointment implements Serializable {
 		}
 		
 		return null;
+	}
+	
+	public static boolean saveAppointment(Assisted assisted, Date appointmentDateTime, int appointmentLength) 
+	{	
+		try 
+		{
+			Appointment appointment  = new Appointment(assisted, appointmentDateTime, appointmentLength);
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
+			EntityManager em = emf.createEntityManager();
+			em.getTransaction().begin();
+			em.persist(appointment);
+			em.getTransaction().commit();
+			em.close();
+			return true;
+			
+		} 
+		catch (Exception e) 
+		{
+			return false;
+		}
 	}
 		
 	@Override

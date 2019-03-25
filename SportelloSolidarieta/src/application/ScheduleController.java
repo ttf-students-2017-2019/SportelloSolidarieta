@@ -16,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import model.Appointment;
+import model.Assisted;
 import model.Settings;
 import schedule.DailyPlan;
 import schedule.ObservableSlot;
@@ -113,7 +114,15 @@ public class ScheduleController {
     	// Only if the selected slot is free save the appointment to the database
     	if (selectedSlot != null && selectedSlot.getAssociatedSlot().getAppointmentAssistedOwner() == null) 
     	{
-    		// To do sava appointment
+    		Assisted sampleAssisted = new Assisted();
+    		sampleAssisted = sampleAssisted.getSampleAssisted();
+    		
+    		System.out.println(sampleAssisted.toString());
+			Date appointmentDateTime =  new Date().from(selectedSlot.getAssociatedSlot().getDateTime().toInstant());
+    		// Saving appointment
+			Appointment appToSave = new Appointment();		
+			appToSave.saveAppointment(sampleAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getAppointmentLength()); 
+			
     	}
     	else if (selectedSlot != null && 
     				selectedSlot.getAssociatedSlot().getAppointmentAssistedOwner() != null) // Slot already taken

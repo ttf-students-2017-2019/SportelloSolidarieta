@@ -155,5 +155,15 @@ public class Assisted implements Serializable {
 
 		return appuntamento;
 	}
-
+	
+	public Assisted getSampleAssisted () 
+	{
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		List<Assisted> res = (List<Assisted>) em.createNamedQuery("Assisted.findAll").getResultList();
+		em.getTransaction().commit();
+		em.close();
+		return res.get(0);
+	}
 }
