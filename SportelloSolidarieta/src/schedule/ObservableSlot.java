@@ -25,6 +25,11 @@ public class ObservableSlot {
 		this.associatedSlot = associatedSlot;
 	}
 
+	public ObservableSlot() 
+	{
+		
+	}
+	
 	public ObservableSlot(Slot currentSlot) {
 		
 		DateTimeStringConverter converter = new DateTimeStringConverter();		

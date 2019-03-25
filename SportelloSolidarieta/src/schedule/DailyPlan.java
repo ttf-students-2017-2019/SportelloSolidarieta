@@ -15,11 +15,20 @@ import schedule.FreeTimeSlot;
 
 public class DailyPlan 
 {
+	private int numberOfAppointments; 
 	private List<ObservableSlot> dailyPlan = new ArrayList<ObservableSlot>();
-
 	private List<FreeTimeSlot> dailyFreeTime = new ArrayList<FreeTimeSlot>();
 	
 	// Getters and Setters
+	
+	public int getNumberOfAppointments() {
+		return numberOfAppointments;
+	}
+
+	public void setNumberOfAppointments(int numberOfAppointments) {
+		this.numberOfAppointments = numberOfAppointments;
+	}
+	
 	public List<ObservableSlot> getDailyPlan() {
 		return dailyPlan;
 	}
@@ -38,6 +47,9 @@ public class DailyPlan
 	
 	public DailyPlan(Date date, Settings settings) 
 	{
+		// Initializing the number of daily appointments
+		numberOfAppointments = 0;
+		
 		// Setting end day and time for appointment day
 		Date start = updateSettingsDateTime(settings.getHStart(), date);
 		
@@ -92,7 +104,10 @@ public class DailyPlan
 					
 					// Adding the slot to the dailyPlan
 					ObservableSlot observableSlot = new ObservableSlot(currentSlot);
-					dailyPlan.add(observableSlot);			
+					dailyPlan.add(observableSlot);
+					
+					// Updating the number of appointments
+					numberOfAppointments++;
 				}
 			}	
 			
@@ -260,4 +275,20 @@ public class DailyPlan
 		}
 	}
 	
+	public ObservableSlot getFirstFreeSlot()
+	{
+		
+		ObservableSlot firstSlot = new ObservableSlot();
+		for (Iterator iterator = dailyPlan.iterator(); iterator.hasNext();) 
+		{
+			ObservableSlot currentSlot = (ObservableSlot) iterator.next();
+			
+			if (currentSlot.getAssociatedSlot().getAppointmentAssistedOwner() == null) 
+			{
+				firstSlot = currentSlot;
+				break;
+			}
+		}
+		return firstSlot;
+	}
 }
