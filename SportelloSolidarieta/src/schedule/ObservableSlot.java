@@ -1,10 +1,14 @@
 package schedule;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.css.CssParser.ParseError.StringParsingError;
-import javafx.util.converter.DateTimeStringConverter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class ObservableSlot {
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
+public class ObservableSlot{
 	
 	private static final String FREE_SLOT = "Libero";
 	private static final String TAKEN_SLOT = "Assegnato";
@@ -27,13 +31,20 @@ public class ObservableSlot {
 
 	public ObservableSlot() 
 	{
-		
+
 	}
 	
 	public ObservableSlot(Slot currentSlot) {
 		
-		DateTimeStringConverter converter = new DateTimeStringConverter();		
-		this.appointmentTimeDate = new SimpleStringProperty(converter.toString(currentSlot.getDateTime().getTime()));
+		//DateTimeStringConverter converter = new DateTimeStringConverter();		
+		//this.appointmentTimeDate = new SimpleStringProperty(converter.toString(currentSlot.getDateTime().getTime()));
+		
+		// Setting time format
+		String pattern =  "HH:mm";
+		DateFormat df = new SimpleDateFormat(pattern);
+		Date date = currentSlot.getDateTime().getTime();
+		String dateAsString = df.format(date);
+		this.appointmentTimeDate = new SimpleStringProperty(dateAsString);
 		
 		this.appointmentLength = new SimpleStringProperty(String.valueOf(currentSlot.getAppointmentLength()) + " minuti");
 		

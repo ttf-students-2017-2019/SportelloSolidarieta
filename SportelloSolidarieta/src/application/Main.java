@@ -119,7 +119,7 @@ public class Main extends Application implements MainCallback {
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, 1024, 768);
-	
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		return scene;
 	}	
 	

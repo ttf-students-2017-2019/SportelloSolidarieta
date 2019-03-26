@@ -170,8 +170,7 @@ public class DailyPlan
 		        {
 		            return  firstSlot.getAssociatedSlot().getDateTime().compareTo(secondSlot.getAssociatedSlot().getDateTime());
 		        }
-		    });
-			
+		    });	
 		}
 			
 	}
