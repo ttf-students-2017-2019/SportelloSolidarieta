@@ -11,12 +11,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
 import model.Appointment;
 import model.Assisted;
 import model.Settings;
@@ -86,6 +88,25 @@ public class ScheduleController {
     @FXML
     private void initialize() {
     	
+    	// Disable datePicker for the current day and for the past
+    	final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
+  	      @Override
+  	      public DateCell call(final DatePicker datePicker) {
+  	        return new DateCell() {
+  	          @Override
+  	          public void updateItem(LocalDate item, boolean empty) {
+  	            super.updateItem(item, empty);
+
+  	            if (item.isBefore(LocalDate.now().plusDays(1))) {
+  	              setDisable(true);
+  	            }
+  	          }
+  	        };
+  	      }
+  	    };
+  	    
+  	    idDatePicker.setDayCellFactory(dayCellFactory);
+    	
     	// Getting the Assisted and setting the labels
     	Assisted assisted = new Assisted();
 		assisted = assisted.getSampleAssisted();
@@ -123,7 +144,8 @@ public class ScheduleController {
     	idColumnStatus.setCellValueFactory(cellData -> cellData.getValue().status);
     	idColumAssisted.setCellValueFactory(cellData -> cellData.getValue().assistedOwner);
     	idTableView.setItems(slotObservableList);
-    	
+    	idTableView.getSelectionModel().select(defaultDailyplan.getFirstFreeSlot());
+    	idTableView.requestFocus();
     	// Setting up the labels
     	idAppointmentNumber.setText(defaultDailyplan.getNumberOfAppointments() + "");
     	idFullDay.setText(Date.from(currentDate.toInstant()).toString());
@@ -176,16 +198,20 @@ public class ScheduleController {
     @FXML
     void previousWeekDailyPlan(ActionEvent event) 
     {
-    	// Getting the datePickerDate and adding one week
+    	// Getting the datePickerDate minus one week
     	LocalDate datePickerLocalDate = idDatePicker.getValue();
     	Calendar cal = Calendar.getInstance();
     	Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     	cal.setTime(datePickerDate);
     	cal.add(Calendar.DATE, - SKIP_DAYS);
-    	Date dateToGo = cal.getTime();
     	
-    	updateDailyPlan(dateToGo);
-    	updateDatePicker(dateToGo);
+    	// Prevent moving to the past
+    	if (cal.after(Calendar.getInstance())) 
+    	{
+        	Date dateToGo = cal.getTime();
+        	updateDailyPlan(dateToGo);
+        	updateDatePicker(dateToGo);
+    	}
     }
 
     @FXML
@@ -197,8 +223,9 @@ public class ScheduleController {
     	Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     	cal.setTime(datePickerDate);
     	cal.add(Calendar.DATE, SKIP_DAYS);
-    	Date dateToGo = cal.getTime();
     	
+    	// Updating the dailyPlan with that day
+    	Date dateToGo = cal.getTime();
     	updateDailyPlan(dateToGo);
     	updateDatePicker(dateToGo);   	
     }
@@ -210,11 +237,19 @@ public class ScheduleController {
     	LocalDate datePickerLocalDate = idDatePicker.getValue();
     	Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     	
-    	// Logging 
-    	System.out.println(datePickerDate.toString());
-    	
-    	// Updating the dailyPlan displayed
-    	updateDailyPlan(datePickerDate);	
+    	// Updating the dailyPlan displayed, preventing moving to the past
+    	if (datePickerDate.after(Calendar.getInstance().getTime()))
+    	{
+    		updateDailyPlan(datePickerDate);
+    	}	
+    	else 
+    	{
+    		// Reverting the date picker to the current day plus one
+    		Calendar cal = Calendar.getInstance();
+    		cal.add(Calendar.DATE,1);		
+    		updateDatePicker(cal.getTime());
+    	}
+    		
     }
    
     // Other methods
@@ -249,7 +284,14 @@ public class ScheduleController {
     	ObservableList<ObservableSlot> slotObservableList = FXCollections.<ObservableSlot>observableArrayList();
     	slotObservableList.addAll(currentDailyplan.getDailyPlan());
     	idTableView.setItems(slotObservableList);
-    	idTableView.getSelectionModel().select(currentDailyplan.getFirstFreeSlot());
+    	
+    	// Selecting the first free slot if there is one
+    	if (currentDailyplan.getFirstFreeSlot()!= null) 
+    	{
+    		idTableView.getSelectionModel().select(currentDailyplan.getFirstFreeSlot());
+    	}
+    	
+    	// Setting the labels
     	updateDatePicker(date);
     	idAppointmentNumber.setText(currentDailyplan.getNumberOfAppointments() + "");
     	idFullDay.setText(date.toString());
