@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.201" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+    <RowConstraints maxHeight="121.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="267.0" minHeight="10.0" prefHeight="214.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="249.0" minHeight="10.0" prefHeight="143.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="249.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <TableView prefHeight="207.0" prefWidth="600.0" GridPane.rowIndex="3">
+        <columns>
+          <TableColumn fx:id="date" prefWidth="91.0" text="Data" />
+          <TableColumn fx:id="description" prefWidth="366.0" text="Descrizione" />
+            <TableColumn fx:id="amount" prefWidth="75.0" text="€ elemosina" />
+        </columns>
+      </TableView>
+      <GridPane id="textfield_surname" prefHeight="142.0" prefWidth="600.0" GridPane.rowIndex="2">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ComboBox id="dropdown_sex" fx:id="dropdown_sex" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label id="label_sex" text="Sesso" GridPane.rowIndex="3" />
+            <TextField id="textfield_name" fx:id="textfield_name" GridPane.columnIndex="1" />
+            <Label id="label_name" text="Nome" />
+            <TextField id="textbox_surname" fx:id="textbox_surname" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label id="label_surname" text="Cognome" GridPane.rowIndex="1" />
+            <Label id="label_brithdate" text="Data di nascita" GridPane.rowIndex="2" />
+            <Label id="label_nationality" text="Nazionalità" GridPane.rowIndex="4" />
+            <TextField id="textbox_nationality" fx:id="textbox_nationality" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label id="label_wentbackhome" text="Ricongiunto con la propria famiglia" GridPane.rowIndex="5" />
+            <CheckBox id="checkbox_wentbackhome" fx:id="checkbox_wentbackhome" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <DatePicker id="datepicker_birthdate" fx:id="datepicker_birthdate" prefWidth="153.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label id="label_repelled" text="Respinto" GridPane.rowIndex="6" />
+            <CheckBox id="checkbox_rejected" fx:id="checkbox_rejected" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label id="label_familydetails" text="Composizione familiare" GridPane.rowIndex="7" />
+            <TextField id="textfield_familycomposition" fx:id="textfield_familycomposition" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+         </children>
+      </GridPane>
+      <Label id="label_view_title" text="DETTAGLI ASSISTITO" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <GridPane GridPane.rowIndex="1">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button id="button_goback" mnemonicParsing="false" onAction="#toSearchPerson" text="Indietro" GridPane.rowIndex="1" />
+            <Button id="button_tocalendar" mnemonicParsing="false" onAction="#toSchedule" text="Calendario" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+      <GridPane GridPane.rowIndex="3">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+      <GridPane prefHeight="24.0" prefWidth="600.0" GridPane.rowIndex="4">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button id="button_save" fx:id="button_save" mnemonicParsing="false" onAction="#setOnAction" text="Salva" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+         </children>
+      </GridPane>
+   </children>
+</GridPane>

@@ -8,11 +8,11 @@ import java.util.Date;
 
 
 /**
- * The persistent class for the impostazioni database table.
+ * The persistent class for the settings database table.
  * 
  */
 @Entity
-@Table(name="impostazioni")
+@Table(name="settings")
 @NamedQuery(name="Settings.findAll", query="SELECT s FROM Settings s")
 public class Settings implements Serializable {
 	private static final long serialVersionUID = 1L;

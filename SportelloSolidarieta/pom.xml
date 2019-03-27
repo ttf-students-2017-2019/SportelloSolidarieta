@@ -12,30 +12,16 @@
           <exclude>**/*.java</exclude>
         </excludes>
       </resource>
-      <resource>
-        <directory>images</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
     </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
         <configuration>
-          <release>10</release>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-  	<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-	<dependency>
-    	<groupId>mysql</groupId>
-    	<artifactId>mysql-connector-java</artifactId>
-    <version>8.0.13</version>
-</dependency>
-  
-  </dependencies>
 </project>

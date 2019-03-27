@@ -2,12 +2,12 @@ package schedule;
 
 import java.util.Calendar;
 
-import model.Assisted;
+import model.Person;
 
 public class Slot {
 	
 	private Calendar dateTime;
-	private Assisted appointmentAssistedOwner;
+	private Person appointmentAssistedOwner;
 	private int appointmentLength;
 	
 	public Calendar getDateTime() {
@@ -18,11 +18,11 @@ public class Slot {
 		this.dateTime = dateTime;
 	}
 
-	public Assisted getAppointmentAssistedOwner() {
+	public Person getAppointmentAssistedOwner() {
 		return appointmentAssistedOwner;
 	}
 
-	public void setAppointmentAssistedOwner(Assisted appointmentAssistedOwner) {
+	public void setAppointmentAssistedOwner(Person appointmentAssistedOwner) {
 		this.appointmentAssistedOwner = appointmentAssistedOwner;
 	}
 
@@ -34,7 +34,7 @@ public class Slot {
 		this.appointmentLength = appointmentLength;
 	}
 
-	public Slot(Calendar dateTime, Assisted appointmentAssistedOwner, int appointmentLength) {
+	public Slot(Calendar dateTime, Person appointmentAssistedOwner, int appointmentLength) {
 		this.dateTime = dateTime;
 		this.appointmentAssistedOwner = appointmentAssistedOwner;
 		this.appointmentLength = appointmentLength;

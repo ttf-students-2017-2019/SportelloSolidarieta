@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<GridPane prefHeight="957.0" prefWidth="1250.0" xmlns="http://javafx.com/javafx/8.0.201" xmlns:fx="http://javafx.com/fxml/1">
+   <rowConstraints>
+      <RowConstraints maxHeight="95.0" minHeight="10.0" prefHeight="76.0" />
+      <RowConstraints maxHeight="98.0" minHeight="10.0" prefHeight="52.0" />
+      <RowConstraints maxHeight="120.0" minHeight="10.0" prefHeight="52.0" />
+      <RowConstraints maxHeight="826.0" minHeight="10.0" prefHeight="720.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="424.0" minHeight="10.0" prefHeight="57.0" vgrow="ALWAYS" />
+   </rowConstraints>
+   <columnConstraints>
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+   </columnConstraints>
+   <children>
+      <GridPane prefHeight="285.0" prefWidth="998.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="1114.0" minWidth="10.0" prefWidth="1114.0" />
+          <ColumnConstraints halignment="RIGHT" maxWidth="423.0" minWidth="10.0" prefWidth="136.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+        </rowConstraints>
+         <children>
+            <ImageView fitHeight="79.0" fitWidth="103.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <image>
+                  <Image url="@../../images/Logo.png" />
+               </image></ImageView>
+            <Button fx:id="btn_report" onAction="#toReport" mnemonicParsing="false" text="REPORT" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+         </children>
+      </GridPane>
+      <GridPane prefHeight="55.0" prefWidth="1252.0" GridPane.rowIndex="2">
+        <columnConstraints>
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="706.0" minWidth="10.0" prefWidth="177.0" />
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="807.0" minWidth="10.0" prefWidth="531.0" />
+            <ColumnConstraints halignment="RIGHT" maxWidth="553.0" minWidth="10.0" prefWidth="542.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="tfield_surname" onKeyTyped="#searchAssited" prefHeight="31.0" prefWidth="506.0" promptText="Cognome" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+            <TextField fx:id="tfield_name" onKeyTyped="#searchAssited" prefHeight="31.0" prefWidth="573.0" promptText="Nome" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ricerca assistito:" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" />
+         </children>
+      </GridPane>
+      <Button fx:id="btn_addAssisted" mnemonicParsing="false" text="AGGIUNGI ASSISTITO" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <TableView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+        <columns>
+          <TableColumn maxWidth="700.0" minWidth="500.0" prefWidth="500.0" text="Cognome" />
+          <TableColumn maxWidth="1000.0" minWidth="495.0" prefWidth="497.0" text="Nome" />
+          <TableColumn maxWidth="500.0" minWidth="300.0" prefWidth="300.0" text="Data di Nascita" />
+        </columns>
+      </TableView>
+      <Button fx:id="btn_detailsAssisted" onAction="#toDetail" mnemonicParsing="false" text="DETTAGLI ASSISTITO" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+   </children>
+</GridPane>

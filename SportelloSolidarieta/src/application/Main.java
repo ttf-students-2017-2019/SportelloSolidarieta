@@ -1,43 +1,48 @@
 package application;
-	
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
-import application.MainCallback.Pages;
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.stage.Stage;
-import model.Settings;
-import schedule.DailyPlan;
-import schedule.Slot;
+import windows.AssistedDetailsController;
+import windows.SearchPersonController;
+import windows.SettingsController;
+import windows.ReportController;
+import windows.ScheduleController;
+import windows.SplashScreenController;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.fxml.FXMLLoader;
 
 
-public class Main extends Application implements MainCallback {
+public class Main extends Application implements MainCallback 
+{
 	@Override
-	public void start(Stage primaryStage) {
-		try {
+	public void start(Stage primaryStage) 
+	{
+		try 
+		{
 			this.primaryStage = primaryStage;
-
+			this.primaryStage.setTitle("Sportello Solidarietà");
+			this.primaryStage.setMaximized(true);
+			
 			showScene(createSplashScreen());
 			
-		} catch(Exception e) {
+		} 
+		catch(Exception e) 
+		{
 			e.printStackTrace();
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		launch(args);
 	}
 	
+	// Swap user interface scene
 	public void switchScene(MainCallback.Pages requiredPage) 
 	{
 		Platform.runLater(() -> 
@@ -46,8 +51,8 @@ public class Main extends Application implements MainCallback {
 			{
 				switch (requiredPage)
 				{	
-				case Registry:
-					showScene(createRegistry());
+				case SearchPerson:
+					showScene(createSearchPerson());
 					break;
 
 				case Report:
@@ -60,12 +65,11 @@ public class Main extends Application implements MainCallback {
 					
 				case AssistedDetail:
 					showScene(createAssistedDetailsLayout());
-					break;
+					break;	
 					
 				case Settings:
 					showScene(createSettingsLayout());
-					break;
-				}
+					break;				}
 			} 
 			catch (IOException e) 
 			{
@@ -78,7 +82,7 @@ public class Main extends Application implements MainCallback {
 	// Create scene Splash Screen page
 	private Scene createSplashScreen() throws IOException
 	{
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SplashScreen.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/SplashScreen.fxml"));
 		SplashScreenController fxmlController = new SplashScreenController(this);	
 		fxmlLoader.setController(fxmlController);
 		BorderPane pane = fxmlLoader.load();
@@ -87,11 +91,11 @@ public class Main extends Application implements MainCallback {
 		return scene;
 	}
 	
-	// Create scene Registry page
-	private Scene createRegistry() throws IOException
-	{
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Registry.fxml"));
-		RegistryController fxmlController = new RegistryController(this);	
+	// Create scene SearchPerson page
+	private Scene createSearchPerson() throws IOException
+	{  
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/SearchPerson.fxml"));
+		SearchPersonController fxmlController = new SearchPersonController(this);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, 1024, 768);
@@ -102,7 +106,7 @@ public class Main extends Application implements MainCallback {
 	// Create scene Report page
 	private Scene createReport() throws IOException
 	{
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Report.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/Report.fxml"));
 		ReportController fxmlController = new ReportController(this);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
@@ -114,24 +118,24 @@ public class Main extends Application implements MainCallback {
 	// Create scene Schedule page
 	private Scene createSchedule() throws IOException
 	{
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Schedule.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/Schedule.fxml"));
 		ScheduleController fxmlController = new ScheduleController(this);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, 1024, 768);
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		
 		return scene;
 	}	
 	
 	// Create scene AssistedDetailsLayout page
 	private Scene createAssistedDetailsLayout() throws IOException
 	{
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AssistedDetailsLayout.fxml"));
-		AssistedDetailsController fxmlController = new AssistedDetailsController(this);	
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/AssistedDetails.fxml"));
+		AssistedDetailsController fxmlController = new AssistedDetailsController(this, null);
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, 1024, 768);
-		
+				
 		return scene;
 	}	
 	
@@ -139,13 +143,13 @@ public class Main extends Application implements MainCallback {
 	private Scene createSettingsLayout() throws IOException
 	{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Settings.fxml"));
-		AssistedDetailsController fxmlController = new AssistedDetailsController(this);	
+		SettingsController fxmlController = new SettingsController(this);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, 1024, 768);
 		
 		return scene;
-	}	
+	}
 	
 	// Load a scene into the stage
 	private void showScene(Scene scene)
@@ -154,7 +158,11 @@ public class Main extends Application implements MainCallback {
 		primaryStage.show();
 	}
 	
+	@Override
+	public Stage getStage() {
+		return primaryStage;
+	}
+	
 	// Application stage
 	private Stage primaryStage;
-	
 }

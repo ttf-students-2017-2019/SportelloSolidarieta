@@ -14,7 +14,6 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="appuntamento")
 @NamedQueries({
 	@NamedQuery(name="Appointment.findAll", query="SELECT a FROM Appointment a"),
 	@NamedQuery(name="Appointment.findAppointmentsByDate", 
@@ -24,7 +23,7 @@ import java.util.List;
 
 public class Appointment implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name="id_appuntamento")
 	private int idAppointment;
@@ -39,26 +38,17 @@ public class Appointment implements Serializable {
 	@Column(name="f_effettuato")
 	private boolean fDone;
 
-	//bi-directional many-to-one association to Assistito
 	@ManyToOne
 	@JoinColumn(name="id_assistito")
-	private Assisted assisted;
+	private Person person;
 
 	public Appointment() {
 	}
-	
-	public Appointment(Assisted assisted, Date appointmentDateTime, int appointmentLength) {
-		setAssisted(assisted);
-		setAppointmentDateTime(appointmentDateTime);
-		setAppointmentLength(appointmentLength);
-	}
-	
-	@Column(name="id_appuntamento")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+
 	public int getIdAppointment() {
 		return this.idAppointment;
 	}
-	
+
 	public void setIdAppointment(int idAppointment) {
 		this.idAppointment = idAppointment;
 	}
@@ -87,12 +77,12 @@ public class Appointment implements Serializable {
 		this.fDone = fDone;
 	}
 
-	public Assisted getAssisted() {
-		return this.assisted;
+	public Person getPerson() {
+		return this.person;
 	}
 
-	public void setAssisted(Assisted assisted) {
-		this.assisted = assisted;
+	public void setPerson(Person person) {
+		this.person = person;
 	}
 	
 	// Other methods
@@ -141,26 +131,6 @@ public class Appointment implements Serializable {
 		}
 		
 		return null;
-	}
-	
-	public static boolean saveAppointment(Assisted assisted, Date appointmentDateTime, int appointmentLength) 
-	{	
-		try 
-		{
-			Appointment appointment  = new Appointment(assisted, appointmentDateTime, appointmentLength);
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
-			EntityManager em = emf.createEntityManager();
-			em.getTransaction().begin();
-			em.persist(appointment);
-			em.getTransaction().commit();
-			em.close();
-			return true;
-			
-		} 
-		catch (Exception e) 
-		{
-			return false;
-		}
 	}
 		
 	@Override

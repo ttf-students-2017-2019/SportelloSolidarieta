@@ -2,14 +2,16 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="SportelloSolidarieta" transaction-type="RESOURCE_LOCAL">
 		<class>model.Appointment</class>
-		<class>model.Assisted</class>
+		<class>model.Meeting</class>
+		<class>model.Person</class>
 		<class>model.Settings</class>
-		<validation-mode>NONE</validation-mode>
+		<class>utilities.LocalDateAttributeConverter</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/assistiti?useTimezone=true&amp;serverTimezone=CET"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sportellosolidarieta?serverTimezone=CET"/>
 			<property name="javax.persistence.jdbc.user" value="root"/>
 			<property name="javax.persistence.jdbc.password" value="1urcaurca"/>
+	        <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
 		</properties>
 	</persistence-unit>
 </persistence>
