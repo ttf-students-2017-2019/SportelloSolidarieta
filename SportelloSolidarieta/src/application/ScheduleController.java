@@ -1,5 +1,7 @@
 package application;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -9,6 +11,7 @@ import java.util.Iterator;
 import com.mysql.cj.jdbc.SuspendableXAConnection;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -127,11 +130,6 @@ public class ScheduleController {
 		
 		// Getting the next month defaultAppointmentDay
     	Date defaultDay = getNextWeekDefaultAppointmentDay();
-    	
-    	// Setting that day in the datePicker
-    	LocalDate calendarDate = defaultDay.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-    	idDatePicker.setValue(calendarDate);
-    	    	
     	DailyPlan defaultDailyplan = new DailyPlan(defaultDay, settings);
        	
     	Calendar currentDate = Calendar.getInstance();
@@ -141,7 +139,7 @@ public class ScheduleController {
     	while (defaultDailyplan.getNumberOfAppointments() >= Settings.findAllSettings().getMaxDailyAppointments())
     	{
     		currentDate.add(Calendar.DATE, SKIP_DAYS);
-    		defaultDailyplan = new DailyPlan(Date.from(currentDate.toInstant()), settings);
+    		defaultDailyplan = new DailyPlan(currentDate.getTime(), settings);
     	} 
     	
     	// Update datePicker
@@ -182,6 +180,22 @@ public class ScheduleController {
     	}
     }
     
+    private void showAlertNoSelection() {
+
+    	Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Attenzione");
+        alert.setHeaderText("Nessuna selezione");
+        alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
+
+			@Override
+			public void handle(DialogEvent event) {
+	
+			}
+        	
+		});
+        alert.showAndWait();
+    }
+    
     private void showAlertAppointmentTaken(ObservableSlot selectedSlot) {
     	
     	Alert alert = new Alert(AlertType.WARNING);
@@ -193,8 +207,12 @@ public class ScheduleController {
 			@Override
 			public void handle(DialogEvent event) {
 				
-				// Update the dailyPlan selecting the first freeSlot 
-				updateDailyPlan(selectedSlot.getAssociatedSlot().getDateTime().getTime());
+				// Update the dailyPlan selecting the first freeSlot
+				LocalDate datePickerLocalDate = idDatePicker.getValue();
+		    	Calendar cal = Calendar.getInstance();
+		    	Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+		    	cal.setTime(datePickerDate);
+				updateDailyPlan(cal.getTime());
 			}
         	
 		});
@@ -290,7 +308,7 @@ public class ScheduleController {
     	if(dailyPlan.getFirstFreeSlot() != null) 
     	{
         	idTableView.getSelectionModel().select(dailyPlan.getFirstFreeSlot());
-        	idTableView.scrollTo(observalbeList.indexOf(dailyPlan.getFirstFreeSlot()));
+        	idTableView.scrollTo(dailyPlan.getFirstFreeSlot());
     	}
     }
    
@@ -336,7 +354,7 @@ public class ScheduleController {
     	
     	// Setting the labels
     	updateDatePicker(date);
-    	idAppointmentNumber.setText(currentDailyplan.getNumberOfAppointments() + "");
+    	idAppointmentNumber.setText(String.valueOf(currentDailyplan.getNumberOfAppointments()));
     	Calendar cal = Calendar.getInstance();
     	cal.setTime(date);
     	idFullDay.setText(getDateAsItalianString(cal));
@@ -411,15 +429,21 @@ public class ScheduleController {
 	
 	private String getAlertMessage(Assisted assisted, Calendar cal)
 	{
+		// Setting time format
+		String pattern =  "HH:mm";
+		DateFormat df = new SimpleDateFormat(pattern);
+		Date date = cal.getTime();
+		String timeAsString = df.format(date);
+		
         return "Appuntamento assegnato a " + assisted.getNome() + " " + assisted.getCognome() + " il " + 
-        			+ cal.get(Calendar.DAY_OF_MONTH) +"/" + cal.get(Calendar.MONTH) +
-        				"/" + cal.get(Calendar.YEAR) + " (" +getDayOfWeek(cal.get(Calendar.DAY_OF_WEEK))  + ") alle ore " + cal.get(Calendar.HOUR_OF_DAY)+ ":" +
-        					cal.get(Calendar.MINUTE);
+        			+ cal.get(Calendar.DAY_OF_MONTH) +"/" + String.valueOf(cal.get(Calendar.MONTH)+1) +
+        				"/" + cal.get(Calendar.YEAR) + " (" +getDayOfWeek(cal.get(Calendar.DAY_OF_WEEK))  + ") alle ore " + 
+        					timeAsString;
 	}
 	
 	private String getDateAsItalianString(Calendar cal)
 	{
-        return getCamelCaseDayOfWeek(cal.get(Calendar.DAY_OF_WEEK)) + " " + cal.get(Calendar.DAY_OF_MONTH) +"/" + cal.get(Calendar.MONTH) +
+        return getCamelCaseDayOfWeek(cal.get(Calendar.DAY_OF_WEEK)) + " " + cal.get(Calendar.DAY_OF_MONTH) +"/" + String.valueOf(cal.get(Calendar.MONTH)+1) +
 			"/" + cal.get(Calendar.YEAR);
 	}
 }
