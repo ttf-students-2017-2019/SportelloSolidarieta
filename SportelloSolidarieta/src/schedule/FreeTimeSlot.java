@@ -30,9 +30,4 @@ public class FreeTimeSlot {
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
-
-	@Override
-	public String toString() {
-		return "";
-	}	
 }

@@ -276,7 +276,6 @@ public class DailyPlan
 	
 	public ObservableSlot getFirstFreeSlot()
 	{
-		
 		ObservableSlot firstSlot = null;
 		
 		for (Iterator iterator = dailyPlan.iterator(); iterator.hasNext();) 
@@ -288,8 +287,7 @@ public class DailyPlan
 				firstSlot = currentSlot;
 				break;
 			}
-		}
-		
+		}	
 		return firstSlot;
 	}
 }

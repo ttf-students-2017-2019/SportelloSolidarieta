@@ -34,11 +34,8 @@ public class ObservableSlot{
 
 	}
 	
-	public ObservableSlot(Slot currentSlot) {
-		
-		//DateTimeStringConverter converter = new DateTimeStringConverter();		
-		//this.appointmentTimeDate = new SimpleStringProperty(converter.toString(currentSlot.getDateTime().getTime()));
-		
+	public ObservableSlot(Slot currentSlot) 
+	{	
 		// Setting time format
 		String pattern =  "HH:mm";
 		DateFormat df = new SimpleDateFormat(pattern);

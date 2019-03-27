@@ -63,9 +63,9 @@
       </GridPane>
       <GridPane GridPane.rowIndex="2">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="0.0" prefWidth="150.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="757.0" minWidth="10.0" prefWidth="757.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="0.0" prefWidth="150.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="0.0" prefWidth="200.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="624.0" minWidth="10.0" prefWidth="624.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="0.0" prefWidth="200.0" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -74,16 +74,16 @@
         </rowConstraints>
          <children>
             <Label fx:id="idFullDay" text="Giorno" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            <TableView fx:id="idTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TableView fx:id="idTableView" maxHeight="624.0" maxWidth="624.0" prefHeight="624.0" prefWidth="624.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
               <columns>
-                <TableColumn fx:id="idColumnTime" maxWidth="199.0" prefWidth="199.0" text="Orario" />
-                  <TableColumn fx:id="idColumnLength" prefWidth="125.0" text="Durata" />
-                <TableColumn fx:id="idColumnStatus" prefWidth="150.0" text="Stato" />
-                  <TableColumn fx:id="idColumAssisted" prefWidth="283.0" text="Assistito" />
+                <TableColumn fx:id="idColumnTime" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" resizable="false" text="Orario" />
+                  <TableColumn fx:id="idColumnLength" minWidth="100.0" prefWidth="100.0" resizable="false" text="Durata" />
+                <TableColumn fx:id="idColumnStatus" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" resizable="false" text="Stato" />
+                  <TableColumn fx:id="idColumAssisted" minWidth="324.0" prefWidth="324.0" text="Assistito" />
               </columns>
             </TableView>
-            <Button fx:id="idPreviousWeekButton" mnemonicParsing="false" onAction="#previousWeekDailyPlan" prefHeight="30.0" prefWidth="150.0" text="Sett. Precedente" />
-            <Button fx:id="idNextWeekButton" mnemonicParsing="false" onAction="#nextWeekDailyPlan" prefHeight="30.0" prefWidth="150.0" text="Sett. Successiva" GridPane.columnIndex="2" />
+            <Button fx:id="idPreviousWeekButton" mnemonicParsing="false" onAction="#previousWeekDailyPlan" prefHeight="30.0" prefWidth="150.0" text="Sett. Precedente" GridPane.halignment="CENTER" />
+            <Button fx:id="idNextWeekButton" mnemonicParsing="false" onAction="#nextWeekDailyPlan" prefHeight="30.0" prefWidth="150.0" text="Sett. Successiva" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />

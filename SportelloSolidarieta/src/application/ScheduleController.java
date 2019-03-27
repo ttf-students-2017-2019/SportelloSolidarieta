@@ -39,6 +39,7 @@ import model.Appointment;
 import model.Assisted;
 import model.Settings;
 import schedule.DailyPlan;
+import schedule.StringUtil;
 import schedule.ObservableSlot;
 
 public class ScheduleController {
@@ -152,7 +153,7 @@ public class ScheduleController {
 
     	// Setting up the labels
     	idAppointmentNumber.setText(String.valueOf(defaultDailyplan.getNumberOfAppointments()));
-    	idFullDay.setText(getDateAsItalianString(currentDate));
+    	idFullDay.setText(StringUtil.getDateAsItalianString(currentDate));
 	}
     
     @FXML
@@ -226,7 +227,7 @@ public class ScheduleController {
     	Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Messaggio di conferma");
         alert.setHeaderText("Appuntamento salvato correttamente");
-        alert.setContentText(getAlertMessage(assisted, cal));
+        alert.setContentText(StringUtil.getAlertMessage(assisted, cal));
         alert.setHeight(300);
         alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
 
@@ -357,7 +358,7 @@ public class ScheduleController {
     	idAppointmentNumber.setText(String.valueOf(currentDailyplan.getNumberOfAppointments()));
     	Calendar cal = Calendar.getInstance();
     	cal.setTime(date);
-    	idFullDay.setText(getDateAsItalianString(cal));
+    	idFullDay.setText(StringUtil.getDateAsItalianString(cal));
 	}
 	
 	// Update the datePicker   
@@ -365,85 +366,5 @@ public class ScheduleController {
 	{
     	LocalDate calendarDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     	idDatePicker.setValue(calendarDate);
-	}
-	
-	// Get lowerCase day of the week
-	private String getDayOfWeek(int dayOfWeek)
-	{	
-		String dayString = "";
-		switch (dayOfWeek) {
-		case Calendar.MONDAY:
-			dayString = "lunedì";
-			break;
-		case Calendar.TUESDAY:
-			dayString = "martedì";
-			break;
-		case Calendar.WEDNESDAY:
-			dayString = "mercoledì";
-			break;
-		case Calendar.THURSDAY:
-			dayString = "giovedì";
-			break;
-		case Calendar.FRIDAY:
-			dayString = "venerdì";
-			break;
-		case Calendar.SATURDAY:
-			dayString = "sabato";
-			break;
-		case Calendar.SUNDAY:
-			dayString = "domenica";
-			break;
-		}
-		return dayString;
-	}
-	
-	// Get CamelCase day of the week
-	private String getCamelCaseDayOfWeek(int dayOfWeek)
-	{	
-		String dayString = "";
-		switch (dayOfWeek) {
-		case Calendar.MONDAY:
-			dayString = "Lunedì";
-			break;
-		case Calendar.TUESDAY:
-			dayString = "Martedì";
-			break;
-		case Calendar.WEDNESDAY:
-			dayString = "Mercoledì";
-			break;
-		case Calendar.THURSDAY:
-			dayString = "Giovedì";
-			break;
-		case Calendar.FRIDAY:
-			dayString = "Venerdì";
-			break;
-		case Calendar.SATURDAY:
-			dayString = "Sabato";
-			break;
-		case Calendar.SUNDAY:
-			dayString = "Domenica";
-			break;
-		}
-		return dayString;
-	}
-	
-	private String getAlertMessage(Assisted assisted, Calendar cal)
-	{
-		// Setting time format
-		String pattern =  "HH:mm";
-		DateFormat df = new SimpleDateFormat(pattern);
-		Date date = cal.getTime();
-		String timeAsString = df.format(date);
-		
-        return "Appuntamento assegnato a " + assisted.getNome() + " " + assisted.getCognome() + " il " + 
-        			+ cal.get(Calendar.DAY_OF_MONTH) +"/" + String.valueOf(cal.get(Calendar.MONTH)+1) +
-        				"/" + cal.get(Calendar.YEAR) + " (" +getDayOfWeek(cal.get(Calendar.DAY_OF_WEEK))  + ") alle ore " + 
-        					timeAsString;
-	}
-	
-	private String getDateAsItalianString(Calendar cal)
-	{
-        return getCamelCaseDayOfWeek(cal.get(Calendar.DAY_OF_WEEK)) + " " + cal.get(Calendar.DAY_OF_MONTH) +"/" + String.valueOf(cal.get(Calendar.MONTH)+1) +
-			"/" + cal.get(Calendar.YEAR);
 	}
 }
