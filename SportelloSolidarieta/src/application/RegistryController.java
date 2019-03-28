@@ -1,12 +1,17 @@
 package application;
 
+import java.io.IOException;
+
 import application.MainCallback.Pages;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.stage.Popup;
 
 public class RegistryController {
 
@@ -47,10 +52,10 @@ public class RegistryController {
     }
     
     @FXML
-    void toSettings(ActionEvent event) 
+    void toSettings(ActionEvent event) throws IOException 
     {
     	interfaceMain.switchScene(MainCallback.Pages.Settings);
-    }
+    }	
     
 	//
     // Instance constructor

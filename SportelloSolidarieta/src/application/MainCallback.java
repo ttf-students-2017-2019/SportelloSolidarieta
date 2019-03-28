@@ -23,4 +23,5 @@ public interface MainCallback
 	//		none
 	//	
 	public void switchScene(Pages requiredPage);
+
 }

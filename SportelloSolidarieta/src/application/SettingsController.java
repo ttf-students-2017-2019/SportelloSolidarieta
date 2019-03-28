@@ -9,13 +9,19 @@ public class SettingsController {
     // Interface to callback the main class
     private MainCallback interfaceMain;	
     
+    public SettingsController(MainCallback interfaceMain)
+    {
+    	this.interfaceMain = interfaceMain;
+    }
+    
     @FXML
     private Button shedule_ok_button;
 
     @FXML
     private Button shedule_back_button;
 
-    @FXML
+
+	@FXML
     void showSettings(ActionEvent event) {
 
     }
@@ -23,7 +29,7 @@ public class SettingsController {
     @FXML
     void toRegistry(ActionEvent event) {
     	
-    	interfaceMain.switchScene(MainCallback.Pages.Registry);
     }
+    
 
 }

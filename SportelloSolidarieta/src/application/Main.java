@@ -11,10 +11,13 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import model.Settings;
 import schedule.DailyPlan;
 import schedule.Slot;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -61,10 +64,10 @@ public class Main extends Application implements MainCallback {
 				case AssistedDetail:
 					showScene(createAssistedDetailsLayout());
 					break;
-					
 				case Settings:
-					showScene(createSettingsLayout());
-					break;
+					showPopup(createSettingsLayout());
+				break;
+				
 				}
 			} 
 			catch (IOException e) 
@@ -135,17 +138,28 @@ public class Main extends Application implements MainCallback {
 		return scene;
 	}	
 	
-	// Create scene Settings page
 	private Scene createSettingsLayout() throws IOException
 	{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Settings.fxml"));
-		AssistedDetailsController fxmlController = new AssistedDetailsController(this);	
+		SettingsController fxmlController = new SettingsController(this);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, 1024, 768);
 		
 		return scene;
 	}	
+	
+	// Load a scene into the stage
+	private void showPopup(Scene scene)
+	{
+		Stage popup = new Stage();
+		popup.initModality(Modality.WINDOW_MODAL);
+		popup.initOwner(primaryStage);
+		popup.setResizable(false);
+		popup.centerOnScreen();
+		popup.setScene(scene);
+		popup.show();
+	}
 	
 	// Load a scene into the stage
 	private void showScene(Scene scene)
