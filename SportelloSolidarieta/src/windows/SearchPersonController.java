@@ -19,6 +19,9 @@ public class SearchPersonController {
     private Button btn_report;
     
     @FXML
+    private Button btn_settings;
+    
+    @FXML
     private Button btn_addAssisted;
 
     @FXML
@@ -34,6 +37,12 @@ public class SearchPersonController {
     void toReport(ActionEvent event) 
     {
     	interfaceMain.switchScene(MainCallback.Pages.Report);
+    }
+    
+    @FXML
+    void toSettings(ActionEvent event) 
+    {
+    	interfaceMain.switchScene(MainCallback.Pages.Settings);
     }
     
     @FXML

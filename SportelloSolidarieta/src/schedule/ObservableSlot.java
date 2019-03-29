@@ -1,9 +1,14 @@
 package schedule;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.util.converter.DateTimeStringConverter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class ObservableSlot {
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
+public class ObservableSlot{
 	
 	private static final String FREE_SLOT = "Libero";
 	private static final String TAKEN_SLOT = "Assegnato";
@@ -11,12 +16,36 @@ public class ObservableSlot {
 	
 	public SimpleStringProperty status;
 	public SimpleStringProperty appointmentTimeDate;
+	public SimpleStringProperty appointmentLength;
 	public SimpleStringProperty assistedOwner;
 	
 	private Slot associatedSlot;
 	
-	public ObservableSlot(Slot currentSlot) {
-				
+	public Slot getAssociatedSlot() {
+		return associatedSlot;
+	}
+
+	public void setAssociatedSlot(Slot associatedSlot) {
+		this.associatedSlot = associatedSlot;
+	}
+
+	public ObservableSlot() 
+	{
+
+	}
+	
+	public ObservableSlot(Slot currentSlot) 
+	{	
+		// Setting time format
+		String pattern =  "HH:mm";
+		DateFormat df = new SimpleDateFormat(pattern);
+		Date date = currentSlot.getDateTime().getTime();
+		String dateAsString = df.format(date);
+		this.appointmentTimeDate = new SimpleStringProperty(dateAsString);
+		
+		this.appointmentLength = new SimpleStringProperty(String.valueOf(currentSlot.getAppointmentLength()) + " minuti");
+		
+		// Assigning the appointment owner only if the slot is taken
 		if (currentSlot.getAppointmentAssistedOwner()==null) {
 			this.status = new SimpleStringProperty(FREE_SLOT);
 			this.assistedOwner = new SimpleStringProperty(EMPTY_STRING);
@@ -26,11 +55,7 @@ public class ObservableSlot {
 			this.status = new SimpleStringProperty(TAKEN_SLOT);
 			this.assistedOwner = new SimpleStringProperty(currentSlot.getAppointmentAssistedOwner().getName() + " " + currentSlot.getAppointmentAssistedOwner().getSurname());
 		}
-		
-		DateTimeStringConverter converter = new DateTimeStringConverter();
-		
-		this.appointmentTimeDate = new SimpleStringProperty(converter.toString(currentSlot.getDateTime().getTime()));
-		
+
 		this.associatedSlot= currentSlot;
 	}
 	

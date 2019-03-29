@@ -5,11 +5,14 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
+import javax.persistence.Persistence;
 import javax.persistence.NamedQuery;
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Indexes;
@@ -157,6 +160,16 @@ public class Person {
 
 		return appuntamento;
 	}
-
+	
+public Person getSamplePerson () 
+	{
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		List<Person> res = (List<Person>) em.createNamedQuery("Person.findAll").getResultList();
+		em.getTransaction().commit();
+		em.close();
+		return res.get(0);
+	}
 	
 }

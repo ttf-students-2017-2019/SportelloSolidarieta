@@ -1,8 +1,10 @@
 package model;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.impl.Log4JLogger;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -10,7 +12,7 @@ import java.util.List;
 
 
 /**
- * The persistent class for the appuntamento database table.
+ * The persistent class for the appointment database table.
  * 
  */
 @Entity
@@ -20,31 +22,38 @@ import java.util.List;
 					query="SELECT a FROM Appointment a WHERE a.appointmentDateTime >= :begin AND a.appointmentDateTime < :end "
 							+ " ORDER BY a.appointmentDateTime")
 })	
-
 public class Appointment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_appuntamento")
 	private int idAppointment;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="data_ora_appuntamento")
 	private Date appointmentDateTime;
-	
+
 	@Column(name="durata")
 	private int appointmentLength;
 
 	@Column(name="f_effettuato")
 	private boolean fDone;
 
+	//bi-directional many-to-one association to Person
 	@ManyToOne
 	@JoinColumn(name="id_assistito")
 	private Person person;
 
 	public Appointment() {
 	}
-
+	
+	public Appointment(Person assisted, Date appointmentDateTime, int appointmentLength) {
+		setPerson(assisted);
+		setAppointmentDateTime(appointmentDateTime);
+		setAppointmentLength(appointmentLength);
+	}
+	
 	public int getIdAppointment() {
 		return this.idAppointment;
 	}
@@ -112,8 +121,6 @@ public class Appointment implements Serializable {
 		c.add(Calendar.DATE, 1);
 		Date searchDayPlusOne = c.getTime();
 		
-		System.out.println(searchDate.toString() + " -> " + searchDayPlusOne.toString());
-		
 		// Setting the queries parameter
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
 		EntityManager em = emf.createEntityManager();
@@ -132,7 +139,27 @@ public class Appointment implements Serializable {
 		
 		return null;
 	}
-		
+	
+	public static boolean saveAppointment(Person assisted, Date appointmentDateTime, int appointmentLength) 
+	{	
+		try 
+		{
+			Appointment appointment  = new Appointment(assisted, appointmentDateTime, appointmentLength);
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
+			EntityManager em = emf.createEntityManager();
+			em.getTransaction().begin();
+			em.persist(appointment);
+			em.getTransaction().commit();
+			em.close();
+			return true;
+			
+		} 
+		catch (Exception e) 
+		{
+			return false;
+		}
+	}
+	
 	@Override
 	public String toString() 
 	{

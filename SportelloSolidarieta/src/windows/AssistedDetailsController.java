@@ -87,7 +87,7 @@ public class AssistedDetailsController {
 			dropdown_sex.setValue(assisted.getSex());
 			textbox_nationality.setText(assisted.getNationality());
 			checkbox_wentbackhome.setSelected(assisted.getIsReunitedWithFamily());
-			checkbox_rejected.setSelected(assisted.getIsRefused());
+			checkbox_rejected.setSelected((assisted.getIsRefused()));
 			textfield_familycomposition.setText(assisted.getFamilyComposition());
 
 			// bind columns to bean properties

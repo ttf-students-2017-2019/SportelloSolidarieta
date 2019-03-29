@@ -4,14 +4,16 @@
 		<class>model.Appointment</class>
 		<class>model.Meeting</class>
 		<class>model.Person</class>
-		<class>model.Settings</class>
+		<class>model.Setting</class>
 		<class>utilities.LocalDateAttributeConverter</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sportellosolidarieta?serverTimezone=CET"/>
+			<property name="eclipselink.jdbc.cache-statements" value="false"/>
+			<property name="eclipselink.jdbc.batch-writing" value="JDBC"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sportellosolidarieta?useTimezone=true&amp;serverTimezone=CET"/>
 			<property name="javax.persistence.jdbc.user" value="root"/>
 			<property name="javax.persistence.jdbc.password" value="1urcaurca"/>
-	        <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
 		</properties>
 	</persistence-unit>
 </persistence>

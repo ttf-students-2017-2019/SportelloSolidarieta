@@ -1,48 +1,41 @@
 package application;
-
+	
 import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import windows.AssistedDetailsController;
-import windows.SearchPersonController;
-import windows.SettingsController;
 import windows.ReportController;
 import windows.ScheduleController;
+import windows.SearchPersonController;
+import windows.SettingsController;
 import windows.SplashScreenController;
+
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.fxml.FXMLLoader;
 
 
-public class Main extends Application implements MainCallback 
-{
+public class Main extends Application implements MainCallback {
 	@Override
-	public void start(Stage primaryStage) 
-	{
-		try 
-		{
+	public void start(Stage primaryStage) {
+		try {
 			this.primaryStage = primaryStage;
-			this.primaryStage.setTitle("Sportello Solidarietà");
-			this.primaryStage.setMaximized(true);
-			
+
 			showScene(createSplashScreen());
 			
-		} 
-		catch(Exception e) 
-		{
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public static void main(String[] args) 
-	{
+	public static void main(String[] args) {
 		launch(args);
 	}
 	
-	// Swap user interface scene
 	public void switchScene(MainCallback.Pages requiredPage) 
 	{
 		Platform.runLater(() -> 
@@ -65,11 +58,12 @@ public class Main extends Application implements MainCallback
 					
 				case AssistedDetail:
 					showScene(createAssistedDetailsLayout());
-					break;	
-					
+					break;
 				case Settings:
-					showScene(createSettingsLayout());
-					break;				}
+					showPopup(createSettingsLayout());
+				break;
+				
+				}
 			} 
 			catch (IOException e) 
 			{
@@ -91,9 +85,9 @@ public class Main extends Application implements MainCallback
 		return scene;
 	}
 	
-	// Create scene SearchPerson page
+	// Create scene Registry page
 	private Scene createSearchPerson() throws IOException
-	{  
+	{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/SearchPerson.fxml"));
 		SearchPersonController fxmlController = new SearchPersonController(this);	
 		fxmlLoader.setController(fxmlController);
@@ -123,7 +117,6 @@ public class Main extends Application implements MainCallback
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, 1024, 768);
-		
 		return scene;
 	}	
 	
@@ -131,24 +124,35 @@ public class Main extends Application implements MainCallback
 	private Scene createAssistedDetailsLayout() throws IOException
 	{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/AssistedDetails.fxml"));
-		AssistedDetailsController fxmlController = new AssistedDetailsController(this, null);
-		fxmlLoader.setController(fxmlController);
-		GridPane pane = fxmlLoader.load();
-		Scene scene = new Scene(pane, 1024, 768);
-				
-		return scene;
-	}	
-	
-	// Create scene Settings page
-	private Scene createSettingsLayout() throws IOException
-	{
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Settings.fxml"));
-		SettingsController fxmlController = new SettingsController(this);	
+		AssistedDetailsController fxmlController = new AssistedDetailsController(this, null);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, 1024, 768);
 		
 		return scene;
+	}	
+	
+	private Scene createSettingsLayout() throws IOException
+	{
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/Settings.fxml"));
+		SettingsController fxmlController = new SettingsController(this);	
+		fxmlLoader.setController(fxmlController);
+		GridPane pane = fxmlLoader.load();
+		Scene scene = new Scene(pane, 512, 768);
+		
+		return scene;
+	}	
+	
+	// Load a scene into the stage
+	private void showPopup(Scene scene)
+	{
+		Stage popup = new Stage();
+		popup.initModality(Modality.WINDOW_MODAL);
+		popup.initOwner(primaryStage);
+		popup.setResizable(false);
+		popup.centerOnScreen();
+		popup.setScene(scene);
+		popup.show();
 	}
 	
 	// Load a scene into the stage
@@ -165,4 +169,5 @@ public class Main extends Application implements MainCallback
 	
 	// Application stage
 	private Stage primaryStage;
+	
 }

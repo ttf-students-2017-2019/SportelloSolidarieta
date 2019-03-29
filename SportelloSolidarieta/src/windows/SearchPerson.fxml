@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<GridPane prefHeight="957.0" prefWidth="1250.0" xmlns="http://javafx.com/javafx/8.0.201" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane prefHeight="957.0" prefWidth="1250.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <rowConstraints>
       <RowConstraints maxHeight="95.0" minHeight="10.0" prefHeight="76.0" />
       <RowConstraints maxHeight="98.0" minHeight="10.0" prefHeight="52.0" />
@@ -25,18 +25,20 @@
    <children>
       <GridPane prefHeight="285.0" prefWidth="998.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="ALWAYS" maxWidth="1114.0" minWidth="10.0" prefWidth="1114.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="136.0" minWidth="10.0" prefWidth="136.0" />
+            <ColumnConstraints halignment="RIGHT" minWidth="10.0" />
           <ColumnConstraints halignment="RIGHT" maxWidth="423.0" minWidth="10.0" prefWidth="136.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <ImageView fitHeight="79.0" fitWidth="103.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <ImageView fitHeight="79.0" fitWidth="103.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <image>
                   <Image url="@../../images/Logo.png" />
                </image></ImageView>
-            <Button fx:id="btn_report" onAction="#toReport" mnemonicParsing="false" text="REPORT" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <Button fx:id="btn_report" mnemonicParsing="false" onAction="#toReport" text="REPORT" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+            <Button fx:id="btn_settings" mnemonicParsing="false" onAction="#toSettings" text="IMPOSTAZIONI" GridPane.halignment="CENTER" />
          </children>
       </GridPane>
       <GridPane prefHeight="55.0" prefWidth="1252.0" GridPane.rowIndex="2">
@@ -62,6 +64,6 @@
           <TableColumn maxWidth="500.0" minWidth="300.0" prefWidth="300.0" text="Data di Nascita" />
         </columns>
       </TableView>
-      <Button fx:id="btn_detailsAssisted" onAction="#toDetail" mnemonicParsing="false" text="DETTAGLI ASSISTITO" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+      <Button fx:id="btn_detailsAssisted" mnemonicParsing="false" onAction="#toDetail" text="DETTAGLI ASSISTITO" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
    </children>
 </GridPane>

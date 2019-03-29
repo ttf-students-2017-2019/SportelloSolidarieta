@@ -25,10 +25,9 @@ public class FreeTimeSlot {
 	} 
 	
 	// Constructor
-	public FreeTimeSlot(Calendar startTime, Calendar endTime) {
-		super();
+	public FreeTimeSlot(Calendar startTime, Calendar endTime) 
+	{
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
-	
 }

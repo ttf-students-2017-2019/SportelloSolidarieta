@@ -27,5 +27,5 @@ public interface MainCallback
 	public void switchScene(Pages requiredPage);
 	
 	public Stage getStage();
-
+	
 }

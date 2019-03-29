@@ -8,13 +8,13 @@ import java.util.Date;
 
 
 /**
- * The persistent class for the impostazioni database table.
+ * The persistent class for the settings database table.
  * 
  */
 @Entity
-@Table(name="impostazioni")
-@NamedQuery(name="Settings.findAll", query="SELECT s FROM Settings s")
-public class Settings implements Serializable {
+@Table(name="settings")
+@NamedQuery(name="Settings.findAll", query="SELECT s FROM Setting s")
+public class Setting implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -65,7 +65,7 @@ public class Settings implements Serializable {
 	@Column(name="h_fine")
 	private Time hEnd;
 
-	public Settings() {
+	public Setting() {
 	}
 	
 	//General Settings getters and setters
@@ -174,14 +174,14 @@ public class Settings implements Serializable {
 	}
 	
 	// Other methods
-	public static Settings findAllSettings() {
+	public static Setting findAllSettings() {
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
 		EntityManager em = emf.createEntityManager();
 		Query query =  em.createNamedQuery("Settings.findAll");
 
 		em.getTransaction().begin();
-		Settings currentSettings = (Settings) query.getSingleResult();
+		Setting currentSettings = (Setting) query.getSingleResult();
 		em.getTransaction().commit();
 		em.close();
 		
@@ -194,7 +194,7 @@ public class Settings implements Serializable {
 	
 	public static int findDefaultWeekDay() {
 		
-		Settings settings = findAllSettings();
+		Setting settings = findAllSettings();
 		 
 		int defaultWeekDay = 0;
 		
