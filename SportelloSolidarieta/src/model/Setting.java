@@ -176,20 +176,23 @@ public class Setting implements Serializable {
 	// Other methods
 	public static Setting findAllSettings() {
 		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
-		EntityManager em = emf.createEntityManager();
-		Query query =  em.createNamedQuery("Settings.findAll");
+		try
+		{
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
+			EntityManager em = emf.createEntityManager();
+			Query query =  em.createNamedQuery("Settings.findAll");
 
-		em.getTransaction().begin();
-		Setting currentSettings = (Setting) query.getSingleResult();
-		em.getTransaction().commit();
-		em.close();
-		
-		if (currentSettings != null) {
-			return currentSettings;			
-		}
-		
-		return null;
+			em.getTransaction().begin();
+			Setting currentSettings = (Setting) query.getSingleResult();
+			em.getTransaction().commit();
+			em.close();
+			
+			return currentSettings;	
+			
+		} catch (Exception e) 
+		{	
+			throw e;
+		}		
 	}
 	
 	public static int findDefaultWeekDay() {
