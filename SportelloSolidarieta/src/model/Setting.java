@@ -194,7 +194,7 @@ public class Setting implements Serializable {
 			throw e;
 		}		
 	}
-	
+		
 	public static int findDefaultWeekDay() {
 		
 		Setting settings = findAllSettings();
@@ -228,7 +228,7 @@ public class Setting implements Serializable {
 		return defaultWeekDay;
 		
 	}
-	
+
 	@Override
 	public String toString() 
 	{

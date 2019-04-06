@@ -43,7 +43,12 @@ public class ObservableSlot{
 		String dateAsString = df.format(date);
 		this.appointmentTimeDate = new SimpleStringProperty(dateAsString);
 		
-		this.appointmentLength = new SimpleStringProperty(String.valueOf(currentSlot.getAppointmentLength()) + " minuti");
+		String lengthString = String.valueOf(currentSlot.getAppointmentLength());
+		// Adding a 0 if the appointment length is a single digit
+		if(lengthString.length()==1)
+			lengthString = "0" + lengthString;
+		
+		this.appointmentLength = new SimpleStringProperty(lengthString + " minuti");
 		
 		// Assigning the appointment owner only if the slot is taken
 		if (currentSlot.getAppointmentAssistedOwner()==null) {
