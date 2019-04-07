@@ -145,24 +145,13 @@ public class SettingsController {
 				 
 				 try 
 				 {
-					 // Default weekday set false and set the new one as true
-					 changeFlag(settings.findDefaultWeekDay(), false);
-					 changeFlag(newDefaultDay, true);
-					 
-					 // Setting the start and end time
-					 settings.setHStart(startTime);
-					 settings.setHEnd(endTime);
-					 
-					 // Setting the appointment length
-					 settings.setAppointmentLength(newAppointmentLength);
-					 
-					 // Setting the max number of appointments
-					 settings.setMaxDailyAppointments(maxAppointmentInTextField);
+					 settings.updateSetting(settings.findDefaultWeekDay(), newDefaultDay, startTime, endTime, newAppointmentLength, maxAppointmentInTextField);
+					 showAlertUpdateSettingsToMainPage();
 					 
 				 } catch (Exception e) {
 					// TODO: handle exception
+					showAlertDatabaseErrorToMainPage(); 
 				 }
-
 				 
 			 } 
 			 catch (Exception e) // No numbers 
@@ -319,42 +308,31 @@ public class SettingsController {
 
 		return appointmentLengthObservable;
 	}
-	
-	// Change the flag of the default day of week 
-	private void changeFlag (int flagToChange, boolean value)
-	{
-		 switch (flagToChange) 
-		 {
-			 case Calendar.MONDAY:
-				 settings.setFMonday(value);
-				 break; 
-			  case Calendar.TUESDAY:
-				  settings.setFTuesday(value);
-				  break;  
-			  case Calendar.WEDNESDAY:
-				  settings.setFWednesday(value);
-				  break;  
-			  case Calendar.THURSDAY:
-				  settings.setFThursday(value);
-				  break;  
-			  case Calendar.FRIDAY:
-				  settings.setFFriday(value);
-				  break;  
-			  case Calendar.SATURDAY:
-				  settings.setFSaturday(value);
-				  break;  
-			  case Calendar.SUNDAY:
-				  settings.setFSunday(value);
-				  break;  
-		}
-	}
-	
+		
 	// Binding the From Hour combo-box and selecting the default setting
 	private void bindApopointmentLengthAndSelectDeafult(ObservableList<ObservableAppointmentLength> appointmentLengthList) 
 	{
 		id_appointment_length.setItems(appointmentLengthList);
 		// The list is in order so just taking the minutes and divide by 5 min gap the settings value -1
 		id_appointment_length.getSelectionModel().select(settings.getAppointmentLength()/5 - 1);		
+	}
+	
+	// To main page success update
+	private void showAlertUpdateSettingsToMainPage() 
+	{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Messaggio di conferma");
+		alert.setHeaderText("Impostazioni aggiornate correttamente");
+		alert.setContentText("Ritorno alla schermata principale");
+		alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
+		
+			@Override
+			public void handle(DialogEvent event) {
+				Stage stage = (Stage) id_setting_label.getParent().getScene().getWindow();
+				stage.close();
+			}
+		});
+		alert.showAndWait();	
 	}
 	
 	// To main page error
