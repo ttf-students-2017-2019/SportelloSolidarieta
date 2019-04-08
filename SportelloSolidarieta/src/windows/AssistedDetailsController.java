@@ -15,7 +15,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Meeting;
-import model.Person;
+import model.Assisted;
 
 public class AssistedDetailsController {
 	
@@ -66,7 +66,7 @@ public class AssistedDetailsController {
     void setOnAction(ActionEvent event) 
     {
 		if (this.validateField()) {
-			DbUtil.savePerson(textfield_name.getText(), textbox_surname.getText(), datepicker_birthdate.getValue(),
+			DbUtil.saveAssisted(textfield_name.getText(), textbox_surname.getText(), datepicker_birthdate.getValue(),
 					dropdown_sex.getValue(), textbox_nationality.getText(), checkbox_wentbackhome.isSelected(),
 					checkbox_rejected.isSelected() , textfield_familycomposition.getText());
 		}
@@ -111,7 +111,7 @@ public class AssistedDetailsController {
 	// returned
 	//		none
 	//
-    public AssistedDetailsController(MainCallback interfaceMain, Person assisted)
+    public AssistedDetailsController(MainCallback interfaceMain, Assisted assisted)
     {
     	this.interfaceMain = interfaceMain;  
     	
@@ -128,5 +128,5 @@ public class AssistedDetailsController {
     
 	private ObservableList<Character> dropBoxValue = (FXCollections.observableArrayList('M', 'F', 'T'));
 	
-	private Person assisted; 
+	private Assisted assisted; 
 }

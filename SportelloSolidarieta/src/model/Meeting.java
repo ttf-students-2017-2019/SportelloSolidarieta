@@ -20,7 +20,7 @@ public class Meeting {
 	private LocalDate date;
 	@ManyToOne
 	@JoinColumn(name="PERSON_ID")
-	private Person person;
+	private Assisted assisted;
 	private String description;
 	private float amount;
 	
@@ -40,20 +40,20 @@ public class Meeting {
 		this.date = date;
 	}
 
-	public Person getPerson() {
-		return person;
+	public Assisted getPerson() {
+		return assisted;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	public void setPerson(Assisted assisted) {
+		this.assisted = assisted;
 	}
 	
 	public String getPersonName() {
-		return person.getName();
+		return assisted.getName();
 	}
 	
 	public String getPersonSurname() {
-		return person.getSurname();
+		return assisted.getSurname();
 	}
 
 	public String getDescription() {

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<GridPane alignment="CENTER" maxHeight="768.0" maxWidth="1024.0" minHeight="384.0" minWidth="512.0" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <rowConstraints>
+      <RowConstraints maxHeight="192.0" minHeight="10.0" prefHeight="192.0" />
+      <RowConstraints maxHeight="153.0" minHeight="10.0" prefHeight="54.0" />
+      <RowConstraints maxHeight="172.0" minHeight="10.0" prefHeight="60.0" />
+      <RowConstraints maxHeight="826.0" minHeight="10.0" prefHeight="417.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="424.0" minHeight="10.0" prefHeight="61.0" vgrow="ALWAYS" />
+   </rowConstraints>
+   <columnConstraints>
+      <ColumnConstraints hgrow="NEVER" minWidth="512.0" prefWidth="1024.0" />
+   </columnConstraints>
+   <children>
+      <GridPane prefHeight="124.0" prefWidth="1261.0">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="179.0" minWidth="10.0" prefWidth="150.0" />
+            <ColumnConstraints halignment="RIGHT" maxWidth="911.0" minWidth="10.0" prefWidth="727.0" />
+            <ColumnConstraints halignment="RIGHT" maxWidth="755.0" minWidth="8.0" prefWidth="46.0" />
+          <ColumnConstraints halignment="RIGHT" maxWidth="423.0" minWidth="10.0" prefWidth="101.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+        </rowConstraints>
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <image>
+                  <Image url="@../../../images/logo.png" />
+               </image></ImageView>
+            <Button fx:id="btn_report" mnemonicParsing="false" onAction="#toReport" text="REPORT" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+            <Button fx:id="btn_settings" mnemonicParsing="false" onAction="#toSettings" text="IMPOSTAZIONI" GridPane.halignment="CENTER" />
+         </children>
+      </GridPane>
+      <Button fx:id="btn_addAssisted" mnemonicParsing="false" onAction="#toDetail" text="AGGIUNGI NUOVO ASSISTITO" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <GridPane prefHeight="55.0" prefWidth="1252.0" GridPane.rowIndex="2">
+        <columnConstraints>
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="706.0" minWidth="10.0" prefWidth="162.0" />
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="807.0" minWidth="10.0" prefWidth="412.0" />
+            <ColumnConstraints halignment="RIGHT" maxWidth="627.0" minWidth="10.0" prefWidth="439.0" />
+            <ColumnConstraints halignment="RIGHT" maxWidth="553.0" minWidth="7.0" prefWidth="12.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="tfield_surname" onKeyReleased="#searchAssisted" prefHeight="31.0" prefWidth="422.0" promptText="Cognome" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
+            <TextField fx:id="tfield_name" onKeyReleased="#searchAssisted" prefHeight="31.0" prefWidth="442.0" promptText="Nome" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ricerca assistito:" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" />
+         </children>
+      </GridPane>
+      <GridPane prefHeight="487.0" prefWidth="1024.0" GridPane.rowIndex="3">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="333.0" minWidth="0.0" prefWidth="0.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="998.0" minWidth="10.0" prefWidth="998.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="333.0" minWidth="0.0" prefWidth="0.0" />
+        </columnConstraints>
+         <children>
+            <TableView fx:id="resultTable" onMousePressed="#rowSelected" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.vgrow="ALWAYS">
+            	<placeholder>
+              	<Label text="Nessun risultato" />
+          	</placeholder>
+              <columns>
+                <TableColumn fx:id="colSurname" maxWidth="700.0" minWidth="-1.0" prefWidth="419.0" text="Cognome" />
+                <TableColumn fx:id="colName" maxWidth="1000.0" minWidth="215.0" prefWidth="401.0" text="Nome" />
+                <TableColumn fx:id="colBirthdate" maxWidth="379.0" minWidth="173.0" prefWidth="177.0" text="Data di Nascita" />
+              </columns>
+            </TableView>
+         </children>
+         <rowConstraints>
+            <RowConstraints />
+         </rowConstraints>
+      </GridPane>
+      <Button fx:id="btn_detailsAssisted" disable="true" mnemonicParsing="false" onAction="#toDetail" text="DETTAGLI ASSISTITO SELEZIONATO" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+   </children>
+</GridPane>

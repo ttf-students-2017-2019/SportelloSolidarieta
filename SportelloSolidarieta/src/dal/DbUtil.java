@@ -1,15 +1,17 @@
 package dal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 import model.Meeting;
-import model.Person;
+import model.Assisted;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -40,8 +42,14 @@ public class DbUtil {
 		}
 	}
 	
-	public static List<Person> getPeople() {
-		return null;
+	//used by SearchAssistedController
+	public static EntityManager getEntityManager() {
+		return emf.createEntityManager();  
+	}
+	
+	//used by SearchAssistedController
+	public static void closeEntityManager(EntityManager em) {
+		em.close();
 	}
 	
 	public static List<Meeting> getMeetings(LocalDate from, LocalDate to) {
@@ -51,13 +59,49 @@ public class DbUtil {
     	return meetings;
 	}
 	
-	public static void savePerson(String name, String surname, LocalDate birthday, Character sex, String nationality, boolean wentbackhome, boolean rejected, String familycomposition) {
-		
+	public static void saveAssisted(String name, String surname, LocalDate birthday, Character sex, String nationality, boolean wentbackhome, boolean rejected, String familycomposition) {
+		//TODO (giammaria?)
 	}
 	
-
-	
-	
-
+	//If no result, doesn't return null but returns an empty list
+	public static List<Assisted> searchAssisted(EntityManager em, String surname, String name) {
+		
+    	Query query;
+		List<Assisted> assisteds; 
+    	
+    	boolean surnameEmpty = (surname == null || surname.equals(""));
+    	boolean nameEmpty = (name == null || name.equals(""));
+    	
+    	if(surnameEmpty && nameEmpty) {
+    		assisteds = null;
+    	}
+    	else if (surnameEmpty) {
+    		query = em.createNamedQuery("Assisted.findName");
+    		query.setParameter("name", name);
+    		assisteds = query.getResultList();	//NOTE: this returns null if no result
+    	}
+    	else {
+			query = em.createNamedQuery("Assisted.findSurnameName");
+			query.setParameter("surname", surname);
+			query.setParameter("name", name);
+			assisteds = query.getResultList();
+    	}
+    	
+    	if(assisteds == null) {		//that is, no search or no result
+    		assisteds = new ArrayList<Assisted>();	//build an empty list, to prevent NullPointerExceptions later
+    		
+    		//TODO change with proper logging
+        	System.out.println("**QUERY RESULT OF \"SEARCH ASSISTED\": no results**");
+    	}
+    	else {
+	    	//TODO change with proper logging
+	    	System.out.println("**QUERY RESULT OF \"SEARCH ASSISTED\"**");
+	    	for(Assisted a : assisteds)
+	    		System.out.println(a.getSurname() + " " + a.getName() + " " + a.getBirthdate());
+	    	System.out.println("**/QUERY RESULT OF \"SEARCH ASSISTED\"**");
+    	}
+    	
+    	return assisteds;
+	}
 	
 }

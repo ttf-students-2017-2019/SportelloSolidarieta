@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import windows.AssistedDetailsController;
 import windows.ReportController;
 import windows.ScheduleController;
-import windows.SearchPersonController;
+import windows.SearchAssistedController;
 import windows.SettingsController;
 import windows.SplashScreenController;
 
@@ -88,8 +88,8 @@ public class Main extends Application implements MainCallback {
 	// Create scene Registry page
 	private Scene createSearchPerson() throws IOException
 	{
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/SearchPerson.fxml"));
-		SearchPersonController fxmlController = new SearchPersonController(this);	
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/SearchAssisted.fxml"));
+		SearchAssistedController fxmlController = new SearchAssistedController(this);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, 1024, 768);

@@ -9,7 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import model.Person;
+import model.Assisted;
 
 public class Formatter {
 
@@ -84,7 +84,7 @@ public class Formatter {
 		return dayString;
 	}
 
-	public static String getAlertMessage(Person assisted, Calendar cal)
+	public static String getAlertMessage(Assisted assisted, Calendar cal)
 	{
 		// Setting time format
 		String pattern =  "HH:mm";

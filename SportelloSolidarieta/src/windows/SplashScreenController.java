@@ -20,7 +20,7 @@ public class SplashScreenController {
             {
                 interfaceMain.switchScene(MainCallback.Pages.SearchPerson);
             }
-        }, 3000);      
+        }, 1500);      
     }
     
 	//
