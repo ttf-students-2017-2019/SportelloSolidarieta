@@ -72,7 +72,6 @@ public class ScheduleController {
 	@FXML
 	private TableColumn<ObservableSlot, String> idColumnTime;
 
-
 	@FXML
 	private TableColumn<ObservableSlot, String> idColumnLength;
 

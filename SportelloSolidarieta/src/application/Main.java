@@ -138,7 +138,7 @@ public class Main extends Application implements MainCallback {
 		SettingsController fxmlController = new SettingsController(this);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
-		Scene scene = new Scene(pane, 512, 768);
+		Scene scene = new Scene(pane, 512, 580);
 		
 		return scene;
 	}	

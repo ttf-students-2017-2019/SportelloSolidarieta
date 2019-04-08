@@ -194,6 +194,65 @@ public class Setting implements Serializable {
 			throw e;
 		}		
 	}
+	// Receive the updated settings from the Settings controller and persist the changes
+	public void updateSetting(int oldDefaultWeekDay, int newDefaultDay, Time startTime, Time endTime,
+			int newAppointmentLength, int maxAppointmentInTextField) 
+	{
+		try
+		{
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
+			EntityManager em = emf.createEntityManager();
+			Query query =  em.createNamedQuery("Settings.findAll");
+
+			em.getTransaction().begin();
+			Setting currentSettings = (Setting) query.getSingleResult();
+			
+			
+			// Update the settings
+			currentSettings.changeFlag(oldDefaultWeekDay, false);
+			currentSettings.changeFlag(newDefaultDay, true);
+			currentSettings.setHStart(startTime);
+			currentSettings.setHEnd(endTime);
+			currentSettings.setAppointmentLength(newAppointmentLength);
+			currentSettings.setMaxDailyAppointments(maxAppointmentInTextField);
+			
+			em.getTransaction().commit();
+			em.close();
+		} 
+		catch (Exception e) 
+		{	
+			throw e;
+		}		
+	}
+	
+	// Change the flag of the default day of week 
+	private void changeFlag (int flagToChange, boolean value)
+	{
+		 switch (flagToChange) 
+		 {
+			 case Calendar.MONDAY:
+				 setFMonday(value);
+				 break; 
+			  case Calendar.TUESDAY:
+				  setFTuesday(value);
+				  break;  
+			  case Calendar.WEDNESDAY:
+				  setFWednesday(value);
+				  break;  
+			  case Calendar.THURSDAY:
+				  setFThursday(value);
+				  break;  
+			  case Calendar.FRIDAY:
+				  setFFriday(value);
+				  break;  
+			  case Calendar.SATURDAY:
+				  setFSaturday(value);
+				  break;  
+			  case Calendar.SUNDAY:
+				  setFSunday(value);
+				  break;  
+		}
+	}
 	
 	public static int findDefaultWeekDay() {
 		
@@ -228,7 +287,7 @@ public class Setting implements Serializable {
 		return defaultWeekDay;
 		
 	}
-	
+
 	@Override
 	public String toString() 
 	{
