@@ -26,7 +26,7 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
 import model.Appointment;
-import model.Person;
+import model.Assisted;
 import model.Setting;
 
 import schedule.DailyPlan;
@@ -103,7 +103,7 @@ public class ScheduleController {
 			settings = Setting.findAllSettings();
 
 			// Getting the Assisted and setting the labels
-			Person assisted = new Person();
+			Assisted assisted = new Assisted();
 			assisted = assisted.getSamplePerson();
 
 			idAssistedNameSurname.setText(assisted.getName() + " " + assisted.getSurname());
@@ -167,7 +167,7 @@ public class ScheduleController {
 		// Only if the selected slot is free save the appointment to the database
 		if (selectedSlot != null && selectedSlot.getAssociatedSlot().getAppointmentAssistedOwner() == null) 
 		{
-			Person sampleAssisted = new Person();
+			Assisted sampleAssisted = new Assisted();
 			sampleAssisted = sampleAssisted.getSamplePerson();
 
 			System.out.println(sampleAssisted.toString());
@@ -231,7 +231,7 @@ public class ScheduleController {
 		alert.showAndWait();
 	}
 
-	private void showAlertWithSuccessfulHeaderText(Person assisted, Date appointmentDateTime, int appointmentLength) {
+	private void showAlertWithSuccessfulHeaderText(Assisted assisted, Date appointmentDateTime, int appointmentLength) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(appointmentDateTime);
 

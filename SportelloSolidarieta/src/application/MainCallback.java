@@ -8,10 +8,10 @@ public interface MainCallback
 	// Identifiers for all application pages
 	public enum Pages
 	{
-		SearchPerson,		// User interface page where search for a person
+		SearchPerson,		// User interface page where search for a assisted
 		Report,				// User interface page to create reports
 		Schedule,			// User interface page to schedule an appointment
-		AssistedDetail,		// User interface page to show person details
+		AssistedDetail,		// User interface page to show assisted details
 		Settings			// User interface page to show settings detail
 	}
 	

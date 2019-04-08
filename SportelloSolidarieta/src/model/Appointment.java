@@ -40,15 +40,15 @@ public class Appointment implements Serializable {
 	@Column(name="f_effettuato")
 	private boolean fDone;
 
-	//bi-directional many-to-one association to Person
+	//bi-directional many-to-one association to Assisted
 	@ManyToOne
 	@JoinColumn(name="id_assistito")
-	private Person person;
+	private Assisted assisted;
 
 	public Appointment() {
 	}
 	
-	public Appointment(Person assisted, Date appointmentDateTime, int appointmentLength) {
+	public Appointment(Assisted assisted, Date appointmentDateTime, int appointmentLength) {
 		setPerson(assisted);
 		setAppointmentDateTime(appointmentDateTime);
 		setAppointmentLength(appointmentLength);
@@ -86,12 +86,12 @@ public class Appointment implements Serializable {
 		this.fDone = fDone;
 	}
 
-	public Person getPerson() {
-		return this.person;
+	public Assisted getPerson() {
+		return this.assisted;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	public void setPerson(Assisted assisted) {
+		this.assisted = assisted;
 	}
 	
 	// Other methods
@@ -140,7 +140,7 @@ public class Appointment implements Serializable {
 		return null;
 	}
 	
-	public static boolean saveAppointment(Person assisted, Date appointmentDateTime, int appointmentLength) 
+	public static boolean saveAppointment(Assisted assisted, Date appointmentDateTime, int appointmentLength) 
 	{	
 		try 
 		{

@@ -19,22 +19,26 @@ import org.eclipse.persistence.annotations.Indexes;
 
 @Entity
 @Indexes({
-	@Index(name="Person_Index_SurnameName", columnNames={"SURNAME","NAME"}),
-	@Index(name="Person_Index_Name", columnNames={"NAME"})
+	@Index(name="Assisted_Index_SurnameName", columnNames={"SURNAME","NAME"}),
+	@Index(name="Assisted_Index_Name", columnNames={"NAME"})
 })
 @NamedQueries({
-	@NamedQuery(name="Person.findSurnameName", query="SELECT a FROM Person a WHERE a.surname LIKE CONCAT(:surname,'%') AND a.name LIKE CONCAT(:name,'%')"), 
-	@NamedQuery(name="Person.findName", query="SELECT a FROM Person a WHERE a.name LIKE CONCAT(:name,'%')"), 
-	@NamedQuery(name="Person.findAll", query="SELECT a FROM Person a")
+	@NamedQuery(name="Assisted.findSurnameName", query="SELECT a FROM Assisted a WHERE a.surname LIKE CONCAT(:surname,'%') AND a.name LIKE CONCAT(:name,'%')"), 
+	@NamedQuery(name="Assisted.findName", query="SELECT a FROM Assisted a WHERE a.name LIKE CONCAT(:name,'%')"), 
+	@NamedQuery(name="Assisted.findAll", query="SELECT a FROM Assisted a")
 })
 
-public class Person {
+public class Assisted {
+	
+	/*
+	 * ENTITY FIELDS
+	 */
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private boolean isDeleted;
-	@Column(name="SURNAME")	//nb column name needed for the index generation by jpa
+	@Column(name="SURNAME")	//NB column name is needed for the index generation by JPA
 	private String surname;
 	@Column(name="NAME")
 	private String name;
@@ -45,11 +49,19 @@ public class Person {
 	private boolean isReunitedWithFamily;
 	private boolean isRefused;
 
-	@OneToMany(mappedBy="person")
+	/*
+	 * ENTITY RELATIONS
+	 */
+	
+	@OneToMany(mappedBy="assisted")
 	private List<Meeting> meetings;
 	
-	@OneToMany(mappedBy="person")
+	@OneToMany(mappedBy="assisted")
 	private List<Appointment> appointments;
+	
+	/*
+	 * GETTERS/SETTERS
+	 */
 	
 	public Long getId() {
 		return id;
@@ -146,6 +158,10 @@ public class Person {
 	public void setAppointment(List<Appointment> appointments) {
 		this.appointments = appointments;
 	}
+	
+	/*
+	 * OTHER MODEL METHODS
+	 */
 
 	public Appointment addAppuntamento(Appointment appuntamento) {
 		getAppointments().add(appuntamento);
@@ -161,12 +177,25 @@ public class Person {
 		return appuntamento;
 	}
 	
-public Person getSamplePerson () 
+	/*
+	 * UTILITY METHODS
+	 */
+
+	@Override
+	public String toString() {
+		return "Assisted [id=" + id + ", isDeleted=" + isDeleted + ", surname=" + surname + ", name=" + name + ", sex="
+				+ sex + ", birthdate=" + birthdate + ", nationality=" + nationality + ", familyComposition="
+				+ familyComposition + ", isReunitedWithFamily=" + isReunitedWithFamily + ", isRefused=" + isRefused
+				+ ", meetings=" + meetings + ", appointments=" + appointments + "]";
+	}
+
+	//TODO @eros should we delete this after testing?
+	public Assisted getSamplePerson () 
 	{
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-		List<Person> res = (List<Person>) em.createNamedQuery("Person.findAll").getResultList();
+		List<Assisted> res = (List<Assisted>) em.createNamedQuery("Assisted.findAll").getResultList();
 		em.getTransaction().commit();
 		em.close();
 		return res.get(0);
