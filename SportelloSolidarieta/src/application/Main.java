@@ -7,6 +7,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import windows.AssistedDetailsController;
+import windows.CalendarController;
 import windows.ReportController;
 import windows.ScheduleController;
 import windows.SearchAssistedController;
@@ -59,10 +60,13 @@ public class Main extends Application implements MainCallback {
 				case AssistedDetail:
 					showScene(createAssistedDetailsLayout());
 					break;
+				case Calendar:
+					showScene(createCalendarLayout());
+				break;
 				case Settings:
 					showPopup(createSettingsLayout());
 				break;
-				
+	
 				}
 			} 
 			catch (IOException e) 
@@ -132,6 +136,7 @@ public class Main extends Application implements MainCallback {
 		return scene;
 	}	
 	
+	// Create scene SettingsLayout 
 	private Scene createSettingsLayout() throws IOException
 	{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/Settings.fxml"));
@@ -139,6 +144,18 @@ public class Main extends Application implements MainCallback {
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, 512, 580);
+		
+		return scene;
+	}	
+	
+	// Create scene CalendarLayout page
+	private Scene createCalendarLayout() throws IOException
+	{
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/Calendar.fxml"));
+		CalendarController fxmlController = new CalendarController(this);	
+		fxmlLoader.setController(fxmlController);
+		GridPane pane = fxmlLoader.load();
+		Scene scene = new Scene(pane, 1024, 768);
 		
 		return scene;
 	}	

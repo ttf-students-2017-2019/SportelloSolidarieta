@@ -12,7 +12,8 @@ public interface MainCallback
 		Report,				// User interface page to create reports
 		Schedule,			// User interface page to schedule an appointment
 		AssistedDetail,		// User interface page to show assisted details
-		Settings			// User interface page to show settings detail
+		Settings,			// User interface page to show settings detail
+		Calendar,			// User interface page to show calendar
 	}
 	
 	//

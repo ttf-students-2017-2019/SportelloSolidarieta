@@ -142,10 +142,18 @@ public class SettingsController {
 					 return;
 				 }
 				 // Otherwise everything is good and we can update the settings in the database
-				 
 				 try 
 				 {
-					 settings.updateSetting(settings.findDefaultWeekDay(), newDefaultDay, startTime, endTime, newAppointmentLength, maxAppointmentInTextField);
+					 // Update the settings
+					 changeFlag(settings.findDefaultWeekDay(), false);
+					 changeFlag(newDefaultDay, true);
+					 settings.setHStart(startTime);
+					 settings.setHEnd(endTime);
+					 settings.setAppointmentLength(newAppointmentLength);
+					 settings.setMaxDailyAppointments(maxAppointmentInTextField);
+					 
+					 // Update db
+					 settings.updateSetting(settings);
 					 showAlertUpdateSettingsToMainPage();
 					 
 				 } catch (Exception e) {
@@ -315,6 +323,35 @@ public class SettingsController {
 		id_appointment_length.setItems(appointmentLengthList);
 		// The list is in order so just taking the minutes and divide by 5 min gap the settings value -1
 		id_appointment_length.getSelectionModel().select(settings.getAppointmentLength()/5 - 1);		
+	}
+	
+	// Change the flag of the default day of week 
+	private void changeFlag(int flagToChange, boolean value)
+	{
+		 switch (flagToChange) 
+		 {
+			 case Calendar.MONDAY:
+				 settings.setFMonday(value);
+				 break; 
+			  case Calendar.TUESDAY:
+				  settings.setFTuesday(value);
+				  break;  
+			  case Calendar.WEDNESDAY:
+				  settings.setFWednesday(value);
+				  break;  
+			  case Calendar.THURSDAY:
+				  settings.setFThursday(value);
+				  break;  
+			  case Calendar.FRIDAY:
+				  settings.setFFriday(value);
+				  break;  
+			  case Calendar.SATURDAY:
+				  settings.setFSaturday(value);
+				  break;  
+			  case Calendar.SUNDAY:
+				  settings.setFSunday(value);
+				  break;  
+		}
 	}
 	
 	// To main page success update

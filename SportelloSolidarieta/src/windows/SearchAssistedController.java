@@ -58,6 +58,9 @@ public class SearchAssistedController {
     private Button btn_report;
     
     @FXML
+    private Button btn_calendar;
+    
+    @FXML
     private Button btn_addAssisted;
     
     @FXML
@@ -104,7 +107,13 @@ public class SearchAssistedController {
     	//DbUtil.closeEntityManager(this.em);	NOTE do *not* do this here, because the scene itsn't reloaded at the exit of "settings", therefore there won't be any EnitityManager
     	interfaceMain.switchScene(MainCallback.Pages.Settings);
     }
-
+    
+    @FXML
+    void toCalendar(ActionEvent event) {
+    	DbUtil.closeEntityManager(this.em);
+    	interfaceMain.switchScene(MainCallback.Pages.Calendar);
+    }
+    
     @FXML
     public void searchAssisted(KeyEvent event) {
     	btn_detailsAssisted.setDisable(true);	//disables "toDetail" button when a new search is made

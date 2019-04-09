@@ -196,14 +196,6 @@ public class ScheduleController {
 		Alert alert = new Alert(AlertType.WARNING);
 		alert.setTitle("Attenzione");
 		alert.setHeaderText("Nessuna selezione");
-		alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
-
-			@Override
-			public void handle(DialogEvent event) {
-
-			}
-
-		});
 		alert.showAndWait();
 	}
 
