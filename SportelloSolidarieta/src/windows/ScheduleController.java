@@ -164,7 +164,7 @@ public class ScheduleController {
 		ObservableSlot selectedSlot = idTableView.getSelectionModel().getSelectedItem(); 
 		
 		// Only if the selected slot is free save the appointment to the database
-		if (selectedSlot != null && selectedSlot.getAssociatedSlot().getAppointmentAssistedOwner() == null) 
+		if (selectedSlot != null && selectedSlot.getAssociatedSlot().getAssocieatedAppointment() == null) 
 		{
 			Assisted sampleAssisted = new Assisted();
 			sampleAssisted = sampleAssisted.getSamplePerson();
@@ -175,13 +175,13 @@ public class ScheduleController {
 			Appointment appToSave = new Appointment();		
 
 			// Check for errors
-			if (appToSave.saveAppointment(sampleAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getAppointmentLength())==true) 
-				showAlertWithSuccessfulHeaderText(sampleAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getAppointmentLength());
+			if (appToSave.saveAppointment(sampleAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getSlotLength())) 
+				showAlertWithSuccessfulHeaderText(sampleAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getSlotLength());
 			else
 				showAlertDatabaseErrorToMainPage(); 
 		}
 		else if (selectedSlot != null && 
-				selectedSlot.getAssociatedSlot().getAppointmentAssistedOwner() != null) // Slot already taken
+				selectedSlot.getAssociatedSlot().getAssocieatedAppointment() != null) // Slot already taken
 		{
 			showAlertAppointmentTaken(selectedSlot);
 		} 

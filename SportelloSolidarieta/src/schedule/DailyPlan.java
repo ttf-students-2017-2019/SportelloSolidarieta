@@ -224,8 +224,7 @@ public class DailyPlan
 		            return  firstSlot.getAssociatedSlot().getDateTime().compareTo(secondSlot.getAssociatedSlot().getDateTime());
 		        }
 		    });	
-		}
-			
+		}		
 	}
 	
 	// Generating all the slots taken by appointment already in the database 
@@ -234,23 +233,28 @@ public class DailyPlan
 		for (Iterator<Appointment> iterator = dailyAppointments.iterator(); iterator.hasNext();) 
 		{
 			Appointment currentAppointment = iterator.next();
-			FreeTimeSlot currentFreeTimeSlot = checkSlot(currentAppointment.getAppointmentDateTime(), currentAppointment.getAppointmentLength());
-			if ( currentFreeTimeSlot != null)
+			
+			// Only when appointment is not deleted add it to the dailyPlan
+			if (!currentAppointment.getFDeleted())
 			{
-				Calendar appointmentCal = Calendar.getInstance();
-				appointmentCal.setTime(currentAppointment.getAppointmentDateTime());
-				Slot currentSlot = new Slot(appointmentCal,currentAppointment.getPerson(),
-						currentAppointment.getAppointmentLength()); 
-				
-				// Updating the dailyFreeTime
-				updateDailyFreeTime(currentSlot, currentFreeTimeSlot);
-				
-				// Adding the slot to the dailyPlan
-				ObservableSlot observableSlot = new ObservableSlot(currentSlot);
-				dailyPlan.add(observableSlot);
-				
-				// Updating the number of appointments
-				numberOfAppointments++;
+				FreeTimeSlot currentFreeTimeSlot = checkSlot(currentAppointment.getAppointmentDateTime(), currentAppointment.getAppointmentLength());
+				if ( currentFreeTimeSlot != null)
+				{
+					Calendar appointmentCal = Calendar.getInstance();
+					appointmentCal.setTime(currentAppointment.getAppointmentDateTime());
+					Slot currentSlot = new Slot(appointmentCal,currentAppointment,
+							currentAppointment.getAppointmentLength()); 
+					
+					// Updating the dailyFreeTime
+					updateDailyFreeTime(currentSlot, currentFreeTimeSlot);
+					
+					// Adding the slot to the dailyPlan
+					ObservableSlot observableSlot = new ObservableSlot(currentSlot);
+					dailyPlan.add(observableSlot);
+					
+					// Updating the number of appointments
+					numberOfAppointments++;
+				}	
 			}
 		}	
 	}
@@ -308,7 +312,7 @@ public class DailyPlan
 				return currentTimeSlot;
 	
 		}
-		
+
 		return null;			
 	}
 	
@@ -317,7 +321,7 @@ public class DailyPlan
 		Calendar appointmentStart = assignedSlot.getDateTime();
 		
 		Calendar appointmentEnd = (Calendar) appointmentStart.clone();
-		appointmentEnd.add(Calendar.MINUTE, assignedSlot.getAppointmentLength());
+		appointmentEnd.add(Calendar.MINUTE, assignedSlot.getSlotLength());
 		
 		// Control if the appointment start is the same of the the start of the slotToModify  
 		if (appointmentStart.equals(slotToModify.getStartTime())) 
@@ -362,7 +366,7 @@ public class DailyPlan
 		{
 			ObservableSlot currentSlot = (ObservableSlot) iterator.next();
 			
-			if (currentSlot.getAssociatedSlot().getAppointmentAssistedOwner() == null) 
+			if (currentSlot.getAssociatedSlot().getAssocieatedAppointment() == null) 
 			{
 				firstSlot = currentSlot;
 				break;
