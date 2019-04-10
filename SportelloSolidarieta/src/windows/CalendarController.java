@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
@@ -230,13 +231,17 @@ public class CalendarController {
 	
 	private void showConfirmationDialog(ObservableSlot selectedSlot) 
 	{
-		Alert alert = new Alert(AlertType.CONFIRMATION);
+		// Creating custom button
+		ButtonType yesButton = new ButtonType("Sì",ButtonData.OK_DONE);
+		ButtonType noButton = new ButtonType("No",ButtonData.CANCEL_CLOSE);
+		
+		Alert alert = new Alert(AlertType.CONFIRMATION, null, yesButton, noButton);
 		alert.setTitle("Avviso di conferma");
 		alert.setHeaderText("Conferma la tua scelta");
 		alert.setContentText("Sicuro di voler cancellare l'appuntamento selezionato?");
 		
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK)
+		if (result.orElse(noButton) == yesButton)
 		{
 			Appointment appointmentToDelete = selectedSlot.getAssociatedSlot().getAssocieatedAppointment();
 			
