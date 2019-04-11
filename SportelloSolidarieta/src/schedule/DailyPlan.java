@@ -172,6 +172,16 @@ public class DailyPlan
 				currentTime = addMinutesToDate(currentTime, appointmentLength);	
 			}
 			
+			// Sorting the dailyPlan list needed to check the beginning of the day
+			Collections.sort(dailyPlan, new Comparator<ObservableSlot>() 
+			{
+				@Override
+				public int compare(ObservableSlot firstSlot, ObservableSlot secondSlot)
+				{
+					return  firstSlot.getAssociatedSlot().getDateTime().compareTo(secondSlot.getAssociatedSlot().getDateTime());
+				}
+			});	
+						
 			Calendar startOfDay = Calendar.getInstance();
 			startOfDay.setTime(start);
 			startOfDay.add(Calendar.SECOND, -1);
@@ -186,8 +196,9 @@ public class DailyPlan
 				FreeTimeSlot currentFreeSlot = (FreeTimeSlot) iterator.next();
 				
 				int appLength = 0;
-				// Managing a free slot beginning before the start time
-				if (currentFreeSlot.getStartTime().before(startOfDay))
+				// Managing a free slot beginning before the start time and end time is the end of the first slot generated fill the gap
+				if (currentFreeSlot.getStartTime().before(startOfDay) &&
+						currentFreeSlot.getEndTime().equals(dailyPlan.get(0).getAssociatedSlot().getDateTime()))
 				{
 					startOfDay.add(Calendar.SECOND, +1);
 					appLength = (int) Duration.between(startOfDay.toInstant(),
