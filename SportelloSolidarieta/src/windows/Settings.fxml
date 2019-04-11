@@ -63,7 +63,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="shedule_ok_button" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#saveSetting" prefHeight="31.0" prefWidth="150.0" text="Conferma" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Button fx:id="shedule_ok_button" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#saveSetting" prefHeight="31.0" prefWidth="150.0" text="Salva" GridPane.columnIndex="3" GridPane.rowIndex="1" />
             <Button fx:id="shedule_back_button" maxWidth="150.0" mnemonicParsing="false" onAction="#toSearchPerson" prefWidth="150.0" text="Annulla" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
@@ -94,7 +94,8 @@
       <GridPane GridPane.rowIndex="7">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.0" minWidth="290.0" prefWidth="185.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="245.0" minWidth="245.0" prefWidth="245.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" />
             <ColumnConstraints hgrow="SOMETIMES" />
         </columnConstraints>
@@ -102,8 +103,8 @@
           <RowConstraints vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label prefHeight="18.0" text="              N massimo per giorno" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            <TextField fx:id="id_max_appointment" maxWidth="65.0" prefWidth="65.0" GridPane.columnIndex="2" />
+            <Label prefHeight="18.0" text="             N massimo per giorno" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+            <TextField fx:id="id_max_appointment" maxWidth="65.0" prefWidth="65.0" GridPane.columnIndex="3" />
          </children>
       </GridPane>
       <GridPane GridPane.rowIndex="4">
@@ -132,7 +133,8 @@
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="160.0" prefWidth="160.0" />
             <ColumnConstraints hgrow="SOMETIMES" />
          </columnConstraints>
@@ -141,7 +143,7 @@
          </rowConstraints>
          <children>
             <Label text="Durata" GridPane.columnIndex="2" />
-            <ComboBox fx:id="id_appointment_length" prefWidth="160.0" GridPane.columnIndex="3" />
+            <ComboBox fx:id="id_appointment_length" prefWidth="160.0" GridPane.columnIndex="4" />
             <Label text="Dettagli appuntamenti" GridPane.columnIndex="1" GridPane.halignment="LEFT">
                <font>
                   <Font name="System Bold" size="15.0" />

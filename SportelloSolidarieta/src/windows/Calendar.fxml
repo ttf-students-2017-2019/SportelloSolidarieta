@@ -24,8 +24,7 @@
       <GridPane GridPane.rowIndex="1">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="334.0" minWidth="334.0" prefWidth="334.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="404.0" minWidth="404.0" prefWidth="404.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
             <ColumnConstraints hgrow="SOMETIMES" />
@@ -36,10 +35,9 @@
           <RowConstraints maxHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label minHeight="30.0" text="Data" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <DatePicker fx:id="idDatePicker" minHeight="30.0" onAction="#updateDailyPlanFromDatePicker" prefHeight="30.0" prefWidth="289.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-            <Label minHeight="30.0" text="Assistito: " GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="idAssistedNameSurname" minHeight="30.0" text="AssistedNameSurname" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Label minHeight="30.0" text="Data" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <DatePicker fx:id="idDatePicker" minHeight="30.0" onAction="#updateDailyPlanFromDatePicker" prefHeight="30.0" prefWidth="289.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Label minHeight="30.0" text="Appuntamenti del giorno" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font></Label>
@@ -59,8 +57,8 @@
           <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="shedule_ok_button" minHeight="30.0" minWidth="200.0" mnemonicParsing="false" onAction="#saveAppointment" prefHeight="30.0" prefWidth="200.0" text="Salva" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <Button fx:id="shedule_back_button" minHeight="30.0" minWidth="200.0" mnemonicParsing="false" onAction="#toAssistedDetail" prefHeight="30.0" prefWidth="200.0" text="Annulla" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <Button fx:id="calendar_delete_button" maxWidth="200.0" minHeight="30.0" minWidth="200.0" mnemonicParsing="false" onAction="#deleteAppointment" prefHeight="30.0" prefWidth="200.0" text="Cancella App. Selezionato" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Button fx:id="shedule_back_button" minHeight="30.0" minWidth="200.0" mnemonicParsing="false" onAction="#toSearchPage" prefHeight="30.0" prefWidth="200.0" text="Indietro" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <GridPane GridPane.rowIndex="2">
@@ -106,7 +104,7 @@
             </GridPane>
          </children>
       </GridPane>
-      <Label minHeight="30.0" text="Fissa nuovo appuntamento" GridPane.halignment="CENTER">
+      <Label minHeight="30.0" text="Calendario" GridPane.halignment="CENTER">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Label>

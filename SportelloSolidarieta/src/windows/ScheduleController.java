@@ -41,6 +41,8 @@ public class ScheduleController {
 
 	// Settings loaded from the database
 	private Setting settings; 
+	
+	private Assisted selectedAssisted;
 
 	public static final int SKIP_DAYS = 7;
 
@@ -102,10 +104,9 @@ public class ScheduleController {
 			settings = Setting.findAllSettings();
 
 			// Getting the Assisted and setting the labels
-			Assisted assisted = new Assisted();
-			assisted = assisted.getSamplePerson();
+			selectedAssisted = interfaceMain.getSelectedAssisted();
 
-			idAssistedNameSurname.setText(assisted.getName() + " " + assisted.getSurname());
+			idAssistedNameSurname.setText(selectedAssisted.getName() + " " + selectedAssisted.getSurname());
 
 			// Getting the next month defaultAppointmentDay
 			Date defaultDay = getNextWeekDefaultAppointmentDay();
@@ -164,24 +165,21 @@ public class ScheduleController {
 		ObservableSlot selectedSlot = idTableView.getSelectionModel().getSelectedItem(); 
 		
 		// Only if the selected slot is free save the appointment to the database
-		if (selectedSlot != null && selectedSlot.getAssociatedSlot().getAppointmentAssistedOwner() == null) 
+		if (selectedSlot != null && selectedSlot.getAssociatedSlot().getAssocieatedAppointment() == null) 
 		{
-			Assisted sampleAssisted = new Assisted();
-			sampleAssisted = sampleAssisted.getSamplePerson();
-
-			System.out.println(sampleAssisted.toString());
+			System.out.println(selectedAssisted.toString());
 			Date appointmentDateTime =  new Date().from(selectedSlot.getAssociatedSlot().getDateTime().toInstant());
 			// Saving appointment
 			Appointment appToSave = new Appointment();		
 
 			// Check for errors
-			if (appToSave.saveAppointment(sampleAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getAppointmentLength())==true) 
-				showAlertWithSuccessfulHeaderText(sampleAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getAppointmentLength());
+			if (appToSave.saveAppointment(selectedAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getSlotLength())) 
+				showAlertWithSuccessfulHeaderText(selectedAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getSlotLength());
 			else
 				showAlertDatabaseErrorToMainPage(); 
 		}
 		else if (selectedSlot != null && 
-				selectedSlot.getAssociatedSlot().getAppointmentAssistedOwner() != null) // Slot already taken
+				selectedSlot.getAssociatedSlot().getAssocieatedAppointment() != null) // Slot already taken
 		{
 			showAlertAppointmentTaken(selectedSlot);
 		} 
@@ -196,14 +194,6 @@ public class ScheduleController {
 		Alert alert = new Alert(AlertType.WARNING);
 		alert.setTitle("Attenzione");
 		alert.setHeaderText("Nessuna selezione");
-		alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
-
-			@Override
-			public void handle(DialogEvent event) {
-
-			}
-
-		});
 		alert.showAndWait();
 	}
 

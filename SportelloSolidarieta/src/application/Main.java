@@ -5,8 +5,9 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import model.Assisted;
 import windows.AssistedDetailsController;
+import windows.CalendarController;
 import windows.ReportController;
 import windows.ScheduleController;
 import windows.SearchAssistedController;
@@ -20,6 +21,17 @@ import javafx.fxml.FXMLLoader;
 
 
 public class Main extends Application implements MainCallback {
+	
+	private Assisted selectedAssisted = null;
+	
+	public Assisted getSelectedAssisted() {
+		return selectedAssisted;
+	}
+
+	public void setSelectedAssisted(Assisted selectedAssisted) {
+		this.selectedAssisted = selectedAssisted;
+	}
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -59,10 +71,13 @@ public class Main extends Application implements MainCallback {
 				case AssistedDetail:
 					showScene(createAssistedDetailsLayout());
 					break;
+				case Calendar:
+					showScene(createCalendarLayout());
+				break;
 				case Settings:
 					showPopup(createSettingsLayout());
 				break;
-				
+	
 				}
 			} 
 			catch (IOException e) 
@@ -132,6 +147,7 @@ public class Main extends Application implements MainCallback {
 		return scene;
 	}	
 	
+	// Create scene SettingsLayout 
 	private Scene createSettingsLayout() throws IOException
 	{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/Settings.fxml"));
@@ -139,6 +155,18 @@ public class Main extends Application implements MainCallback {
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, 512, 580);
+		
+		return scene;
+	}	
+	
+	// Create scene CalendarLayout page
+	private Scene createCalendarLayout() throws IOException
+	{
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/Calendar.fxml"));
+		CalendarController fxmlController = new CalendarController(this);	
+		fxmlLoader.setController(fxmlController);
+		GridPane pane = fxmlLoader.load();
+		Scene scene = new Scene(pane, 1024, 768);
 		
 		return scene;
 	}	
