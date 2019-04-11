@@ -5,7 +5,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import model.Assisted;
 import windows.AssistedDetailsController;
 import windows.CalendarController;
 import windows.ReportController;
@@ -21,6 +21,17 @@ import javafx.fxml.FXMLLoader;
 
 
 public class Main extends Application implements MainCallback {
+	
+	private Assisted selectedAssisted = null;
+	
+	public Assisted getSelectedAssisted() {
+		return selectedAssisted;
+	}
+
+	public void setSelectedAssisted(Assisted selectedAssisted) {
+		this.selectedAssisted = selectedAssisted;
+	}
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {

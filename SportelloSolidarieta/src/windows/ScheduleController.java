@@ -41,6 +41,8 @@ public class ScheduleController {
 
 	// Settings loaded from the database
 	private Setting settings; 
+	
+	private Assisted selectedAssisted;
 
 	public static final int SKIP_DAYS = 7;
 
@@ -102,10 +104,9 @@ public class ScheduleController {
 			settings = Setting.findAllSettings();
 
 			// Getting the Assisted and setting the labels
-			Assisted assisted = new Assisted();
-			assisted = assisted.getSamplePerson();
+			selectedAssisted = interfaceMain.getSelectedAssisted();
 
-			idAssistedNameSurname.setText(assisted.getName() + " " + assisted.getSurname());
+			idAssistedNameSurname.setText(selectedAssisted.getName() + " " + selectedAssisted.getSurname());
 
 			// Getting the next month defaultAppointmentDay
 			Date defaultDay = getNextWeekDefaultAppointmentDay();
@@ -166,17 +167,14 @@ public class ScheduleController {
 		// Only if the selected slot is free save the appointment to the database
 		if (selectedSlot != null && selectedSlot.getAssociatedSlot().getAssocieatedAppointment() == null) 
 		{
-			Assisted sampleAssisted = new Assisted();
-			sampleAssisted = sampleAssisted.getSamplePerson();
-
-			System.out.println(sampleAssisted.toString());
+			System.out.println(selectedAssisted.toString());
 			Date appointmentDateTime =  new Date().from(selectedSlot.getAssociatedSlot().getDateTime().toInstant());
 			// Saving appointment
 			Appointment appToSave = new Appointment();		
 
 			// Check for errors
-			if (appToSave.saveAppointment(sampleAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getSlotLength())) 
-				showAlertWithSuccessfulHeaderText(sampleAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getSlotLength());
+			if (appToSave.saveAppointment(selectedAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getSlotLength())) 
+				showAlertWithSuccessfulHeaderText(selectedAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getSlotLength());
 			else
 				showAlertDatabaseErrorToMainPage(); 
 		}

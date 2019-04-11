@@ -12,6 +12,7 @@ import java.util.List;
 import model.Appointment;
 import model.Setting;
 import schedule.FreeTimeSlot;
+import sun.font.LayoutPathImpl.EndType;
 
 public class DailyPlan 
 {
@@ -197,8 +198,7 @@ public class DailyPlan
 						//Adding the slot to the dailyPlan
 						ObservableSlot observableSlot = new ObservableSlot(currentSlot);
 						dailyPlan.add(observableSlot);
-					}
-					
+					}				
 				}
 				else if(currentFreeSlot.getStartTime().after(startOfDay) && 
 						currentFreeSlot.getEndTime().before(endOfDay)) // Managing all other situations	
@@ -212,7 +212,23 @@ public class DailyPlan
 						ObservableSlot observableSlot = new ObservableSlot(currentSlot);
 						dailyPlan.add(observableSlot);
 					}
-				}				
+				}
+				// Managing a free slot ending after the end of the day
+				else if (currentFreeSlot.getStartTime().before(endOfDay) && 
+						 currentFreeSlot.getEndTime().after(endOfDay))
+				{
+					endOfDay.add(Calendar.SECOND, -1);
+					appLength = (int) Duration.between(currentFreeSlot.getStartTime().toInstant(),
+							endOfDay.toInstant()).toMinutes();
+					Slot currentSlot = new Slot(currentFreeSlot.getStartTime(),null, appLength);
+					
+					if (appLength > 0) {						
+						//Adding the slot to the dailyPlan
+						ObservableSlot observableSlot = new ObservableSlot(currentSlot);
+						dailyPlan.add(observableSlot);
+					}
+					
+				}
 			}
 				
 			// Sorting the dailyPlan list

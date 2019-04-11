@@ -45,6 +45,7 @@ public class SearchAssistedController {
 	@FXML
 	private void initialize() {
 		this.em = DbUtil.getEntityManager();	//I need the EntityManager at the very beginning, otherwise the first search would appear delayed
+    	interfaceMain.setSelectedAssisted(null);// Reset the selectedAssisted
 	}
 
 	/*
@@ -93,6 +94,8 @@ public class SearchAssistedController {
     	if(event.getSource().equals(btn_addAssisted))
     		selectedAssisted = null;	//resets the previously selected assisted
     	DbUtil.closeEntityManager(this.em);
+    	if (selectedAssisted!=null)
+    		interfaceMain.setSelectedAssisted(selectedAssisted); // set selectedAssisted in the main
     	interfaceMain.switchScene(MainCallback.Pages.AssistedDetail);	//TODO pass the selected
     }
 
