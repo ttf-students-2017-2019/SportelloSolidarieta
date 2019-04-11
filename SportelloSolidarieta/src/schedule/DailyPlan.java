@@ -91,8 +91,8 @@ public class DailyPlan
 		List<Appointment> dailyAppointments = Appointment.findAppointmentsByDate(date);
 		
 		// Initializing current time to start of the working day
-		Date currentTime = start;
-				
+		Date currentTime = start;	
+		
 		// Initializing appointmentLength
 		int appointmentLength = appointmentLenghtFromSettings;
 					
@@ -171,16 +171,6 @@ public class DailyPlan
 				}
 				currentTime = addMinutesToDate(currentTime, appointmentLength);	
 			}
-			
-			// Sorting the dailyPlan list needed to check the beginning of the day
-			Collections.sort(dailyPlan, new Comparator<ObservableSlot>() 
-			{
-				@Override
-				public int compare(ObservableSlot firstSlot, ObservableSlot secondSlot)
-				{
-					return  firstSlot.getAssociatedSlot().getDateTime().compareTo(secondSlot.getAssociatedSlot().getDateTime());
-				}
-			});	
 						
 			Calendar startOfDay = Calendar.getInstance();
 			startOfDay.setTime(start);
@@ -196,9 +186,9 @@ public class DailyPlan
 				FreeTimeSlot currentFreeSlot = (FreeTimeSlot) iterator.next();
 				
 				int appLength = 0;
-				// Managing a free slot beginning before the start time and end time is the end of the first slot generated fill the gap
-				if (currentFreeSlot.getStartTime().before(startOfDay) &&
-						currentFreeSlot.getEndTime().equals(dailyPlan.get(0).getAssociatedSlot().getDateTime()))
+				// Managing a free slot beginning before the start time
+				if (currentFreeSlot.getStartTime().before(startOfDay) 
+						&& currentFreeSlot.getEndTime().after(startOfDay))		
 				{
 					startOfDay.add(Calendar.SECOND, +1);
 					appLength = (int) Duration.between(startOfDay.toInstant(),
@@ -265,7 +255,7 @@ public class DailyPlan
 			if (!currentAppointment.getFDeleted())
 			{
 				FreeTimeSlot currentFreeTimeSlot = checkSlot(currentAppointment.getAppointmentDateTime(), currentAppointment.getAppointmentLength());
-				if ( currentFreeTimeSlot != null)
+				if (currentFreeTimeSlot != null)
 				{
 					Calendar appointmentCal = Calendar.getInstance();
 					appointmentCal.setTime(currentAppointment.getAppointmentDateTime());
@@ -345,13 +335,15 @@ public class DailyPlan
 	
 	private void updateDailyFreeTime(Slot assignedSlot, FreeTimeSlot slotToModify) 
 	{	
-		Calendar appointmentStart = assignedSlot.getDateTime();
+		Calendar appointmentStart = Calendar.getInstance();
+		appointmentStart.setTime(assignedSlot.getDateTime().getTime());
 		
-		Calendar appointmentEnd = (Calendar) appointmentStart.clone();
+		Calendar appointmentEnd = Calendar.getInstance();
+		appointmentEnd.setTime(assignedSlot.getDateTime().getTime());
 		appointmentEnd.add(Calendar.MINUTE, assignedSlot.getSlotLength());
 		
 		// Control if the appointment start is the same of the the start of the slotToModify  
-		if (appointmentStart.equals(slotToModify.getStartTime())) 
+		if (appointmentStart.equals(slotToModify.getStartTime()) && !appointmentEnd.equals(slotToModify.getEndTime())) 
 		{
 			// Creating the new freeTimeSlot with starting time the end of the appointment  
 			FreeTimeSlot newFreeTimeSlot = new FreeTimeSlot(appointmentEnd, slotToModify.getEndTime());
@@ -360,7 +352,7 @@ public class DailyPlan
 			dailyFreeTime.add(dailyFreeTime.indexOf(slotToModify), newFreeTimeSlot );
 			dailyFreeTime.remove(slotToModify);
 		}
-		else if(appointmentEnd.equals(slotToModify.getEndTime())) // Appointment ends at the end of the freeTimeSlot 
+		else if(appointmentEnd.equals(slotToModify.getEndTime()) && appointmentStart.equals(slotToModify.getStartTime())) // Appointment ends at the end of the freeTimeSlot 
 		{
 			// Creating the new freeTimeSlot with end time the end of the appointment  
 			FreeTimeSlot newFreeTimeSlot = new FreeTimeSlot(slotToModify.getStartTime(), appointmentEnd);
