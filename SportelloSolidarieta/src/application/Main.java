@@ -4,6 +4,7 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.Assisted;
 import windows.AssistedDetailsController;
@@ -34,9 +35,11 @@ public class Main extends Application implements MainCallback {
 
 	@Override
 	public void start(Stage primaryStage) {
-		try {
+		try 
+		{	
 			this.primaryStage = primaryStage;
-
+			this.primaryStage.setMaximized(true);
+			
 			showScene(createSplashScreen());
 			
 		} catch(Exception e) {
@@ -95,7 +98,7 @@ public class Main extends Application implements MainCallback {
 		SplashScreenController fxmlController = new SplashScreenController(this);	
 		fxmlLoader.setController(fxmlController);
 		BorderPane pane = fxmlLoader.load();
-		Scene scene = new Scene(pane, 1024, 768);
+		Scene scene = new Scene(pane);
 		
 		return scene;
 	}
@@ -107,7 +110,7 @@ public class Main extends Application implements MainCallback {
 		SearchAssistedController fxmlController = new SearchAssistedController(this);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
-		Scene scene = new Scene(pane, 1024, 768);
+		Scene scene = new Scene(pane,Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
 		
 		return scene;
 	}
@@ -119,7 +122,7 @@ public class Main extends Application implements MainCallback {
 		ReportController fxmlController = new ReportController(this);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
-		Scene scene = new Scene(pane, 1024, 768);
+		Scene scene = new Scene(pane,Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
 		
 		return scene;
 	}	
@@ -131,7 +134,7 @@ public class Main extends Application implements MainCallback {
 		ScheduleController fxmlController = new ScheduleController(this);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
-		Scene scene = new Scene(pane, 1024, 768);
+		Scene scene = new Scene(pane,Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
 		return scene;
 	}	
 	
@@ -142,7 +145,7 @@ public class Main extends Application implements MainCallback {
 		AssistedDetailsController fxmlController = new AssistedDetailsController(this, null);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
-		Scene scene = new Scene(pane, 1024, 768);
+		Scene scene = new Scene(pane,Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
 		
 		return scene;
 	}	
@@ -166,7 +169,7 @@ public class Main extends Application implements MainCallback {
 		CalendarController fxmlController = new CalendarController(this);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
-		Scene scene = new Scene(pane, 1024, 768);
+		Scene scene = new Scene(pane,Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());
 		
 		return scene;
 	}	
@@ -187,6 +190,7 @@ public class Main extends Application implements MainCallback {
 	private void showScene(Scene scene)
 	{
 		primaryStage.setScene(scene);
+		primaryStage.setMaximized(true);
 		primaryStage.show();
 	}
 	
