@@ -39,7 +39,7 @@
                   <Image url="@../../../images/logo.png" />
                </image></ImageView>
             <Button fx:id="btn_settings" maxWidth="125.0" minWidth="125.0" mnemonicParsing="false" onAction="#toSettings" prefWidth="125.0" text="IMPOSTAZIONI" GridPane.halignment="CENTER" />
-            <GridPane GridPane.columnIndex="2">
+            <GridPane prefHeight="188.0" prefWidth="162.0" GridPane.columnIndex="2">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
@@ -48,13 +48,13 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="btn_report" maxWidth="125.0" minWidth="125.0" mnemonicParsing="false" onAction="#toReport" text="REPORT" GridPane.halignment="CENTER" />
-                  <Button fx:id="btn_calendar" maxWidth="125.0" minWidth="125.0" mnemonicParsing="false" onAction="#toCalendar" text="CALENDARIO" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <Button fx:id="btn_report" maxWidth="132.0" minWidth="125.0" mnemonicParsing="false" onAction="#toReport" prefHeight="31.0" prefWidth="132.0" text="REPORT          -&gt;" GridPane.halignment="CENTER" />
+                  <Button fx:id="btn_calendar" maxWidth="134.0" minWidth="125.0" mnemonicParsing="false" onAction="#toCalendar" prefHeight="31.0" prefWidth="134.0" text="CALENDARIO  -&gt;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                </children>
             </GridPane>
          </children>
       </GridPane>
-      <Button fx:id="btn_addAssisted" mnemonicParsing="false" onAction="#toDetail" text="AGGIUNGI NUOVO ASSISTITO" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <Button fx:id="btn_addAssisted" mnemonicParsing="false" onAction="#toDetail" text="AGGIUNGI NUOVO ASSISTITO  -&gt;" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
       <GridPane prefHeight="55.0" prefWidth="1252.0" GridPane.rowIndex="2">
         <columnConstraints>
           <ColumnConstraints hgrow="ALWAYS" maxWidth="706.0" minWidth="10.0" prefWidth="162.0" />
@@ -78,7 +78,7 @@
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="333.0" minWidth="0.0" prefWidth="0.0" />
         </columnConstraints>
          <children>
-            <TableView fx:id="resultTable" onMousePressed="#rowSelected" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.vgrow="ALWAYS">
+            <TableView fx:id="resultTable" disable="true" onMousePressed="#rowSelected" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.vgrow="ALWAYS">
             	<placeholder>
               	<Label text="Nessun risultato" />
           	</placeholder>
@@ -93,6 +93,6 @@
             <RowConstraints />
          </rowConstraints>
       </GridPane>
-      <Button fx:id="btn_detailsAssisted" disable="true" mnemonicParsing="false" onAction="#toDetail" text="DETTAGLI ASSISTITO SELEZIONATO" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+      <Button fx:id="btn_detailsAssisted" disable="true" mnemonicParsing="false" onAction="#toDetail" text="DETTAGLI ASSISTITO SELEZIONATO  -&gt;" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
    </children>
 </GridPane>
