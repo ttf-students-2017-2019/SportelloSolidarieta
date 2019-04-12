@@ -1,5 +1,7 @@
 package windows;
 
+import java.util.List;
+
 import application.MainCallback;
 import dal.DbUtil;
 import javafx.collections.FXCollections;
@@ -78,7 +80,7 @@ public class AssistedDetailsController {
 			Alert alert = new Alert(AlertType.INFORMATION, "Utente Salvato con successo.", ButtonType.OK);
 			alert.showAndWait();
 			DbUtil.saveAssisted(a);
-			}
+		}
 	}
 
 	@FXML
@@ -87,24 +89,24 @@ public class AssistedDetailsController {
 		// bind text field to bean properties
 		textfield_name.setText(assisted.getName());
 		textbox_surname.setText(assisted.getSurname());
-
 		datepicker_birthdate.setValue(assisted.getBirthdate());
-
 		dropdown_sex.setValue(assisted.getSex());
 		textbox_nationality.setText(assisted.getNationality());
 		checkbox_wentbackhome.setSelected(assisted.getIsReunitedWithFamily());
 		checkbox_rejected.setSelected((assisted.getIsRefused()));
 		textfield_familycomposition.setText(assisted.getFamilyComposition());
-
+		List<Meeting> meetings = assisted.getMeetings();
 		// bind columns to bean properties
 		date.setCellValueFactory(new PropertyValueFactory<Meeting, String>("date"));
 		description.setCellValueFactory(new PropertyValueFactory<Meeting, String>("description"));
 		amount.setCellValueFactory(new PropertyValueFactory<Meeting, String>("amount"));
 
 		// initialize data model and bind table
-		ObservableList<Meeting> v = FXCollections.<Meeting>observableArrayList();
-		v.setAll(assisted.getMeetings());
-		table.setItems(v);
+		if (meetings != null) {
+			ObservableList<Meeting> v = FXCollections.<Meeting>observableArrayList();
+			v.setAll(meetings);
+			table.setItems(v);
+		}
 	}
 
 	//
