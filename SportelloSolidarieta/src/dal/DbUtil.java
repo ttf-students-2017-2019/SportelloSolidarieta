@@ -10,6 +10,11 @@ import javax.persistence.Query;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.DialogEvent;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 import model.Meeting;
 import model.Assisted;
 
@@ -43,8 +48,17 @@ public class DbUtil {
 	}
 	
 	//used by SearchAssistedController
-	public static EntityManager getEntityManager() {
-		return emf.createEntityManager();  
+	public static EntityManager getEntityManager() throws Exception {
+		EntityManager em = null;
+		try {
+			em = emf.createEntityManager(); 
+		}
+		catch (Exception e) {
+			//TODO change with proper logging
+			System.out.println(DbUtil.class.getName() + " getEntityManager():" + e);
+			throw e;
+		}
+		return em;
 	}
 	
 	//used by SearchAssistedController
@@ -102,6 +116,16 @@ public class DbUtil {
     	}
     	
     	return assisteds;
+	}
+	
+	public static void showAlertDatabaseError() 
+	{
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle(null);
+		alert.setHeaderText("Errore di connessione al database");
+		alert.setContentText(null);
+
+		alert.showAndWait();	
 	}
 	
 }

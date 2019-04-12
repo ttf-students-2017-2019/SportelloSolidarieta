@@ -48,7 +48,13 @@ public class SearchAssistedController {
 	
 	@FXML
 	private void initialize() {
-		this.em = DbUtil.getEntityManager();	//I need the EntityManager at the very beginning, otherwise the first search would appear delayed
+		try {
+			this.em = DbUtil.getEntityManager();  //I need the EntityManager at the very beginning, otherwise the first search would appear delayed
+		} catch (Exception e) {
+			// TODO improve
+			e.printStackTrace();
+			DbUtil.showAlertDatabaseError();
+		}	
     	interfaceMain.setSelectedAssisted(null);// Reset the selectedAssisted
 	}
 
