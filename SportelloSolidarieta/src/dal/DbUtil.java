@@ -27,12 +27,19 @@ public class DbUtil {
 	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
 
 	public static Connection connect() throws SQLException {
-		MysqlDataSource ds = new MysqlDataSource();
-
-		ds.setServerName("localhost");
-		ds.setDatabaseName("sportellosolidarieta");
-		ds.setUser("root");
-		ds.setPassword("mysql");
+		MysqlDataSource ds = null;
+		try {
+			ds = new MysqlDataSource();
+	
+			ds.setServerName("localhost");
+			ds.setDatabaseName("sportellosolidarieta");
+			ds.setUser("root");
+			ds.setPassword("mysql");
+		}
+		catch (Exception e) {
+			DbUtil.showAlertDatabaseError();
+			throw new SQLException();
+		}
 		return ds.getConnection();
 	}
 
