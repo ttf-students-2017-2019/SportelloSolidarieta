@@ -127,6 +127,12 @@ public class SearchAssistedController {
     	btn_detailsAssisted.setDisable(true);	//disables "toDetail" button when a new search is made
     	selectedAssisted = null;	//resets the previously selected assisted
     	List<Assisted> assistedsFound = DbUtil.searchAssisted(em, tfield_surname.getText(), tfield_name.getText());
+    	if(assistedsFound == null || assistedsFound.isEmpty()) {
+    		resultTable.setDisable(true);
+    	} 
+    	else {
+    		resultTable.setDisable(false);
+    	}
     	bindResults(assistedsFound); 	
     }
     
@@ -137,7 +143,8 @@ public class SearchAssistedController {
     		Assisted selectedAssited = resultTable.getSelectionModel().getSelectedItem();
     		this.selectedAssisted = selectedAssited;
     		System.out.println("SELECTED ASSISTED: " + this.selectedAssisted);	 //TODO change with a proper logging
-    		btn_detailsAssisted.setDisable(false);	//activate "toDetail" button
+    		if(selectedAssited != null)	//note: its selects a null Assisted if i click in the empty area of the Table, so I need this one
+    			btn_detailsAssisted.setDisable(false);	//activate "toDetail" button
     	}
     }
     
