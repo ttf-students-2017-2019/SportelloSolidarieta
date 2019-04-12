@@ -11,9 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Persistence;
-import javax.persistence.NamedQuery;
+
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Indexes;
 

@@ -19,6 +19,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import model.Meeting;
 import model.Assisted;
 
@@ -40,6 +41,10 @@ public class AssistedDetailsController {
 	private CheckBox checkbox_rejected;
 	@FXML
 	private TextField textfield_familycomposition;
+    @FXML
+    private TextField textfield_amount;
+    @FXML
+    private TextField textfield_description;
 
 	@FXML
 	private TableView<Meeting> table;
@@ -75,6 +80,8 @@ public class AssistedDetailsController {
 		a.setReunitedWithFamily(checkbox_wentbackhome.isSelected());
 		a.setRefused(checkbox_rejected.isSelected());
 		a.setFamilyComposition(textfield_familycomposition.getText());
+		
+		
 
 		if (this.validateField()) {
 			Alert alert = new Alert(AlertType.INFORMATION, "Utente Salvato con successo.", ButtonType.OK);
@@ -82,6 +89,16 @@ public class AssistedDetailsController {
 			DbUtil.saveAssisted(a);
 		}
 	}
+	
+    @FXML
+    void rowSelected(MouseEvent event) {
+    	if (event.isPrimaryButtonDown())
+    	{
+    		Meeting selectedMeeting = table.getSelectionModel().getSelectedItem();
+    		this.selectedMeeting = selectedMeeting;
+    		System.out.println("SELECTED MEETING: " + selectedMeeting);	 //TODO change with a proper loggings
+    	}
+    }
 
 	@FXML
 	public void initialize() {
@@ -133,4 +150,5 @@ public class AssistedDetailsController {
 	private ObservableList<Character> dropBoxValue = (FXCollections.observableArrayList('M', 'F', 'T'));
 
 	private Assisted assisted;
+	private Meeting selectedMeeting;
 }

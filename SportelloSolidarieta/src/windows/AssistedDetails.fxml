@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.201" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -24,13 +24,23 @@
       <RowConstraints maxHeight="249.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView fx:id="table" prefHeight="207.0" prefWidth="600.0" GridPane.rowIndex="3">
-        <columns>
-          <TableColumn fx:id="date" prefWidth="91.0" text="Data" />
-          <TableColumn fx:id="description" prefWidth="366.0" text="Descrizione" />
-            <TableColumn fx:id="amount" prefWidth="75.0" text="€ elemosina" />
-        </columns>
-      </TableView>
+      <GridPane GridPane.rowIndex="1">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button id="button_goback" mnemonicParsing="false" onAction="#toSearchPerson" text="Indietro" GridPane.rowIndex="1" />
+            <Label id="label_view_title" text="DETTAGLI ASSISTITO" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button id="button_tocalendar" mnemonicParsing="false" onAction="#toSchedule" text="Calendario" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
       <GridPane id="textfield_surname" prefHeight="142.0" prefWidth="600.0" GridPane.rowIndex="2">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -65,44 +75,28 @@
             <TextField id="textfield_familycomposition" fx:id="textfield_familycomposition" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>
       </GridPane>
-      <Label id="label_view_title" text="DETTAGLI ASSISTITO" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-      <GridPane GridPane.rowIndex="1">
+      <TableView fx:id="table" onMousePressed="#rowSelected" prefHeight="207.0" prefWidth="600.0" GridPane.rowIndex="3">
+        <columns>
+          <TableColumn fx:id="date" prefWidth="91.0" text="Data" />
+          <TableColumn fx:id="description" prefWidth="366.0" text="Descrizione" />
+            <TableColumn fx:id="amount" prefWidth="75.0" text="€ elemosina" />
+        </columns>
+      </TableView>
+      <GridPane prefHeight="36.0" prefWidth="600.0" GridPane.rowIndex="4">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Button id="button_goback" mnemonicParsing="false" onAction="#toSearchPerson" text="Indietro" GridPane.rowIndex="1" />
-            <Button id="button_tocalendar" mnemonicParsing="false" onAction="#toSchedule" text="Calendario" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-         </children>
-      </GridPane>
-      <GridPane GridPane.rowIndex="3">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-      </GridPane>
-      <GridPane prefHeight="24.0" prefWidth="600.0" GridPane.rowIndex="4">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button id="button_save" fx:id="button_save" mnemonicParsing="false" onAction="#setOnAction" text="Salva" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <TextField fx:id="textfield_amount" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextField fx:id="textfield_description" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button id="button_save" fx:id="button_save" mnemonicParsing="false" onAction="#setOnAction" text="Salva" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>
