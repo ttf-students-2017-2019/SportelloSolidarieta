@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+
 import model.Appointment;
 import model.Setting;
 import schedule.FreeTimeSlot;
@@ -240,7 +242,30 @@ public class DailyPlan
 		        {
 		            return  firstSlot.getAssociatedSlot().getDateTime().compareTo(secondSlot.getAssociatedSlot().getDateTime());
 		        }
-		    });	
+		    });
+			
+			// Checking for duplicate for each slot and remove the clone if found. Need further analysis for proper bug fixing.
+			for (int i=0; i<dailyPlan.size(); i++) 
+			{
+				List<ObservableSlot> allOtherSlotTocheck = new ArrayList<ObservableSlot>();
+				allOtherSlotTocheck.addAll(dailyPlan);
+				// Remove the appointment to check
+				allOtherSlotTocheck.remove(i);
+				
+				ObservableSlot slotToCheck = dailyPlan.get(i);
+				
+				for (int j=0; j<allOtherSlotTocheck.size(); j++) 
+				{	
+					// If there is a clone remove it
+					if(slotToCheck.getAssociatedSlot().getDateTime().equals(allOtherSlotTocheck.get(j).getAssociatedSlot().getDateTime()))
+					{
+						// Remove only a free slot and not a taken appointment
+						if(dailyPlan.get(i).getAssociatedSlot().getAssocieatedAppointment() == null)
+							dailyPlan.remove(i);
+					}			
+				} 
+			}
+			
 		}		
 	}
 	
