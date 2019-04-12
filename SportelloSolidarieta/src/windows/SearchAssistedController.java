@@ -91,12 +91,17 @@ public class SearchAssistedController {
     
     @FXML
     void toDetail(ActionEvent event) {
-    	if(event.getSource().equals(btn_addAssisted))
-    		selectedAssisted = null;	//resets the previously selected assisted
+    	if(event.getSource().equals(btn_addAssisted)) {	//if ADD button 
+    		//create a new Assisted with the Name and Surname with the search fields
+    		selectedAssisted = new Assisted();
+    		selectedAssisted.setName(tfield_name.getText());
+    		selectedAssisted.setSurname(tfield_surname.getText());
+    	}
+    	interfaceMain.setSelectedAssisted(selectedAssisted); // set selectedAssisted in the main
+    	System.out.println("PASSING ASSISTED: " + this.selectedAssisted);	 //TODO change with a proper logging
+    	
     	DbUtil.closeEntityManager(this.em);
-    	if (selectedAssisted!=null)
-    		interfaceMain.setSelectedAssisted(selectedAssisted); // set selectedAssisted in the main
-    	interfaceMain.switchScene(MainCallback.Pages.AssistedDetail);	//TODO pass the selected
+    	interfaceMain.switchScene(MainCallback.Pages.AssistedDetail);	
     }
 
     @FXML
