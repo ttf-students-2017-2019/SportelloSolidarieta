@@ -24,7 +24,7 @@
       <RowConstraints maxHeight="249.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TableView prefHeight="207.0" prefWidth="600.0" GridPane.rowIndex="3">
+      <TableView fx:id="table" prefHeight="207.0" prefWidth="600.0" GridPane.rowIndex="3">
         <columns>
           <TableColumn fx:id="date" prefWidth="91.0" text="Data" />
           <TableColumn fx:id="description" prefWidth="366.0" text="Descrizione" />
