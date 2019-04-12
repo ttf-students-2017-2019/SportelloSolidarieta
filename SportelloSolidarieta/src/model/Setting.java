@@ -194,7 +194,24 @@ public class Setting implements Serializable {
 			throw e;
 		}		
 	}
-	
+	// Receive the updated settings from the Settings controller and persist the changes
+	public void updateSetting(Setting settings) 
+	{
+		try
+		{
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
+			EntityManager em = emf.createEntityManager();
+			em.getTransaction().begin();
+			em.merge(settings);
+			em.getTransaction().commit();
+			em.close();
+		} 
+		catch (Exception e) 
+		{	
+			throw e;
+		}		
+	}
+		
 	public static int findDefaultWeekDay() {
 		
 		Setting settings = findAllSettings();
@@ -228,7 +245,7 @@ public class Setting implements Serializable {
 		return defaultWeekDay;
 		
 	}
-	
+
 	@Override
 	public String toString() 
 	{

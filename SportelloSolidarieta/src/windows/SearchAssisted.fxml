@@ -26,10 +26,9 @@
    <children>
       <GridPane prefHeight="124.0" prefWidth="1261.0">
         <columnConstraints>
-          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="179.0" minWidth="10.0" prefWidth="150.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
             <ColumnConstraints halignment="RIGHT" maxWidth="911.0" minWidth="10.0" prefWidth="727.0" />
-            <ColumnConstraints halignment="RIGHT" maxWidth="755.0" minWidth="8.0" prefWidth="46.0" />
-          <ColumnConstraints halignment="RIGHT" maxWidth="423.0" minWidth="10.0" prefWidth="101.0" />
+          <ColumnConstraints halignment="RIGHT" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
@@ -39,8 +38,20 @@
                <image>
                   <Image url="@../../../images/logo.png" />
                </image></ImageView>
-            <Button fx:id="btn_report" mnemonicParsing="false" onAction="#toReport" text="REPORT" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
-            <Button fx:id="btn_settings" mnemonicParsing="false" onAction="#toSettings" text="IMPOSTAZIONI" GridPane.halignment="CENTER" />
+            <Button fx:id="btn_settings" maxWidth="125.0" minWidth="125.0" mnemonicParsing="false" onAction="#toSettings" prefWidth="125.0" text="IMPOSTAZIONI" GridPane.halignment="CENTER" />
+            <GridPane GridPane.columnIndex="2">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="btn_report" maxWidth="125.0" minWidth="125.0" mnemonicParsing="false" onAction="#toReport" text="REPORT" GridPane.halignment="CENTER" />
+                  <Button fx:id="btn_calendar" maxWidth="125.0" minWidth="125.0" mnemonicParsing="false" onAction="#toCalendar" text="CALENDARIO" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+               </children>
+            </GridPane>
          </children>
       </GridPane>
       <Button fx:id="btn_addAssisted" mnemonicParsing="false" onAction="#toDetail" text="AGGIUNGI NUOVO ASSISTITO" GridPane.halignment="CENTER" GridPane.rowIndex="1" />

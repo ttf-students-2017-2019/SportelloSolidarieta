@@ -45,6 +45,7 @@ public class SearchAssistedController {
 	@FXML
 	private void initialize() {
 		this.em = DbUtil.getEntityManager();	//I need the EntityManager at the very beginning, otherwise the first search would appear delayed
+    	interfaceMain.setSelectedAssisted(null);// Reset the selectedAssisted
 	}
 
 	/*
@@ -56,6 +57,9 @@ public class SearchAssistedController {
 	
     @FXML
     private Button btn_report;
+    
+    @FXML
+    private Button btn_calendar;
     
     @FXML
     private Button btn_addAssisted;
@@ -90,6 +94,8 @@ public class SearchAssistedController {
     	if(event.getSource().equals(btn_addAssisted))
     		selectedAssisted = null;	//resets the previously selected assisted
     	DbUtil.closeEntityManager(this.em);
+    	if (selectedAssisted!=null)
+    		interfaceMain.setSelectedAssisted(selectedAssisted); // set selectedAssisted in the main
     	interfaceMain.switchScene(MainCallback.Pages.AssistedDetail);	//TODO pass the selected
     }
 
@@ -104,7 +110,13 @@ public class SearchAssistedController {
     	//DbUtil.closeEntityManager(this.em);	NOTE do *not* do this here, because the scene itsn't reloaded at the exit of "settings", therefore there won't be any EnitityManager
     	interfaceMain.switchScene(MainCallback.Pages.Settings);
     }
-
+    
+    @FXML
+    void toCalendar(ActionEvent event) {
+    	DbUtil.closeEntityManager(this.em);
+    	interfaceMain.switchScene(MainCallback.Pages.Calendar);
+    }
+    
     @FXML
     public void searchAssisted(KeyEvent event) {
     	btn_detailsAssisted.setDisable(true);	//disables "toDetail" button when a new search is made

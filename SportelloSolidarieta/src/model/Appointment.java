@@ -39,6 +39,9 @@ public class Appointment implements Serializable {
 
 	@Column(name="f_effettuato")
 	private boolean fDone;
+	
+	@Column(name="f_deleted")
+	private boolean fDeleted;
 
 	//bi-directional many-to-one association to Assisted
 	@ManyToOne
@@ -84,6 +87,14 @@ public class Appointment implements Serializable {
 
 	public void setFDone(boolean fDone) {
 		this.fDone = fDone;
+	}
+	
+	public boolean getFDeleted() {
+		return this.fDeleted;
+	}
+
+	public void setFDeleted(boolean fDeleted) {
+		this.fDeleted = fDeleted;
 	}
 
 	public Assisted getPerson() {
@@ -153,6 +164,26 @@ public class Appointment implements Serializable {
 			em.close();
 			return true;
 			
+		} 
+		catch (Exception e) 
+		{
+			return false;
+		}
+	}
+	
+	// Delete an appointment setting the deletedFlag true
+	public static boolean deleteAppointment(Appointment appointmentToDelete) 
+	{	
+		try 
+		{
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("SportelloSolidarieta");
+			EntityManager em = emf.createEntityManager();
+			em.getTransaction().begin(); 
+			appointmentToDelete.setFDeleted(true);
+			em.merge(appointmentToDelete);
+			em.getTransaction().commit();
+			em.close();
+			return true;	
 		} 
 		catch (Exception e) 
 		{

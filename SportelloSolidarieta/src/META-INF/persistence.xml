@@ -5,11 +5,16 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="SportelloSolidarieta"
 		transaction-type="RESOURCE_LOCAL">
+		<class>model.Appointment</class>
+		<class>model.Assisted</class>
+		<class>model.Meeting</class>
+		<class>model.Setting</class>
+		<class>utilities.LocalDateAttributeConverter</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 			<!-- NOTE change this two lines on your local machine to match your db connection -->
 			<property name="javax.persistence.jdbc.user" value="root" />
-			<property name="javax.persistence.jdbc.password" value="mysql" />
+			<property name="javax.persistence.jdbc.password" value="1urcaurca" />
 			
 			<property name="javax.persistence.jdbc.url"
 				value="jdbc:mysql://localhost:3306/sportellosolidarieta?useTimezone=true&amp;serverTimezone=CET" />

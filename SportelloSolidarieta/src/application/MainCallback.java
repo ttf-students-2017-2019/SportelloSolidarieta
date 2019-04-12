@@ -1,6 +1,7 @@
 package application;
 
 import javafx.stage.Stage;
+import model.Assisted;
 
 // Services exposed from Main class
 public interface MainCallback 
@@ -12,7 +13,8 @@ public interface MainCallback
 		Report,				// User interface page to create reports
 		Schedule,			// User interface page to schedule an appointment
 		AssistedDetail,		// User interface page to show assisted details
-		Settings			// User interface page to show settings detail
+		Settings,			// User interface page to show settings detail
+		Calendar,			// User interface page to show calendar
 	}
 	
 	//
@@ -28,4 +30,7 @@ public interface MainCallback
 	
 	public Stage getStage();
 	
+	public Assisted getSelectedAssisted();
+	
+	public void setSelectedAssisted(Assisted assisted);
 }
