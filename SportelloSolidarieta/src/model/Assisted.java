@@ -183,10 +183,20 @@ public class Assisted {
 
 	@Override
 	public String toString() {
-		return "Assisted [id=" + id + ", isDeleted=" + isDeleted + ", surname=" + surname + ", name=" + name + ", sex="
-				+ sex + ", birthdate=" + birthdate + ", nationality=" + nationality + ", familyComposition="
-				+ familyComposition + ", isReunitedWithFamily=" + isReunitedWithFamily + ", isRefused=" + isRefused
-				+ ", meetings=" + meetings + ", appointments=" + appointments + "]";
+		return "Assisted "
+				+ "[id=" + id 
+				+ ", isDeleted=" + isDeleted 
+				+ ", surname=" + surname 
+				+ ", name=" + name 
+				+ ", sex=" + sex 
+				+ ", birthdate=" + birthdate 
+				+ ", nationality=" + nationality 
+				+ ", familyComposition=" + familyComposition 
+				+ ", isReunitedWithFamily=" + isReunitedWithFamily 
+				+ ", isRefused=" + isRefused
+				+ ", meetings=" + (meetings == null || meetings.isEmpty() ? "[Empty list]" : "@" + Integer.toHexString(meetings.hashCode()))
+				+ ", appointments=" + (appointments == null || appointments.isEmpty() ? "[Empty]" : "@" + Integer.toHexString(appointments.hashCode()))
+				+ "]";
 	}
 
 	//TODO @eros should we delete this after testing?

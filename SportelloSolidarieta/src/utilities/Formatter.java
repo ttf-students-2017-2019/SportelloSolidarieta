@@ -21,7 +21,7 @@ public class Formatter {
 
 	public static String formatDate(LocalDate date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		return formatter.format(date);
+		return date == null ? "-Data mancante-" : formatter.format(date);
 	}
 
 	// Get lowerCase day of the week
