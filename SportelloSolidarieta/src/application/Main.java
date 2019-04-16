@@ -142,7 +142,7 @@ public class Main extends Application implements MainCallback {
 	private Scene createAssistedDetailsLayout() throws IOException
 	{
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/AssistedDetails.fxml"));
-		AssistedDetailsController fxmlController = new AssistedDetailsController(this, null);	
+		AssistedDetailsController fxmlController = new AssistedDetailsController(this);	
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane,Screen.getPrimary().getBounds().getWidth(), Screen.getPrimary().getBounds().getHeight());

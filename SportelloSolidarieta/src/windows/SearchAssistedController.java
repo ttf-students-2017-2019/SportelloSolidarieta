@@ -1,5 +1,6 @@
 package windows;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,15 +11,18 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import application.MainCallback;
 import dal.DbUtil;
 import model.Assisted;
+import model.Meeting;
 
 public class SearchAssistedController {
 	
@@ -44,7 +48,13 @@ public class SearchAssistedController {
 	
 	@FXML
 	private void initialize() {
-		this.em = DbUtil.getEntityManager();	//I need the EntityManager at the very beginning, otherwise the first search would appear delayed
+		try {
+			this.em = DbUtil.getEntityManager();  //I need the EntityManager at the very beginning, otherwise the first search would appear delayed
+		} catch (Exception e) {
+			// TODO improve
+			e.printStackTrace();
+			DbUtil.showAlertDatabaseError();
+		}	
     	interfaceMain.setSelectedAssisted(null);// Reset the selectedAssisted
 	}
 
@@ -83,7 +93,7 @@ public class SearchAssistedController {
     private TableColumn<Assisted, String> colName;
 
     @FXML
-    private TableColumn<Assisted, String> colBirthdate;
+    private TableColumn<Assisted, LocalDate> colBirthdate;
     
     /*
      * JavaFX actions
@@ -91,12 +101,17 @@ public class SearchAssistedController {
     
     @FXML
     void toDetail(ActionEvent event) {
-    	if(event.getSource().equals(btn_addAssisted))
-    		selectedAssisted = null;	//resets the previously selected assisted
+    	if(event.getSource().equals(btn_addAssisted)) {	//if ADD button 
+    		//create a new Assisted with the Name and Surname with the search fields
+    		selectedAssisted = new Assisted();
+    		selectedAssisted.setName(tfield_name.getText());
+    		selectedAssisted.setSurname(tfield_surname.getText());
+    	}
+    	interfaceMain.setSelectedAssisted(selectedAssisted); // set selectedAssisted in the main
+    	System.out.println("PASSING ASSISTED: " + this.selectedAssisted);	 //TODO change with a proper logging
+    	
     	DbUtil.closeEntityManager(this.em);
-    	if (selectedAssisted!=null)
-    		interfaceMain.setSelectedAssisted(selectedAssisted); // set selectedAssisted in the main
-    	interfaceMain.switchScene(MainCallback.Pages.AssistedDetail);	//TODO pass the selected
+    	interfaceMain.switchScene(MainCallback.Pages.AssistedDetail);	
     }
 
     @FXML
@@ -122,6 +137,12 @@ public class SearchAssistedController {
     	btn_detailsAssisted.setDisable(true);	//disables "toDetail" button when a new search is made
     	selectedAssisted = null;	//resets the previously selected assisted
     	List<Assisted> assistedsFound = DbUtil.searchAssisted(em, tfield_surname.getText(), tfield_name.getText());
+    	if(assistedsFound == null || assistedsFound.isEmpty()) {
+    		resultTable.setDisable(true);
+    	} 
+    	else {
+    		resultTable.setDisable(false);
+    	}
     	bindResults(assistedsFound); 	
     }
     
@@ -132,7 +153,8 @@ public class SearchAssistedController {
     		Assisted selectedAssited = resultTable.getSelectionModel().getSelectedItem();
     		this.selectedAssisted = selectedAssited;
     		System.out.println("SELECTED ASSISTED: " + this.selectedAssisted);	 //TODO change with a proper logging
-    		btn_detailsAssisted.setDisable(false);	//activate "toDetail" button
+    		if(selectedAssited != null)	//note: it selects a null Assisted if I click in the empty area of the Table, so I need this one
+    			btn_detailsAssisted.setDisable(false);	//activate "toDetail" button
     	}
     }
     
@@ -151,22 +173,20 @@ public class SearchAssistedController {
     	//sets the columns
     	colSurname.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSurname()));
     	colName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
-    	//TODO fix the following to have an italian format (be aware of consequent new sorting)
-    	colBirthdate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBirthdate().toString()));	
     	
-//		final String DATE_FORMAT = "dd/MM/yyyy";
-//    	DateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
-//    	colBirthdate.setCellFactory(cellData -> new TableCell<Assisted, Date>() {
-//    	    @Override
-//    	    protected void updateItem(Date date, boolean empty) {
-//    	        super.updateItem(date, empty);
-//    	        if (empty) {
-//    	            setText(null);
-//    	        } else {
-//    	            setText(formatter.format(date));
-//    	        }
-//    	    }
-//    	});
+    	//set the date column and formatting (NOTE: the sort works because this one)
+    	colBirthdate.setCellValueFactory(new PropertyValueFactory<Assisted, LocalDate>("birthdate"));	//NOTE: "birthdate" is the filed of the model bean
+    	colBirthdate.setCellFactory(cellData -> new TableCell<Assisted, LocalDate>() {
+    	    @Override
+    	    protected void updateItem(LocalDate date, boolean isEmpty) {
+    	        super.updateItem(date, isEmpty);
+    	        if (isEmpty) {
+    	            setText(null);
+    	        } else {
+    	            setText(utilities.Formatter.formatDate(date));
+    	        }
+    	    }
+    	});
     }
    
 }
