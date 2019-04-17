@@ -105,7 +105,7 @@ public class PdfUtil {
 	
 	private static void writeRow(Meeting m) {
 		try {
-			contentStream.showText(m.getPersonSurname() + StringUtils.repeat(" ", (charsPerLine - 20) / 2 - m.getPersonSurname().length()) + m.getPersonName() + StringUtils.repeat(" ",  (charsPerLine - 20) / 2 - m.getPersonName().length()) + Formatter.formatDate(m.getDate()) + StringUtils.repeat(" ", 10 - Formatter.formatNumber(m.getAmount()).length()) + Formatter.formatNumber(m.getAmount()));
+			contentStream.showText(m.getAssistedSurname() + StringUtils.repeat(" ", (charsPerLine - 20) / 2 - m.getAssistedSurname().length()) + m.getAssistedName() + StringUtils.repeat(" ",  (charsPerLine - 20) / 2 - m.getAssistedName().length()) + Formatter.formatDate(m.getDate()) + StringUtils.repeat(" ", 10 - Formatter.formatNumber(m.getAmount()).length()) + Formatter.formatNumber(m.getAmount()));
 			contentStream.newLine();
 			currentLine++;
     	} catch (IOException e) {

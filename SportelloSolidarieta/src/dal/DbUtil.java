@@ -19,6 +19,7 @@ import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.Meeting;
+import report.ObservableMeeting;
 import model.Assisted;
 import model.Meeting;
 
@@ -30,13 +31,12 @@ public class DbUtil {
 		MysqlDataSource ds = null;
 		try {
 			ds = new MysqlDataSource();
-	
+
 			ds.setServerName("localhost");
 			ds.setDatabaseName("sportellosolidarieta");
 			ds.setUser("root");
 			ds.setPassword("mysql");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			DbUtil.showAlertDatabaseError();
 			throw new SQLException();
 		}
@@ -54,14 +54,13 @@ public class DbUtil {
 		}
 	}
 
-	//used by SearchAssistedController
+	// used by SearchAssistedController
 	public static EntityManager getEntityManager() throws Exception {
 		EntityManager em = null;
 		try {
-			em = emf.createEntityManager(); 
-		}
-		catch (Exception e) {
-			//TODO change with proper logging
+			em = emf.createEntityManager();
+		} catch (Exception e) {
+			// TODO change with proper logging
 			System.out.println(DbUtil.class.getName() + " getEntityManager():" + e);
 			throw e;
 		}
@@ -75,8 +74,26 @@ public class DbUtil {
 
 	public static List<Meeting> getMeetings(LocalDate from, LocalDate to) {
 		EntityManager em = emf.createEntityManager();
-		List<Meeting> meetings = em.createNamedQuery("Meeting.findByDate", Meeting.class).setParameter("from", from)
+		List<Meeting> meetings = em.createNamedQuery("Meeting.findMeetings", Meeting.class)
+				.setParameter("donationString", ObservableMeeting.DONATION_STRING).setParameter("from", from)
 				.setParameter("to", to).getResultList();
+		em.close();
+		return meetings;
+	}
+
+	public static List<Meeting> getDonations(LocalDate from, LocalDate to) {
+		EntityManager em = emf.createEntityManager();
+		List<Meeting> meetings = em.createNamedQuery("Meeting.findDonations", Meeting.class)
+				.setParameter("donationString", ObservableMeeting.DONATION_STRING).setParameter("from", from)
+				.setParameter("to", to).getResultList();
+		em.close();
+		return meetings;
+	}
+
+	public static List<Meeting> getMeetingsAndDonations(LocalDate from, LocalDate to) {
+		EntityManager em = emf.createEntityManager();
+		List<Meeting> meetings = em.createNamedQuery("Meeting.findMeetingsAndDonations", Meeting.class)
+				.setParameter("from", from).setParameter("to", to).getResultList();
 		em.close();
 		return meetings;
 	}
@@ -127,14 +144,13 @@ public class DbUtil {
 		return assisteds;
 	}
 
-	public static void showAlertDatabaseError() 
-	{
+	public static void showAlertDatabaseError() {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle(null);
 		alert.setHeaderText("Errore di connessione al database");
 		alert.setContentText(null);
 
-		alert.showAndWait();	
+		alert.showAndWait();
 	}
 
 }
