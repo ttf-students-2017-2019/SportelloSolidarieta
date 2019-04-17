@@ -10,15 +10,15 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" maxHeight="768.0" maxWidth="1024.0" minHeight="384.0" minWidth="512.0" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane alignment="CENTER" maxHeight="708.0" maxWidth="1024.0" minHeight="708.0" minWidth="512.0" prefHeight="708.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1024.0" minWidth="512.0" prefWidth="1024.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="110.0" minHeight="110.0" prefHeight="110.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="478.0" minHeight="478.0" prefHeight="478.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="90.0" minHeight="90.0" prefHeight="90.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <GridPane GridPane.rowIndex="1">
@@ -30,18 +30,18 @@
             <ColumnConstraints hgrow="SOMETIMES" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="100.0" minHeight="30.0" prefHeight="100.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label minHeight="30.0" text="Data" GridPane.columnIndex="2" />
-            <DatePicker fx:id="idDatePicker" minHeight="30.0" onAction="#updateDailyPlanFromDatePicker" prefHeight="30.0" prefWidth="289.0" GridPane.columnIndex="3" />
-            <Label minHeight="30.0" text="Appuntamenti del giorno" GridPane.columnIndex="1">
+            <Label text="Data" GridPane.columnIndex="2" />
+            <DatePicker fx:id="idDatePicker" minHeight="31.0" onAction="#updateDailyPlanFromDatePicker" prefHeight="31.0" prefWidth="289.0" GridPane.columnIndex="3" />
+            <Label text="Appuntamenti del giorno" GridPane.columnIndex="1">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font></Label>
          </children>
       </GridPane>
-      <GridPane GridPane.rowIndex="3">
+      <GridPane maxHeight="60.0" minHeight="60.0" prefHeight="60.0" GridPane.rowIndex="3">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -50,20 +50,20 @@
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="45.0" minHeight="45.0" prefHeight="45.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="45.0" minHeight="45.0" prefHeight="45.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="calendar_delete_button" maxWidth="200.0" minHeight="30.0" minWidth="200.0" mnemonicParsing="false" onAction="#deleteAppointment" prefHeight="30.0" prefWidth="200.0" text="Cancella App. Selezionato" GridPane.columnIndex="3" GridPane.valignment="BOTTOM" />
-            <Button fx:id="shedule_back_button" minHeight="30.0" minWidth="200.0" mnemonicParsing="false" onAction="#toSearchPage" prefHeight="30.0" prefWidth="200.0" text="Indietro" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM" />
+            <Button fx:id="calendar_delete_button" minWidth="200.0" mnemonicParsing="false" onAction="#deleteAppointment" prefWidth="200.0" text="CANCELLA APP. SELEZIONATO" GridPane.columnIndex="3" GridPane.valignment="BOTTOM" />
+            <Button fx:id="shedule_back_button" minWidth="200.0" mnemonicParsing="false" onAction="#toSearchPage" prefWidth="200.0" text="INDIETRO" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
       <GridPane GridPane.rowIndex="2">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="100.0" prefWidth="200.0" />
+          <ColumnConstraints hgrow="SOMETIMES" prefWidth="200.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="624.0" minWidth="312.0" prefWidth="624.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="100.0" prefWidth="200.0" />
+            <ColumnConstraints hgrow="SOMETIMES" prefWidth="200.0" />
             <ColumnConstraints hgrow="SOMETIMES" />
         </columnConstraints>
         <rowConstraints>
@@ -76,7 +76,7 @@
                <font>
                   <Font name="System Bold" size="15.0" />
                </font></Label>
-            <TableView fx:id="idTableView" maxHeight="624.0" maxWidth="624.0" minHeight="388.0" prefHeight="624.0" prefWidth="624.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <TableView fx:id="idTableView" maxHeight="388.0" maxWidth="624.0" minHeight="388.0" prefHeight="388.0" prefWidth="624.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
               <columns>
                 <TableColumn fx:id="idColumnTime" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" resizable="false" text="Orario" />
                   <TableColumn fx:id="idColumnLength" minWidth="100.0" prefWidth="100.0" resizable="false" text="Durata" />
@@ -84,8 +84,8 @@
                   <TableColumn fx:id="idColumAssisted" minWidth="160.0" prefWidth="324.0" text="Assistito" />
               </columns>
             </TableView>
-            <Button fx:id="idPreviousWeekButton" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#previousWeekDailyPlan" prefHeight="30.0" prefWidth="150.0" text="Sett. Precedente" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-            <Button fx:id="idNextWeekButton" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#nextWeekDailyPlan" prefHeight="30.0" prefWidth="150.0" text="Sett. Successiva" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+            <Button fx:id="idPreviousWeekButton" mnemonicParsing="false" onAction="#previousWeekDailyPlan" prefWidth="150.0" text="SETT. PRECEDENTE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+            <Button fx:id="idNextWeekButton" mnemonicParsing="false" onAction="#nextWeekDailyPlan" prefWidth="150.0" text="SETT. SUCCESSIVA" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
             <GridPane GridPane.columnIndex="2" GridPane.rowIndex="2">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
@@ -103,7 +103,7 @@
             </GridPane>
          </children>
       </GridPane>
-      <Label minHeight="30.0" text="Calendario" GridPane.halignment="CENTER">
+      <Label text="Calendario" GridPane.halignment="CENTER">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Label>
