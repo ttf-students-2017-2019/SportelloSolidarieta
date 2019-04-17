@@ -14,6 +14,7 @@
 		<properties>
 			<!-- NOTE change this two lines on your local machine to match your db connection -->
 			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="mysql" />
 			
 			<property name="javax.persistence.jdbc.url"
 				value="jdbc:mysql://localhost:3306/sportellosolidarieta?useTimezone=true&amp;serverTimezone=CET" />
