@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faceted-project>
-  <runtime name="jdk-9.0.1"/>
-  <secondary-runtime name="jre1.8.0_201"/>
+  <runtime name="jre1.8.0_201"/>
   <fixed facet="java"/>
   <fixed facet="jpt.jpa"/>
   <installed facet="java" version="1.8"/>
