@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -65,7 +66,7 @@ public class ReportController {
 
 	@FXML
 	private TableColumn<ObservableMeeting, String> outgoings;
-	
+
 	@FXML
 	private TableColumn<ObservableMeeting, String> incomes;
 
@@ -73,10 +74,25 @@ public class ReportController {
 	private Button export;
 
 	@FXML
-	private Label total;
+	private Button back;
 
 	@FXML
-	private Button back;
+	private Label totalOutgoingsLabel;
+
+	@FXML
+	private Label totalOutgoingsValue;
+
+	@FXML
+	private Label totalIncomesLabel;
+
+	@FXML
+	private Label totalIncomesValue;
+
+	@FXML
+	private Label balanceLabel;
+
+	@FXML
+	private Label balanceValue;
 
 	public ReportController(MainCallback interfaceMain) {
 		this.interfaceMain = interfaceMain;
@@ -124,6 +140,12 @@ public class ReportController {
 		// initialize data model and bind table
 		observableMeetings = FXCollections.observableArrayList();
 		table.setItems(observableMeetings);
+
+		// hide incomes labels. The default report is for outgoings
+		totalIncomesLabel.setVisible(false);
+		totalIncomesValue.setVisible(false);
+		balanceLabel.setVisible(false);
+		balanceValue.setVisible(false);
 	}
 
 	@FXML
@@ -142,7 +164,40 @@ public class ReportController {
 	//
 
 	@FXML
-	void onDateSelected(ActionEvent event) {
+	void loadData(ActionEvent event) {
+
+		if (outgoingsOnly.isSelected()) {
+			// hide incomes and balance labels
+			totalIncomesLabel.setVisible(false);
+			totalIncomesValue.setVisible(false);
+			balanceLabel.setVisible(false);
+			balanceValue.setVisible(false);
+
+			// show outgoings labels
+			totalOutgoingsLabel.setVisible(true);
+			totalOutgoingsValue.setVisible(true);
+
+		} else if (incomesOnly.isSelected()) {
+			// hide outgoings labels and balance labels
+			totalOutgoingsLabel.setVisible(false);
+			totalOutgoingsValue.setVisible(false);
+			balanceLabel.setVisible(false);
+			balanceValue.setVisible(false);
+
+			// show incomes labels
+			totalIncomesLabel.setVisible(true);
+			totalIncomesValue.setVisible(true);
+
+		} else /* outgoings and incomes is selected */
+		{
+			// show everything
+			totalOutgoingsLabel.setVisible(true);
+			totalOutgoingsValue.setVisible(true);
+			totalIncomesLabel.setVisible(true);
+			totalIncomesValue.setVisible(true);
+			balanceLabel.setVisible(true);
+			balanceValue.setVisible(true);
+		}
 
 		if ((from.getValue() == null) || (to.getValue() == null)) {
 			return;
@@ -153,22 +208,50 @@ public class ReportController {
 			label.setTextFill(Color.web("#ff0000"));
 			table.setPlaceholder(label);
 		} else {
+			
+			// formatter needed to display totals
+			NumberFormat numberFormat = NumberFormat.getInstance(Locale.ITALIAN);
+			numberFormat.setMinimumFractionDigits(2);
+			
 			// load data into model (view updates automatically)
-			if (outgoingsOnly.isSelected()) {
+			if (outgoingsOnly.isSelected()) 
+			{
 				meetings = DbUtil.getMeetings(from.getValue(), to.getValue());
-			} else if (incomesOnly.isSelected()) {
+
+				// total outgoings value is in the first position of the results array 
+				Float outgoings = calculateTotals().get(0);
+				
+				// display total outgoings
+				totalOutgoingsValue.setText(utilities.Formatter.formatNumber(outgoings));		
+			} 
+			else if (incomesOnly.isSelected()) 
+			{
 				meetings = DbUtil.getDonations(from.getValue(), to.getValue());
-			} else /* outgoings and incomes is selected */ {
+				
+				// total incomes value is in the first position of the results array 
+				Float incomes = calculateTotals().get(1);
+				
+				// display total incomes
+				totalIncomesValue.setText(utilities.Formatter.formatNumber(incomes));	
+			} 
+			else /* outgoings and incomes is selected */ 
+			{
 				meetings = DbUtil.getMeetingsAndDonations(from.getValue(), to.getValue());
+				
+				// total outgoings value is in the first position of the results array, incomes in the second 
+				Float outgoings = calculateTotals().get(0);
+				Float incomes = calculateTotals().get(1);
+				
+				// display totals 
+				totalOutgoingsValue.setText(utilities.Formatter.formatNumber(outgoings));
+				totalIncomesValue.setText(utilities.Formatter.formatNumber(incomes));	
+				balanceValue.setText(utilities.Formatter.formatNumber(incomes-outgoings));
 			}
 			populateObservableList(meetings);
+			
 			if (observableMeetings.isEmpty()) {
 				table.setPlaceholder(new Label("Nessun risultato"));
 			}
-			// display total
-			NumberFormat numberFormat = NumberFormat.getInstance(Locale.ITALIAN);
-			numberFormat.setMinimumFractionDigits(2);
-			total.setText(utilities.Formatter.formatNumber(calculateTotal()));
 		}
 	}
 
@@ -179,7 +262,8 @@ public class ReportController {
 		File file = fileChooser.showSaveDialog(interfaceMain.getStage());
 		if (file != null) {
 			try {
-				PdfUtil.export(meetings, from.getValue(), to.getValue(), total.getText(), file.getCanonicalPath());
+				PdfUtil.export(meetings, from.getValue(), to.getValue(), totalOutgoingsValue.getText(),
+						file.getCanonicalPath());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -194,12 +278,27 @@ public class ReportController {
 		}
 	}
 
-	private float calculateTotal() {
-		float total = 0;
-		for (Meeting m : meetings) {
-			total += m.getAmount();
+	// calculate total outgoings and incomes results contains outgoings and incomes in this order 
+	private List<Float> calculateTotals() 
+	{
+		List<Float> results = new ArrayList<Float>();
+		
+		float totalOutgoings = 0;
+		float totalIncomes = 0;
+		
+		for (Meeting m : meetings) 
+		{
+			if (m.getAssistedSurname().equals(ObservableMeeting.DONATION_STRING))
+				totalIncomes += m.getAmount();
+			else
+				totalOutgoings += m.getAmount();
 		}
-		return total;
+				
+		// adding in order outgoings, incomes
+		results.add(totalOutgoings);
+		results.add(totalIncomes);
+		
+		return results;
 	}
 
 }
