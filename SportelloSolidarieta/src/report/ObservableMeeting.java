@@ -1,5 +1,7 @@
 package report;
 
+import java.time.LocalDate;
+
 import javafx.beans.property.SimpleStringProperty;
 import model.Meeting;
 import utilities.Formatter;
@@ -8,14 +10,16 @@ public class ObservableMeeting {
 	
 	public static final String DONATION_STRING = "Donazioni";
 	
-	private SimpleStringProperty date;
+	private Meeting meeting;
+//	private SimpleStringProperty date;
 	private SimpleStringProperty assistedSurname;
 	private SimpleStringProperty assistedName;
 	private SimpleStringProperty outgoings;
 	private SimpleStringProperty incomes;
 	
 	public ObservableMeeting(Meeting meeting) {
-		date = new SimpleStringProperty(Formatter.formatDate(meeting.getDate()));
+		this.meeting = meeting;
+//		date = new SimpleStringProperty(Formatter.formatDate(meeting.getDate()));
 		assistedSurname = new SimpleStringProperty(meeting.getAssistedSurname());
 		if (meeting.getAssistedSurname().equals(DONATION_STRING)) {
 			assistedName = new SimpleStringProperty("");
@@ -29,8 +33,8 @@ public class ObservableMeeting {
 		System.out.println(this.toString());
 	}
 
-	public SimpleStringProperty getDate() {
-		return date;
+	public LocalDate getDate() {
+		return meeting.getDate();
 	}
 
 	public SimpleStringProperty getAssistedSurname() {
