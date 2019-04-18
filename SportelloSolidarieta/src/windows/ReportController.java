@@ -19,12 +19,15 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
+import model.Assisted;
 import model.Meeting;
 import report.ObservableMeeting;
 import utilities.PdfUtil;
@@ -63,7 +66,7 @@ public class ReportController {
 	private TableColumn<ObservableMeeting, String> surname;
 
 	@FXML
-	private TableColumn<ObservableMeeting, String> date;
+	private TableColumn<ObservableMeeting, LocalDate> date;
 
 	@FXML
 	private TableColumn<ObservableMeeting, String> outgoings;
@@ -142,7 +145,19 @@ public class ReportController {
 		// bind columns to bean properties
 		surname.setCellValueFactory(cellData -> cellData.getValue().getAssistedSurname());
 		name.setCellValueFactory(cellData -> cellData.getValue().getAssistedName());
-		date.setCellValueFactory(cellData -> cellData.getValue().getDate());
+//		date.setCellValueFactory(cellData -> cellData.getValue().getDate());
+    	date.setCellValueFactory(new PropertyValueFactory<ObservableMeeting, LocalDate>("date"));
+    	date.setCellFactory(cellData -> new TableCell<ObservableMeeting, LocalDate>() {
+    	    @Override
+    	    protected void updateItem(LocalDate date, boolean isEmpty) {
+    	        super.updateItem(date, isEmpty);
+    	        if (isEmpty) {
+    	            setText(null);
+    	        } else {
+    	            setText(utilities.Formatter.formatDate(date));
+    	        }
+    	    }
+    	});    	
 		outgoings.setCellValueFactory(cellData -> cellData.getValue().getOutgoings());
 		incomes.setCellValueFactory(cellData -> cellData.getValue().getIncomes());
 

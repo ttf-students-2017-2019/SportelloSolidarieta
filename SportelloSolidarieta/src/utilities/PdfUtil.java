@@ -115,7 +115,7 @@ public class PdfUtil {
 	
 	private static void writeRow(ObservableMeeting m) {
 		try {
-			contentStream.showText(m.getAssistedSurname().get() + StringUtils.repeat(" ", (charsPerLine - 30) / 2 - m.getAssistedSurname().get().length()) + m.getAssistedName().get() + StringUtils.repeat(" ",  (charsPerLine - 30) / 2 - m.getAssistedName().get().length()) + m.getDate().get() + StringUtils.repeat(" ", 10 - m.getOutgoings().get().length()) + m.getOutgoings().get() + StringUtils.repeat(" ", 10 - m.getIncomes().get().length()) + m.getIncomes().get());
+			contentStream.showText(m.getAssistedSurname().get() + StringUtils.repeat(" ", (charsPerLine - 30) / 2 - m.getAssistedSurname().get().length()) + m.getAssistedName().get() + StringUtils.repeat(" ",  (charsPerLine - 30) / 2 - m.getAssistedName().get().length()) + Formatter.formatDate(m.getDate()) + StringUtils.repeat(" ", 10 - m.getOutgoings().get().length()) + m.getOutgoings().get() + StringUtils.repeat(" ", 10 - m.getIncomes().get().length()) + m.getIncomes().get());
 			contentStream.newLine();
 			currentLine++;
     	} catch (IOException e) {
