@@ -17,12 +17,16 @@ public class ObservableMeeting {
 	public ObservableMeeting(Meeting meeting) {
 		date = new SimpleStringProperty(Formatter.formatDate(meeting.getDate()));
 		assistedSurname = new SimpleStringProperty(meeting.getAssistedSurname());
-		assistedName = new SimpleStringProperty(meeting.getAssistedName());
 		if (meeting.getAssistedSurname().equals(DONATION_STRING)) {
+			assistedName = new SimpleStringProperty("");
+			outgoings = new SimpleStringProperty("");
 			incomes = new SimpleStringProperty(Formatter.formatNumber(meeting.getAmount()));
 		} else {
+			assistedName = new SimpleStringProperty(meeting.getAssistedName());
 			outgoings = new SimpleStringProperty(Formatter.formatNumber(meeting.getAmount()));
+			incomes = new SimpleStringProperty("");
 		}
+		System.out.println(this.toString());
 	}
 
 	public SimpleStringProperty getDate() {
@@ -44,5 +48,5 @@ public class ObservableMeeting {
 	public SimpleStringProperty getIncomes() {
 		return incomes;
 	}
-
+	
 }

@@ -28,6 +28,7 @@ import javafx.util.Callback;
 import model.Meeting;
 import report.ObservableMeeting;
 import utilities.PdfUtil;
+import utilities.PdfUtil.ReportType;
 
 public class ReportController {
 
@@ -93,7 +94,16 @@ public class ReportController {
 
 	@FXML
 	private Label balanceValue;
-
+	
+	//
+	// Instance constructor
+	//
+	// parameters
+	// interfaceMain interface to callback the main class
+	//
+	// returned
+	// none
+	//
 	public ReportController(MainCallback interfaceMain) {
 		this.interfaceMain = interfaceMain;
 	}
@@ -127,8 +137,7 @@ public class ReportController {
 		from.setDayCellFactory(dayCellFactory);
 		to.setDayCellFactory(dayCellFactory);
 
-		// set table placeholder to blank
-//		table.setPlaceholder(new Label(""));
+		table.setPlaceholder(new Label("Nessun risultato"));
 
 		// bind columns to bean properties
 		surname.setCellValueFactory(cellData -> cellData.getValue().getAssistedSurname());
@@ -152,16 +161,6 @@ public class ReportController {
 	void toRegistry(ActionEvent event) {
 		interfaceMain.switchScene(MainCallback.Pages.SearchPerson);
 	}
-
-	//
-	// Instance constructor
-	//
-	// parameters
-	// interfaceMain interface to callback the main class
-	//
-	// returned
-	// none
-	//
 
 	@FXML
 	void loadData(ActionEvent event) {
@@ -188,8 +187,7 @@ public class ReportController {
 			totalIncomesLabel.setVisible(true);
 			totalIncomesValue.setVisible(true);
 
-		} else /* outgoings and incomes is selected */
-		{
+		} else if (outgoingsAndIncomes.isSelected()) {
 			// show everything
 			totalOutgoingsLabel.setVisible(true);
 			totalOutgoingsValue.setVisible(true);
@@ -202,9 +200,12 @@ public class ReportController {
 		if ((from.getValue() == null) || (to.getValue() == null)) {
 			return;
 		}
+		
+		// clear table results so placeholder is shown in case of error
+		observableMeetings.clear();
 
 		if (from.getValue().isAfter(to.getValue())) {
-			Label label = new Label("Errore! La data di inizio è successiva alla data di fine");
+			Label label = new Label("Errore! La data di inizio ï¿½ successiva alla data di fine");
 			label.setTextFill(Color.web("#ff0000"));
 			table.setPlaceholder(label);
 		} else {
@@ -214,8 +215,7 @@ public class ReportController {
 			numberFormat.setMinimumFractionDigits(2);
 			
 			// load data into model (view updates automatically)
-			if (outgoingsOnly.isSelected()) 
-			{
+			if (outgoingsOnly.isSelected()) {
 				meetings = DbUtil.getMeetings(from.getValue(), to.getValue());
 
 				// total outgoings value is in the first position of the results array 
@@ -223,9 +223,7 @@ public class ReportController {
 				
 				// display total outgoings
 				totalOutgoingsValue.setText(utilities.Formatter.formatNumber(outgoings));		
-			} 
-			else if (incomesOnly.isSelected()) 
-			{
+			} else if (incomesOnly.isSelected()) {
 				meetings = DbUtil.getDonations(from.getValue(), to.getValue());
 				
 				// total incomes value is in the first position of the results array 
@@ -233,9 +231,7 @@ public class ReportController {
 				
 				// display total incomes
 				totalIncomesValue.setText(utilities.Formatter.formatNumber(incomes));	
-			} 
-			else /* outgoings and incomes is selected */ 
-			{
+			} else if (outgoingsAndIncomes.isSelected()) {
 				meetings = DbUtil.getMeetingsAndDonations(from.getValue(), to.getValue());
 				
 				// total outgoings value is in the first position of the results array, incomes in the second 
@@ -262,8 +258,13 @@ public class ReportController {
 		File file = fileChooser.showSaveDialog(interfaceMain.getStage());
 		if (file != null) {
 			try {
-				PdfUtil.export(meetings, from.getValue(), to.getValue(), totalOutgoingsValue.getText(),
-						file.getCanonicalPath());
+				if (outgoingsOnly.isSelected()) {
+					PdfUtil.export(ReportType.OutgoingsOnly, observableMeetings, from.getValue(), to.getValue(), totalOutgoingsValue.getText(), null, null, file.getCanonicalPath());
+				} else if (incomesOnly.isSelected()) {
+					PdfUtil.export(ReportType.IncomesOnly, observableMeetings, from.getValue(), to.getValue(), null, totalIncomesValue.getText(), null, file.getCanonicalPath());
+				} else if (outgoingsAndIncomes.isSelected()) {
+					PdfUtil.export(ReportType.OutgoingsAndIncomes, observableMeetings, from.getValue(), to.getValue(), totalOutgoingsValue.getText(), totalIncomesValue.getText(), balanceValue.getText(), file.getCanonicalPath());
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -271,7 +272,6 @@ public class ReportController {
 	}
 
 	private void populateObservableList(List<Meeting> meetings) {
-		observableMeetings.clear();
 		for (Meeting m : meetings) {
 			ObservableMeeting om = new ObservableMeeting(m);
 			observableMeetings.add(om);
