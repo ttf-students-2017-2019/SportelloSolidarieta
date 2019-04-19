@@ -8,15 +8,15 @@ import model.Meeting;
 public interface MainCallback 
 {
 	// Identifiers for all application pages
-	public enum Pages
+	public enum Page
 	{
-		SearchPerson,		// User interface page where search for a assisted
-		Report,				// User interface page to create reports
-		Schedule,			// User interface page to schedule an appointment
-		AssistedDetail,		// User interface page to show assisted details
-		Settings,			// User interface page to show settings detail
-		Calendar,			// User interface page to show calendar
-		MeetingDetail,		// User interface page to show meeting detail				
+		SEARCH_ASSISTED,	// User interface page where search for a assisted
+		REPORT,				// User interface page to create reports
+		SCHEDULE,			// User interface page to schedule an appointment
+		ASSISTED_DETAIL,	// User interface page to show assisted details
+		SETTINGS,			// User interface page to show settings detail
+		CALENDAR,			// User interface page to show calendar
+		MEETING_DETAILS,	// User interface page to show meeting details
 	}
 	
 	//
@@ -28,7 +28,7 @@ public interface MainCallback
 	// returned
 	//		none
 	//	
-	public void switchScene(Pages requiredPage);
+	public void switchScene(Page requestedPage, PageCallback currentPage);
 	
 	public Stage getStage();
 	

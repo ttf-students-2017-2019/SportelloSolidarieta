@@ -2,7 +2,7 @@ package report;
 
 import java.time.LocalDate;
 
-import application.MainCallback.Pages;
+import application.MainCallback.Page;
 import javafx.beans.property.SimpleStringProperty;
 import model.Meeting;
 import utilities.Formatter;
@@ -20,13 +20,13 @@ public class ObservableMeeting{
 	private SimpleStringProperty outgoings;
 	private SimpleStringProperty incomes;
 		
-	public ObservableMeeting(Meeting meeting, Pages page) {
+	public ObservableMeeting(Meeting meeting, Page page) {
 		this.meeting = meeting;
 //		date = new SimpleStringProperty(Formatter.formatDate(meeting.getDate()));
 		assistedSurname = new SimpleStringProperty(meeting.getAssistedSurname());
 		
 		switch (page) {
-		case Report:
+		case REPORT:
 			if (meeting.getAssistedSurname().equals(DONATION_STRING)) {
 				assistedName = new SimpleStringProperty("");
 				outgoings = new SimpleStringProperty("");
@@ -38,7 +38,7 @@ public class ObservableMeeting{
 			}
 			break;
 
-		case MeetingDetail:
+		case MEETING_DETAILS:
 			assistedName = new SimpleStringProperty(meeting.getAssistedName());
 			outgoings = new SimpleStringProperty(Formatter.formatNumber(meeting.getAmount()));
 			description = new SimpleStringProperty(meeting.getDescription());

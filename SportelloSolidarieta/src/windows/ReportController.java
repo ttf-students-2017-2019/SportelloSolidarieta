@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Locale;
 
 import application.MainCallback;
-import application.MainCallback.Pages;
+import application.MainCallback.Page;
 import dal.DbUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,7 +28,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-import model.Assisted;
 import model.Meeting;
 import report.ObservableMeeting;
 import utilities.PdfUtil;
@@ -175,7 +174,7 @@ public class ReportController {
 
 	@FXML
 	void toRegistry(ActionEvent event) {
-		interfaceMain.switchScene(MainCallback.Pages.SearchPerson);
+		interfaceMain.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
 	}
 
 	@FXML
@@ -289,7 +288,7 @@ public class ReportController {
 
 	private void populateObservableList(List<Meeting> meetings) {
 		for (Meeting m : meetings) {
-			ObservableMeeting om = new ObservableMeeting(m,Pages.Report);
+			ObservableMeeting om = new ObservableMeeting(m,Page.REPORT);
 			observableMeetings.add(om);
 		}
 	}
