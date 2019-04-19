@@ -13,15 +13,11 @@ import javax.persistence.Query;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
-import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
-import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Stage;
 import model.Meeting;
 import report.ObservableMeeting;
 import model.Assisted;
-import model.Meeting;
 
 public class DbUtil {
 
@@ -98,7 +94,16 @@ public class DbUtil {
 		return meetings;
 	}
 
-	public static void saveAssisted(Assisted toSave) {
+	public static Assisted saveAssisted(Assisted detached) {
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		Assisted managed = em.merge(detached);
+		em.getTransaction().commit();
+		em.close();
+		return managed;
+	}
+	
+	public static void saveMeeting(Meeting toSave) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		em.merge(toSave);
