@@ -105,6 +105,14 @@ public class DbUtil {
 		em.getTransaction().commit();
 		em.close();
 	}
+	
+	public static void saveMeeting(Meeting toSave) {
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		em.merge(toSave);
+		em.getTransaction().commit();
+		em.close();
+	}
 
 	// If no result, doesn't return null but returns an empty list
 	public static List<Assisted> searchAssisted(EntityManager em, String surname, String name) {

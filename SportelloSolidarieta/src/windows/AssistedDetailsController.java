@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import application.MainCallback;
+import application.MainCallback.Pages;
 import dal.DbUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,12 +16,15 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import model.Meeting;
+import report.ObservableMeeting;
 import model.Assisted;
 
 public class AssistedDetailsController {
@@ -43,13 +47,13 @@ public class AssistedDetailsController {
 	private TextField textfield_familycomposition;
 
 	@FXML
-	private TableView<Meeting> table;
+	private TableView<ObservableMeeting> table;
 	@FXML
-	private TableColumn<Meeting, String> date;
+	private TableColumn<ObservableMeeting, LocalDate> date;
 	@FXML
-	private TableColumn<Meeting, String> amount;
+	private TableColumn<ObservableMeeting, String> amount;
 	@FXML
-	private TableColumn<Meeting, String> description;
+	private TableColumn<ObservableMeeting, String> description;
 	
 	@FXML
 	private Button button_save;
@@ -91,6 +95,7 @@ public class AssistedDetailsController {
 
 	@FXML
 	public void initialize() {
+		button_meeting_detail.setDisable(true);
 		dropdown_sex.setItems(dropBoxValue);
 		// bind text field to bean properties
 		textfield_name.setText(assisted.getName());
@@ -103,14 +108,30 @@ public class AssistedDetailsController {
 		textfield_familycomposition.setText(assisted.getFamilyComposition());
 		List<Meeting> meetings = assisted.getMeetings();
 		// bind columns to bean properties
-		date.setCellValueFactory(new PropertyValueFactory<Meeting, String>("date"));
-		description.setCellValueFactory(new PropertyValueFactory<Meeting, String>("description"));
-		amount.setCellValueFactory(new PropertyValueFactory<Meeting, String>("amount"));
-
+		date.setCellValueFactory(new PropertyValueFactory<ObservableMeeting, LocalDate>("date"));
+    	date.setCellFactory(cellData -> new TableCell<ObservableMeeting, LocalDate>() {
+    	    @Override
+    	    protected void updateItem(LocalDate date, boolean isEmpty) {
+    	        super.updateItem(date, isEmpty);
+    	        if (isEmpty) {
+    	            setText(null);
+    	        } else {
+    	            setText(utilities.Formatter.formatDate(date));
+    	        }
+    	    }
+    	});    	
+    	description.setCellValueFactory(cellData -> cellData.getValue().getDescription());
+		amount.setCellValueFactory(cellData -> cellData.getValue().getOutgoings());
+		
 		// initialize data model and bind table
 		if (meetings != null) {
-			ObservableList<Meeting> v = FXCollections.<Meeting>observableArrayList();
-			v.setAll(meetings);
+			ObservableList<ObservableMeeting> v = FXCollections.<ObservableMeeting>observableArrayList();
+			
+			for (Meeting m : meetings) {
+				ObservableMeeting om = new ObservableMeeting(m, Pages.MeetingDetail);
+				v.add(om);
+			}
+			
 			table.setItems(v);
 		}
 	}
@@ -133,9 +154,23 @@ public class AssistedDetailsController {
     		interfaceMain.setSelectedMeeting(meeting);
     	}
     	else 
-    		interfaceMain.setSelectedMeeting(table.getSelectionModel().getSelectedItem());
+    		interfaceMain.setSelectedMeeting(table.getSelectionModel().getSelectedItem().getMeeting());
+    	
+    	interfaceMain.switchScene(Pages.MeetingDetail);
     	
     		
+    }
+    
+    @FXML
+    void rowSelected(MouseEvent event) {
+    	if (event.isPrimaryButtonDown())
+    	{
+    		ObservableMeeting selectedObMeeting = table.getSelectionModel().getSelectedItem();
+    		interfaceMain.setSelectedMeeting(selectedObMeeting.getMeeting());
+    		System.out.println("SELECTED MEETINg: " + selectedObMeeting.getMeeting());	 //TODO change with a proper logging
+    		if(selectedObMeeting != null)	//note: it selects a null Meeting if I click in the empty area of the Table, so I need this one
+    			button_meeting_detail.setDisable(false);	//activate "toMeetingDetail" button
+    	}
     }
     
 	//

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 
 import application.MainCallback;
+import application.MainCallback.Pages;
 import dal.DbUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -288,7 +289,7 @@ public class ReportController {
 
 	private void populateObservableList(List<Meeting> meetings) {
 		for (Meeting m : meetings) {
-			ObservableMeeting om = new ObservableMeeting(m);
+			ObservableMeeting om = new ObservableMeeting(m,Pages.Report);
 			observableMeetings.add(om);
 		}
 	}

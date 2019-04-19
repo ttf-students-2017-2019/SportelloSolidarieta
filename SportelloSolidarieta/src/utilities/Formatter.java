@@ -18,7 +18,7 @@ public class Formatter {
 		numberFormat.setMinimumFractionDigits(2);
 		return numberFormat.format(number);
 	}
-
+	
 	public static String formatDate(LocalDate date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return date == null ? "-Data mancante-" : formatter.format(date);
