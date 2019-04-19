@@ -1,5 +1,6 @@
 package windows;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import application.MainCallback;
@@ -49,9 +50,14 @@ public class AssistedDetailsController {
 	private TableColumn<Meeting, String> amount;
 	@FXML
 	private TableColumn<Meeting, String> description;
+	
 	@FXML
 	private Button button_save;
-
+    @FXML
+    private Button button_meeting_detail;
+    @FXML
+    private Button button_meeting_add;
+    
 	@FXML
 	void toSearchPerson(ActionEvent event) {
 		interfaceMain.switchScene(MainCallback.Pages.SearchPerson);
@@ -108,7 +114,30 @@ public class AssistedDetailsController {
 			table.setItems(v);
 		}
 	}
+	
+    @FXML
+    void removeMeeting(ActionEvent event) {
 
+    }
+    
+    @FXML
+    void toMeetingDetail(ActionEvent event) {
+    	
+    	if (event.getSource().equals(button_meeting_add)) 
+    	{
+    		Meeting meeting =new Meeting();
+    		meeting.setDate(LocalDate.now());
+    		meeting.setDescription("");
+    		meeting.setAmount(0);
+    		meeting.setAssisted(interfaceMain.getSelectedAssisted());
+    		interfaceMain.setSelectedMeeting(meeting);
+    	}
+    	else 
+    		interfaceMain.setSelectedMeeting(table.getSelectionModel().getSelectedItem());
+    	
+    		
+    }
+    
 	//
 	// Instance constructor
 	//

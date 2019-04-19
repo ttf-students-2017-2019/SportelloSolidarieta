@@ -9,8 +9,11 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.Assisted;
+import model.Meeting;
+import windows.MeetingDetailController;
 import windows.AssistedDetailsController;
 import windows.CalendarController;
+import windows.MeetingDetailController;
 import windows.ReportController;
 import windows.ScheduleController;
 import windows.SearchAssistedController;
@@ -28,6 +31,7 @@ import javafx.geometry.Rectangle2D;
 public class Main extends Application implements MainCallback {
 	
 	private Assisted selectedAssisted = null;
+	private Meeting selectedMeeting = null;
 	
 	public Assisted getSelectedAssisted() {
 		return selectedAssisted;
@@ -35,6 +39,14 @@ public class Main extends Application implements MainCallback {
 
 	public void setSelectedAssisted(Assisted selectedAssisted) {
 		this.selectedAssisted = selectedAssisted;
+	}
+	
+	public Meeting getSelectedMeeting() {
+		return selectedMeeting;
+	}
+
+	public void setSelectedMeeting(Meeting selectedMeeting) {
+		this.selectedMeeting = selectedMeeting;
 	}
 
 	@Override
@@ -81,10 +93,14 @@ public class Main extends Application implements MainCallback {
 				case Calendar:
 					showScene(createCalendarLayout());
 				break;
+				
 				case Settings:
 					showPopup(createSettingsLayout());
 				break;
-	
+				
+				case MeetingDetail:
+					showPopup(createMeetingDetailLayout());
+				break;
 				}
 			} 
 			catch (IOException e) 
@@ -176,8 +192,20 @@ public class Main extends Application implements MainCallback {
 		Scene scene = new Scene(pane,Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
 		
 		return scene;
-	}	
+	}
 	
+	// Create scene MeetingDetailLayout 
+	private Scene createMeetingDetailLayout() throws IOException
+	{
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/MeetingDetail.fxml"));
+		MeetingDetailController fxmlController = new MeetingDetailController(this);	
+		fxmlLoader.setController(fxmlController);
+		GridPane pane = fxmlLoader.load();
+		Scene scene = new Scene(pane, 565, 640);
+		
+		return scene;
+	}	
+		
 	// Load a scene into the stage
 	private void showPopup(Scene scene)
 	{
