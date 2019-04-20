@@ -151,7 +151,9 @@ public class ScheduleController {
 				}
 			};
 			idDatePicker.setDayCellFactory(dayCellFactory);
-
+			
+			if (idTableView.getSelectionModel().getSelectedItem() == null)
+				shedule_ok_button.setDisable(true);
 		} 
 		catch (Exception e) 
 		{
@@ -245,7 +247,7 @@ public class ScheduleController {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Messaggio di errore");
 		alert.setHeaderText("Errore di connessione al database");
-		alert.setContentText("Riprovare piï¿½ tardi");
+		alert.setContentText("Riprovare più tardi");
 		alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
 
 			@Override

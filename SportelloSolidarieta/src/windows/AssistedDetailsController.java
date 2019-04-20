@@ -241,7 +241,9 @@ public class AssistedDetailsController implements PageCallback {
 	}
 	
 	public void refresh() {
-		meetings = FXCollections.observableArrayList(assisted.getMeetings());
+		meetings = FXCollections.observableArrayList();
+		meetings.clear();
+		meetings.addAll(assisted.getMeetings());
 		table.setItems(meetings);
 	}
 
