@@ -29,36 +29,12 @@ public class SearchAssistedController {
 	 * MEMBERS
 	 */
 	
-	private MainCallback interfaceMain; 
+	private MainCallback main; // Interface to callback the main class
 	private EntityManager em;
 	private Assisted selectedAssisted;
 	
 	/*
-	 * CONSTRUCTOR
-	 */
-	
-	public SearchAssistedController(MainCallback interfaceMain) {
-		this.interfaceMain = interfaceMain;   
-	}
-	
-	/*
-	 * SCENE INITIALIZATION
-	 */
-	
-	@FXML
-	private void initialize() {
-		try {
-			this.em = DbUtil.getEntityManager();  //I need the EntityManager at the very beginning, otherwise the first search would appear delayed
-		} catch (Exception e) {
-			// TODO improve
-			e.printStackTrace();
-			DbUtil.showAlertDatabaseError();
-		}	
-    	interfaceMain.setSelectedAssisted(null);// Reset the selectedAssisted
-	}
-
-	/*
-	 * JavaFX components
+	 * JAVAFX COMPONENTS
 	 */
 	
     @FXML
@@ -93,9 +69,34 @@ public class SearchAssistedController {
 
     @FXML
     private TableColumn<Assisted, LocalDate> colBirthdate;
-    
+    	
+	/*
+	 * CONSTRUCTOR
+	 */
+	
+	public SearchAssistedController(MainCallback main) {
+		this.main = main;   
+	}
+	
+	/*
+	 * SCENE INITIALIZATION
+	 */
+	
+	@FXML
+	private void initialize() {
+		try {
+			this.em = DbUtil.getEntityManager();  //I need the EntityManager at the very beginning, otherwise the first search would appear delayed
+		} catch (Exception e) {
+			// TODO improve
+			e.printStackTrace();
+			DbUtil.showAlertDatabaseError();
+		}	
+    	main.setSelectedAssisted(null);// Reset the selectedAssisted
+	}
+
+	
     /*
-     * JavaFX actions
+     * JAVAFX ACTIONS
      */
     
     @FXML
@@ -106,31 +107,31 @@ public class SearchAssistedController {
     		selectedAssisted.setName(tfield_name.getText());
     		selectedAssisted.setSurname(tfield_surname.getText());
     	}
-    	interfaceMain.setSelectedAssisted(selectedAssisted); // set selectedAssisted in the main
+    	main.setSelectedAssisted(selectedAssisted); // set selectedAssisted in the main
     	System.out.println("PASSING ASSISTED: " + this.selectedAssisted);	 //TODO change with a proper logging
     	
     	if (em.isOpen()) {
     		DbUtil.closeEntityManager(em);
     	}
-    	interfaceMain.switchScene(MainCallback.Page.ASSISTED_DETAIL, null);	
+    	main.switchScene(MainCallback.Page.ASSISTED_DETAIL, null);	
     }
 
     @FXML
     void toReport(ActionEvent event) {
     	DbUtil.closeEntityManager(this.em);
-    	interfaceMain.switchScene(MainCallback.Page.REPORT, null);
+    	main.switchScene(MainCallback.Page.REPORT, null);
     }
 
     @FXML
     void toSettings(ActionEvent event) {
     	//DbUtil.closeEntityManager(this.em);	NOTE do *not* do this here, because the scene itsn't reloaded at the exit of "settings", therefore there won't be any EnitityManager
-    	interfaceMain.switchScene(MainCallback.Page.SETTINGS, null);
+    	main.switchScene(MainCallback.Page.SETTINGS, null);
     }
     
     @FXML
     void toCalendar(ActionEvent event) {
     	DbUtil.closeEntityManager(this.em);
-    	interfaceMain.switchScene(MainCallback.Page.CALENDAR, null);
+    	main.switchScene(MainCallback.Page.CALENDAR, null);
     }
     
     @FXML

@@ -8,6 +8,26 @@ import javafx.fxml.FXML;
 
 public class SplashScreenController {
 	
+	/*
+	 * MEMBERS
+	 */
+	
+    private MainCallback main; // Interface to callback the main class
+    private Timer timerAutoHide; // Timer to auto-hide this scene
+    
+	/*
+	 * CONSTRUCTOR
+	 */
+    
+    public SplashScreenController(MainCallback main)
+    {
+    	this.main = main;   
+    }
+	    
+	/*
+	 * SCENE INITIALIZATION
+	 */
+    
     @FXML
     private void initialize() 
     {
@@ -18,28 +38,9 @@ public class SplashScreenController {
             @Override
             public void run() 
             {
-                interfaceMain.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
+                main.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
             }
         }, 1500);      
     }
-    
-	//
-    // Instance constructor
-	//
-	// parameters	
-	//		interfaceMain 		interface to callback the main class
-	//
-	// returned
-	//		none
-	//
-    public SplashScreenController(MainCallback interfaceMain)
-    {
-    	this.interfaceMain = interfaceMain;   
-    } 
-    
-    // Interface to callback the main class
-    private MainCallback interfaceMain;
-    
-    // Timer to auto-hide this scene
-    private Timer timerAutoHide;	
+    	
 }

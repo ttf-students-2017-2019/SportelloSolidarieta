@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.Meeting;
 import utilities.Formatter;
+import windows.AssistedDetailsController.Operation;
 
 import java.time.LocalDate;
 
@@ -23,17 +24,18 @@ import dal.DbUtil;
 
 public class MeetingDetailsController {
 
-	// Interface to callback the main class
-	private MainCallback interfaceMain;
+	/*
+	 * MEMBERS
+	 */
+
+	private MainCallback main; // Interface to callback the main class
 	private PageCallback previousPage;
-
 	private Meeting meeting;
-	private Boolean meetingToMofify;
+	private Operation operation;
 
-	public MeetingDetailsController(MainCallback interfaceMain, PageCallback currentPage) {
-		this.interfaceMain = interfaceMain;
-		previousPage = currentPage;
-	}
+	/*
+	 * JAVAFX COMPONENTS
+	 */
 
 	@FXML
 	private TextField value;
@@ -43,6 +45,19 @@ public class MeetingDetailsController {
 
 	@FXML
 	private DatePicker date;
+
+	/*
+	 * CONSTRUCTOR
+	 */
+
+	public MeetingDetailsController(MainCallback main, PageCallback currentPage) {
+		this.main = main;
+		previousPage = currentPage;
+	}
+
+	/*
+	 * SCENE INITIALIZATION
+	 */
 
 	@FXML
 	private void initialize() {
@@ -64,40 +79,45 @@ public class MeetingDetailsController {
 		};
 		date.setDayCellFactory(dayCellFactory);
 
-		// getting selected meeting and kind of action: add or modify
+		// getting selected meeting and kind of operation: create or update
 		meeting = previousPage.getSelectedMeeting();
-		meetingToMofify = previousPage.getMeetingtoModify();
-		
+		operation = previousPage.getOperation();
+
 		// binding the meeting to layout
 		descriptionText.setText(meeting.getDescription());
 		value.setText(Formatter.formatNumber(meeting.getAmount()));
 		date.setValue(meeting.getDate());
 	}
 
+	/*
+	 * JAVAFX ACTIONS
+	 */
+
 	@FXML
 	void saveMeeting(ActionEvent event) {
-		
+
 		int meetingIndex = meeting.getAssisted().getMeetings().indexOf(meeting);
-		
+
 		meeting.setDate(date.getValue());
 		if (descriptionText.getText().length() <= 1000) {
 			meeting.setDescription(descriptionText.getText());
 			try {
 				meeting.setAmount(Float.valueOf(Formatter.reverseFormatNumber(value.getText())));
-				DbUtil.saveMeeting(meeting);
+				meeting = DbUtil.saveMeeting(meeting);
 				showAlertAddedMeetingToAssistedDetail();
 
-				if (meetingToMofify == false)
+				switch (operation) {
+				case CREATE:
 					meeting.getAssisted().getMeetings().add(meeting);
-				else 
-				{
-					//meeting.getAssisted().getMeetings().set(meetingIndex, meeting);
-					meeting.getAssisted().getMeetings().remove(meetingIndex);
-					meeting.getAssisted().getMeetings().add(meetingIndex, meeting);
+					break;
+
+				case UPDATE:
+					meeting.getAssisted().getMeetings().set(meetingIndex, meeting);
 					System.out.println(meeting.getAssisted().getMeetings().toString());
+					break;
 				}
-					
-					
+
+				System.out.println("REFRESH");
 				previousPage.refresh();
 				meeting = null;
 			} catch (Exception e) {
@@ -115,6 +135,10 @@ public class MeetingDetailsController {
 		meeting = null;
 	}
 
+    /*
+     * OTHER METHODS
+     */
+	
 	// Alerts
 
 	// Meeting added to assisted detail

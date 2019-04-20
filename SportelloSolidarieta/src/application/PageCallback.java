@@ -1,17 +1,12 @@
 package application;
 
 import model.Meeting;
+import windows.AssistedDetailsController.Operation;
 
 public interface PageCallback {
 
-	public Meeting getSelectedMeeting();
-	
-	public void setSelectedMeeting(Meeting meeting);
-	
-	public Boolean getMeetingtoModify();
-	
-	public void setMeetingToMofify(Boolean meetengToModify);
-	
+	Meeting getSelectedMeeting();
+	Operation getOperation();
 	void refresh();
 	
 }
