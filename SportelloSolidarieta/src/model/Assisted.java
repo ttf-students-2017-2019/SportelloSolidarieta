@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -54,7 +55,7 @@ public class Assisted {
 	 */
 	
 	@OneToMany(mappedBy="assisted")
-	private List<Meeting> meetings;
+	private List<Meeting> meetings = new ArrayList<Meeting>();
 	
 	@OneToMany(mappedBy="assisted")
 	private List<Appointment> appointments;

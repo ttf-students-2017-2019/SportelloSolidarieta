@@ -46,9 +46,7 @@
       <GridPane GridPane.rowIndex="3">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
@@ -56,14 +54,14 @@
             <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="shedule_ok_button" minWidth="200.0" mnemonicParsing="false" onAction="#saveAppointment" prefWidth="200.0" text="SALVA" GridPane.columnIndex="3" GridPane.valignment="BOTTOM" />
-            <Button fx:id="shedule_back_button" minWidth="200.0" mnemonicParsing="false" onAction="#toAssistedDetail" prefWidth="200.0" text="ANNULLA" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM" />
+            <Button fx:id="shedule_ok_button" minWidth="200.0" mnemonicParsing="false" onAction="#saveAppointment" prefWidth="200.0" text="SALVA" GridPane.columnIndex="2" GridPane.valignment="BOTTOM" />
+            <Button fx:id="shedule_back_button" minWidth="200.0" mnemonicParsing="false" onAction="#toAssistedDetail" prefWidth="200.0" text="ANNULLA" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
       <GridPane GridPane.rowIndex="2">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" />
-          <ColumnConstraints hgrow="SOMETIMES" prefWidth="200.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="100.0" prefWidth="200.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="624.0" minWidth="312.0" prefWidth="624.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="100.0" prefWidth="200.0" />
             <ColumnConstraints hgrow="SOMETIMES" />
