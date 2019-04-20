@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
@@ -25,6 +26,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import model.Appointment;
 import model.Assisted;
+import model.Meeting;
 import schedule.DailyPlan;
 import schedule.ObservableSlot;
 import utilities.Formatter;
@@ -42,9 +44,6 @@ public class CalendarController {
 
     @FXML
     private Button calendar_delete_button;
-
-    @FXML
-    private Button shedule_back_button;
 
     @FXML
     private Label idFullDay;
@@ -65,12 +64,6 @@ public class CalendarController {
 	private TableColumn<ObservableSlot, String> idColumAssisted;
 
     @FXML
-    private Button idPreviousWeekButton;
-
-    @FXML
-    private Button idNextWeekButton;
-
-    @FXML
     private Label idAppointmentNumber;
     
     @FXML
@@ -86,6 +79,9 @@ public class CalendarController {
     	
 		try 
 		{
+			// disable save button: there is no selection
+			calendar_delete_button.setDisable(true);
+			
 			// Getting today date
 			Calendar todayCal = Calendar.getInstance();
 			Date defaultDay = getDateForDailyPlan(Date.from(todayCal.toInstant()));
@@ -124,14 +120,7 @@ public class CalendarController {
 		
 		// Only with a selected appointment try to delete it
 		if (selectedSlot != null) 
-		{
 			showConfirmationDialog(selectedSlot);
-		}
-		else // There is no selection
-		{
-			showAlertNoSelection();
-		}
-
     }
 
 	@FXML
@@ -196,6 +185,17 @@ public class CalendarController {
 		}
 	}
     
+    @FXML
+    void onRowSelected(MouseEvent event) {
+    	if (event.isPrimaryButtonDown())
+    	{
+    		ObservableSlot selectedSlot = idTableView.getSelectionModel().getSelectedItem();
+    		
+    		if (selectedSlot != null)	//note: it selects a null slot if I click in the empty area of the Table, so I need this one
+    			calendar_delete_button.setDisable(false);
+    	}
+    }
+
 	// Other methods
 	public CalendarController(MainCallback interfaceMain)
 	{
@@ -219,20 +219,11 @@ public class CalendarController {
 		return cal.getTime();
 	}
 	
-	// Alerts
-	private void showAlertNoSelection() {
-
-		Alert alert = new Alert(AlertType.WARNING);
-		alert.setTitle("Attenzione");
-		alert.setHeaderText("Nessuna selezione");
-		alert.setContentText("Selezionare l'appuntamento da cancellare");
-		alert.showAndWait();
-	}
-	
+	// Alerts	
 	private void showConfirmationDialog(ObservableSlot selectedSlot) 
 	{
 		// Creating custom button
-		ButtonType yesButton = new ButtonType("Sï¿½",ButtonData.OK_DONE);
+		ButtonType yesButton = new ButtonType("Sì",ButtonData.OK_DONE);
 		ButtonType noButton = new ButtonType("No",ButtonData.CANCEL_CLOSE);
 		
 		Alert alert = new Alert(AlertType.CONFIRMATION, null, yesButton, noButton);
@@ -250,15 +241,11 @@ public class CalendarController {
 			{
 				Date date = getDateForDailyPlan(appointmentToDelete.getAppointmentDateTime());
 				updateDailyPlan(date);
+				calendar_delete_button.setDisable(true);
 			} 
 			else
 				showAlertDatabaseErrorToMainPage(); 
-	    } 
-		else 
-		{
-			// Do nothing
-		}
-		
+	    }
 	}
 	
 	private void showAlertDatabaseErrorToMainPage() 
@@ -266,7 +253,7 @@ public class CalendarController {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Messaggio di errore");
 		alert.setHeaderText("Errore di connessione al database");
-		alert.setContentText("Riprovare piï¿½ tardi");
+		alert.setContentText("Riprovare più tardi");
 		alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
 
 			@Override
@@ -290,7 +277,10 @@ public class CalendarController {
 	
 	// Update the dailyPan displayed
 	public void updateDailyPlan(Date date) 
-	{	
+	{
+		// disable save button: there is no selection
+		calendar_delete_button.setDisable(true);
+		
 		// Getting the new dailyPlan and updating the TableView
 		DailyPlan currentDailyplan = new DailyPlan(date);
 	
