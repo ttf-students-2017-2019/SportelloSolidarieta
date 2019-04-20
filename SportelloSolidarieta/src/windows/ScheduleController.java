@@ -15,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.DialogEvent;
@@ -48,9 +49,6 @@ public class ScheduleController {
 
 	// Page elements
 	@FXML
-	private GridPane idAssistedNameLabel;
-
-	@FXML
 	private Label idAssistedNameSurname;
 
 	@FXML
@@ -58,9 +56,6 @@ public class ScheduleController {
 
 	@FXML
 	private Button shedule_ok_button;
-
-	@FXML
-	private Button shedule_back_button;
 
 	@FXML
 	private Label idFullDay;
@@ -180,47 +175,21 @@ public class ScheduleController {
 			else
 				showAlertDatabaseErrorToMainPage(); 
 		}
-		else if (selectedSlot != null && 
-				selectedSlot.getAssociatedSlot().getAssocieatedAppointment() != null) // Slot already taken
-		{
-			showAlertAppointmentTaken(selectedSlot);
-		} 
-		else // There is no selection
-		{
-			showAlertNoSelection();
-		}
 	}
-
-	private void showAlertNoSelection() {
-
-		Alert alert = new Alert(AlertType.WARNING);
-		alert.setTitle("Attenzione");
-		alert.setHeaderText("Nessuna selezione");
-		alert.showAndWait();
-	}
-
-	private void showAlertAppointmentTaken(ObservableSlot selectedSlot) {
-
-		Alert alert = new Alert(AlertType.WARNING);
-		alert.setTitle("Attenzione");
-		alert.setHeaderText("Appuntamento non disponibile");
-		alert.setContentText("Selezione del primo appuntamento disponibile della giornata");
-		alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
-
-			@Override
-			public void handle(DialogEvent event) {
-
-				// Update the dailyPlan selecting the first freeSlot
-				LocalDate datePickerLocalDate = idDatePicker.getValue();
-				Calendar cal = Calendar.getInstance();
-				Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-				cal.setTime(datePickerDate);
-				updateDailyPlan(cal.getTime());
-			}
-
-		});
-		alert.showAndWait();
-	}
+	
+    @FXML
+    void onRowSelected(MouseEvent event) {
+    	if (event.isPrimaryButtonDown())
+    	{
+    		ObservableSlot selectedSlot = idTableView.getSelectionModel().getSelectedItem();
+    		
+    		// enable saving when selected slot is free
+    		if (selectedSlot != null && selectedSlot.getAssociatedSlot().getAssocieatedAppointment() == null)
+    			shedule_ok_button.setDisable(false);
+    		else 
+    			shedule_ok_button.setDisable(true);
+    	}
+    }
 
 	private void showAlertWithSuccessfulHeaderText(Assisted assisted, Date appointmentDateTime, int appointmentLength) {
 		Calendar cal = Calendar.getInstance();
@@ -311,7 +280,7 @@ public class ScheduleController {
 
 	@FXML
 	void updateDailyPlanFromDatePicker(ActionEvent event) 
-	{
+	{	
 		// Getting the datePickerDate
 		LocalDate datePickerLocalDate = idDatePicker.getValue();
 		Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
@@ -400,6 +369,10 @@ public class ScheduleController {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		idFullDay.setText(Formatter.getDateAsItalianString(cal));
+		
+		// disable save if there is no selection
+		if (idTableView.getSelectionModel().getSelectedItem() == null)
+			shedule_ok_button.setDisable(true);
 	}
 		
 	// Update the datePicker   
