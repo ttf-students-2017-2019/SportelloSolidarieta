@@ -35,17 +35,19 @@ import utilities.Formatter;
 
 public class ScheduleController {
 
-	// Interface to callback the main class
-	private MainCallback interfaceMain;	
+	/*
+	 * MEMBERS
+	 */
 
-	// Settings loaded from the database
-	private Setting settings; 
-	
+	private MainCallback interfaceMain; // Interface to callback the main class
+	private Setting settings; // Settings loaded from the database
 	private Assisted selectedAssisted;
-
 	public static final int SKIP_DAYS = 7;
 
-	// Page elements
+	/*
+	 * JAVAFX COMPONENTS
+	 */
+
 	@FXML
 	private Label idAssistedNameSurname;
 
@@ -82,17 +84,22 @@ public class ScheduleController {
 	@FXML
 	private Button idNextWeekButton;
 
-	@FXML
-	void toAssistedDetail(ActionEvent event) 
-	{
-		interfaceMain.switchScene(MainCallback.Page.ASSISTED_DETAIL, null);
+	/*
+	 * CONSTRUCTOR
+	 */
+
+	public ScheduleController(MainCallback interfaceMain) {
+		this.interfaceMain = interfaceMain;
 	}
+
+	/*
+	 * SCENE INITIALIZATION
+	 */
 
 	@FXML
 	private void initialize() {
 
-		try 
-		{
+		try {
 			// Getting the settings from db
 			settings = Setting.findAllSettings();
 
@@ -108,12 +115,12 @@ public class ScheduleController {
 			Calendar currentDate = Calendar.getInstance();
 			currentDate.setTime(defaultDay);
 
-			// Only if the appointments of the day are less than the default maximum display the dailyPlan
-			while (defaultDailyplan.getNumberOfAppointments() >= Setting.findAllSettings().getMaxDailyAppointments())
-			{
+			// Only if the appointments of the day are less than the default maximum display
+			// the dailyPlan
+			while (defaultDailyplan.getNumberOfAppointments() >= Setting.findAllSettings().getMaxDailyAppointments()) {
 				currentDate.add(Calendar.DATE, SKIP_DAYS);
 				defaultDailyplan = new DailyPlan(currentDate.getTime(), settings);
-			} 
+			}
 
 			// Update datePicker
 			updateDatePicker(Date.from(currentDate.toInstant()));
@@ -126,7 +133,7 @@ public class ScheduleController {
 			// Setting up the labels
 			idAppointmentNumber.setText(String.valueOf(defaultDailyplan.getNumberOfAppointments()));
 			idFullDay.setText(Formatter.getDateAsItalianString(currentDate));
-			
+
 			// Disable datePicker for the current day and for the past
 			final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
 				@Override
@@ -144,50 +151,124 @@ public class ScheduleController {
 				}
 			};
 			idDatePicker.setDayCellFactory(dayCellFactory);
-			
+
 			if (idTableView.getSelectionModel().getSelectedItem() == null)
 				shedule_ok_button.setDisable(true);
-		} 
-		catch (Exception e) 
-		{
+		} catch (Exception e) {
+			showAlertDatabaseErrorToMainPage();
+		}
+	}
+
+	/*
+	 * JAVAFX ACTIONS
+	 */
+
+	@FXML
+	void toAssistedDetail(ActionEvent event) {
+		interfaceMain.switchScene(MainCallback.Page.ASSISTED_DETAIL, null);
+	}
+
+	@FXML
+	void saveAppointment(ActionEvent event) {
+		ObservableSlot selectedSlot = idTableView.getSelectionModel().getSelectedItem();
+
+		// Only if the selected slot is free save the appointment to the database
+		if (selectedSlot != null && selectedSlot.getAssociatedSlot().getAssocieatedAppointment() == null) {
+			System.out.println(selectedAssisted.toString());
+			Date appointmentDateTime = new Date().from(selectedSlot.getAssociatedSlot().getDateTime().toInstant());
+			// Saving appointment
+			Appointment appToSave = new Appointment();
+
+			// Check for errors
+			if (appToSave.saveAppointment(selectedAssisted, appointmentDateTime,
+					selectedSlot.getAssociatedSlot().getSlotLength()))
+				showAlertWithSuccessfulHeaderText(selectedAssisted, appointmentDateTime,
+						selectedSlot.getAssociatedSlot().getSlotLength());
+			else
+				showAlertDatabaseErrorToMainPage();
+		}
+	}
+
+	@FXML
+	void onRowSelected(MouseEvent event) {
+		if (event.isPrimaryButtonDown()) {
+			ObservableSlot selectedSlot = idTableView.getSelectionModel().getSelectedItem();
+
+			// enable saving when selected slot is free
+			if (selectedSlot != null && selectedSlot.getAssociatedSlot().getAssocieatedAppointment() == null)
+				shedule_ok_button.setDisable(false);
+			else
+				shedule_ok_button.setDisable(true);
+		}
+	}
+
+	@FXML
+	void previousWeekDailyPlan(ActionEvent event) {
+		// Getting the datePickerDate minus one week
+		LocalDate datePickerLocalDate = idDatePicker.getValue();
+		Calendar cal = Calendar.getInstance();
+		Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+		cal.setTime(datePickerDate);
+		cal.add(Calendar.DATE, -SKIP_DAYS);
+
+		// Prevent moving to the past
+		if (cal.after(Calendar.getInstance())) {
+			try {
+				Date dateToGo = cal.getTime();
+				updateDailyPlan(dateToGo);
+				updateDatePicker(dateToGo);
+			} catch (Exception e) {
+				showAlertDatabaseErrorToMainPage();
+			}
+
+		}
+	}
+
+	@FXML
+	void nextWeekDailyPlan(ActionEvent event) {
+		// Getting the datePickerDate and adding one week
+		LocalDate datePickerLocalDate = idDatePicker.getValue();
+		Calendar cal = Calendar.getInstance();
+		Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+		cal.setTime(datePickerDate);
+		cal.add(Calendar.DATE, SKIP_DAYS);
+
+		// Updating the dailyPlan with that day
+		try {
+			Date dateToGo = cal.getTime();
+			updateDailyPlan(dateToGo);
+			updateDatePicker(dateToGo);
+		} catch (Exception e) {
 			showAlertDatabaseErrorToMainPage();
 		}
 	}
 
 	@FXML
-	void saveAppointment(ActionEvent event) 
-	{
-		ObservableSlot selectedSlot = idTableView.getSelectionModel().getSelectedItem(); 
-		
-		// Only if the selected slot is free save the appointment to the database
-		if (selectedSlot != null && selectedSlot.getAssociatedSlot().getAssocieatedAppointment() == null) 
-		{
-			System.out.println(selectedAssisted.toString());
-			Date appointmentDateTime =  new Date().from(selectedSlot.getAssociatedSlot().getDateTime().toInstant());
-			// Saving appointment
-			Appointment appToSave = new Appointment();		
+	void updateDailyPlanFromDatePicker(ActionEvent event) {
+		// Getting the datePickerDate
+		LocalDate datePickerLocalDate = idDatePicker.getValue();
+		Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 
-			// Check for errors
-			if (appToSave.saveAppointment(selectedAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getSlotLength())) 
-				showAlertWithSuccessfulHeaderText(selectedAssisted, appointmentDateTime, selectedSlot.getAssociatedSlot().getSlotLength());
-			else
-				showAlertDatabaseErrorToMainPage(); 
+		// Updating the dailyPlan displayed, preventing moving to the past
+		if (datePickerDate.after(Calendar.getInstance().getTime())) {
+			try {
+				updateDailyPlan(datePickerDate);
+			} catch (Exception e) {
+				showAlertDatabaseErrorToMainPage();
+			}
+		} else // Reverting the date picker to the current day plus one if we try to move to
+				// the past
+		{
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.DATE, 1);
+			updateDatePicker(cal.getTime());
 		}
+
 	}
-	
-    @FXML
-    void onRowSelected(MouseEvent event) {
-    	if (event.isPrimaryButtonDown())
-    	{
-    		ObservableSlot selectedSlot = idTableView.getSelectionModel().getSelectedItem();
-    		
-    		// enable saving when selected slot is free
-    		if (selectedSlot != null && selectedSlot.getAssociatedSlot().getAssocieatedAppointment() == null)
-    			shedule_ok_button.setDisable(false);
-    		else 
-    			shedule_ok_button.setDisable(true);
-    	}
-    }
+
+	/*
+	 * OTHER METHODS
+	 */
 
 	private void showAlertWithSuccessfulHeaderText(Assisted assisted, Date appointmentDateTime, int appointmentLength) {
 		Calendar cal = Calendar.getInstance();
@@ -208,7 +289,7 @@ public class ScheduleController {
 		});
 		alert.showAndWait();
 	}
-	
+
 	private void showAlertDatabaseErrorToMainPage() {
 
 		Alert alert = new Alert(AlertType.ERROR);
@@ -226,87 +307,8 @@ public class ScheduleController {
 		alert.showAndWait();
 	}
 
-	@FXML
-	void previousWeekDailyPlan(ActionEvent event) 
-	{
-		// Getting the datePickerDate minus one week
-		LocalDate datePickerLocalDate = idDatePicker.getValue();
-		Calendar cal = Calendar.getInstance();
-		Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-		cal.setTime(datePickerDate);
-		cal.add(Calendar.DATE, - SKIP_DAYS);
-
-		// Prevent moving to the past
-		if (cal.after(Calendar.getInstance())) 
-		{
-			try 
-			{
-				Date dateToGo = cal.getTime();
-				updateDailyPlan(dateToGo);
-				updateDatePicker(dateToGo);
-			} 
-			catch (Exception e) 
-			{
-				showAlertDatabaseErrorToMainPage();
-			}
-
-		}
-	}
-
-	@FXML
-	void nextWeekDailyPlan(ActionEvent event) 
-	{
-		// Getting the datePickerDate and adding one week
-		LocalDate datePickerLocalDate = idDatePicker.getValue();
-		Calendar cal = Calendar.getInstance();
-		Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-		cal.setTime(datePickerDate);
-		cal.add(Calendar.DATE, SKIP_DAYS);
-
-		// Updating the dailyPlan with that day
-		try 
-		{
-			Date dateToGo = cal.getTime();
-			updateDailyPlan(dateToGo);
-			updateDatePicker(dateToGo);
-		} 
-		catch (Exception e) 
-		{
-			showAlertDatabaseErrorToMainPage();
-		}
-	}
-
-	@FXML
-	void updateDailyPlanFromDatePicker(ActionEvent event) 
-	{	
-		// Getting the datePickerDate
-		LocalDate datePickerLocalDate = idDatePicker.getValue();
-		Date datePickerDate = Date.from(datePickerLocalDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-
-		// Updating the dailyPlan displayed, preventing moving to the past
-		if (datePickerDate.after(Calendar.getInstance().getTime()))
-		{
-			try 
-			{
-				updateDailyPlan(datePickerDate);
-			} 
-			catch (Exception e) 
-			{
-				showAlertDatabaseErrorToMainPage();
-			}
-		}	
-		else // Reverting the date picker to the current day plus one if we try to move to the past 
-		{	
-			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.DATE,1);		
-			updateDatePicker(cal.getTime());
-		}
-
-	}
-
-	// Bind the dailyPlan to TableView   
-	private void bindAndSelectFirstFreeSlot(ObservableList<ObservableSlot>  observalbeList, DailyPlan dailyPlan) 
-	{    	
+	// Bind the dailyPlan to TableView
+	private void bindAndSelectFirstFreeSlot(ObservableList<ObservableSlot> observalbeList, DailyPlan dailyPlan) {
 		idColumnTime.setCellValueFactory(cellData -> cellData.getValue().appointmentTimeDate);
 		idColumnLength.setCellValueFactory(cellData -> cellData.getValue().appointmentLength);
 		idColumnStatus.setCellValueFactory(cellData -> cellData.getValue().status);
@@ -314,24 +316,17 @@ public class ScheduleController {
 		idTableView.setItems(observalbeList);
 
 		// Selecting the first free slot of the day
-		if(dailyPlan.getFirstFreeSlot() != null) 
-		{
+		if (dailyPlan.getFirstFreeSlot() != null) {
 			idTableView.getSelectionModel().select(dailyPlan.getFirstFreeSlot());
 			idTableView.scrollTo(dailyPlan.getFirstFreeSlot());
 		}
 	}
 
-	// Other methods
-	public ScheduleController(MainCallback interfaceMain)
-	{
-		this.interfaceMain = interfaceMain;   
-	}
-
 	// Get next month default day appointment
-	public Date getNextWeekDefaultAppointmentDay () 
-	{
-		// Getting the same day in the next month, selecting from that week the default weekday
-		Calendar cal = Calendar.getInstance(); 
+	public Date getNextWeekDefaultAppointmentDay() {
+		// Getting the same day in the next month, selecting from that week the default
+		// weekday
+		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, SKIP_DAYS);
 		cal.set(Calendar.DAY_OF_WEEK, Setting.findDefaultWeekDay());
 
@@ -339,15 +334,14 @@ public class ScheduleController {
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);	
+		cal.set(Calendar.MILLISECOND, 0);
 
-		//Return the date
+		// Return the date
 		return cal.getTime();
 	}
 
 	// Update the dailyPan displayed
-	public void updateDailyPlan(Date date) 
-	{	
+	public void updateDailyPlan(Date date) {
 		// Getting the new dailyPlan and updating the TableView
 		DailyPlan currentDailyplan = new DailyPlan(date, settings);
 		ObservableList<ObservableSlot> slotObservableList = FXCollections.<ObservableSlot>observableArrayList();
@@ -355,8 +349,7 @@ public class ScheduleController {
 		idTableView.setItems(slotObservableList);
 
 		// Selecting the first free slot if there is one
-		if (currentDailyplan.getFirstFreeSlot()!= null) 
-		{
+		if (currentDailyplan.getFirstFreeSlot() != null) {
 			idTableView.getSelectionModel().select(currentDailyplan.getFirstFreeSlot());
 			idTableView.scrollTo(slotObservableList.indexOf(currentDailyplan.getFirstFreeSlot()));
 		}
@@ -367,15 +360,14 @@ public class ScheduleController {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		idFullDay.setText(Formatter.getDateAsItalianString(cal));
-		
+
 		// disable save if there is no selection
 		if (idTableView.getSelectionModel().getSelectedItem() == null)
 			shedule_ok_button.setDisable(true);
 	}
-		
-	// Update the datePicker   
-	public void updateDatePicker(Date date) 
-	{
+
+	// Update the datePicker
+	public void updateDatePicker(Date date) {
 		LocalDate calendarDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		idDatePicker.setValue(calendarDate);
 	}
