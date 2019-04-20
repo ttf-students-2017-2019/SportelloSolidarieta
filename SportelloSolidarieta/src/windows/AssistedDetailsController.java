@@ -32,6 +32,27 @@ public class AssistedDetailsController implements PageCallback {
 
 	// Interface to callback the main class
 	private MainCallback interfaceMain;
+	
+	// Selected meeting and task to perform
+	private Meeting selectedMeeting = null;
+	private Boolean meetingToMofify = null;
+	
+	public Meeting getSelectedMeeting() {
+		return selectedMeeting;
+	}
+
+	public void setSelectedMeeting(Meeting selectedMeeting) {
+		this.selectedMeeting = selectedMeeting;
+	}
+
+	public Boolean getMeetingtoModify() {
+		return meetingToMofify;
+	}
+
+	public void setMeetingToMofify(Boolean meetingToMofify) {
+		this.meetingToMofify = meetingToMofify;
+	}
+	
 	private Assisted assisted;
 	private ObservableList<Meeting> meetings;
 	private ObservableList<Character> dropBoxValue = (FXCollections.observableArrayList('M', 'F', 'T'));
@@ -173,9 +194,9 @@ public class AssistedDetailsController implements PageCallback {
 		assisted.setFamilyComposition(textfield_familycomposition.getText());
 
 		if (this.isValid()) {
+			assisted = DbUtil.saveAssisted(assisted);
 			Alert alert = new Alert(AlertType.INFORMATION, "Utente Salvato con successo.", ButtonType.OK);
 			alert.showAndWait();
-			assisted = DbUtil.saveAssisted(assisted);
 		}
 	}
 
@@ -184,7 +205,7 @@ public class AssistedDetailsController implements PageCallback {
     	if (event.isPrimaryButtonDown())
     	{
     		Meeting selectedMeeting = table.getSelectionModel().getSelectedItem();
-    		interfaceMain.setSelectedMeeting(table.getSelectionModel().getSelectedItem());
+    		setSelectedMeeting(table.getSelectionModel().getSelectedItem());
     		System.out.println("SELECTED MEETING: " + selectedMeeting);	 //TODO change with a proper logging
     		if (selectedMeeting != null)	//note: it selects a null Meeting if I click in the empty area of the Table, so I need this one
     			button_meeting_detail.setDisable(false);
@@ -201,9 +222,11 @@ public class AssistedDetailsController implements PageCallback {
     		meeting.setDescription("");
     		meeting.setAmount(0);
     		meeting.setAssisted(assisted);
-    		interfaceMain.setSelectedMeeting(meeting);
+    		setSelectedMeeting(meeting);
+    		setMeetingToMofify(false);
     	} else if (event.getSource() == button_meeting_detail) {
-    		interfaceMain.setSelectedMeeting(table.getSelectionModel().getSelectedItem());
+    		setSelectedMeeting(table.getSelectionModel().getSelectedItem());
+    		setMeetingToMofify(true);
     	}
     	interfaceMain.switchScene(Page.MEETING_DETAILS, this);
     }
@@ -218,7 +241,9 @@ public class AssistedDetailsController implements PageCallback {
 	}
 	
 	public void refresh() {
-		meetings = FXCollections.observableArrayList(assisted.getMeetings());
+		meetings = FXCollections.observableArrayList();
+		meetings.clear();
+		meetings.addAll(assisted.getMeetings());
 		table.setItems(meetings);
 	}
 

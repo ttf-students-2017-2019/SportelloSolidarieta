@@ -19,6 +19,10 @@ public class Formatter {
 		return numberFormat.format(number);
 	}
 	
+	public static String reverseFormatNumber(String numberString) {
+		return numberString.replace(',', '.');	
+	}
+		
 	public static String formatDate(LocalDate date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return date == null ? "-Data mancante-" : formatter.format(date);

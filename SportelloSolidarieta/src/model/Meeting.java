@@ -19,6 +19,11 @@ import javax.persistence.NamedQuery;
 })
 public class Meeting {
 
+	@Override
+	public String toString() {
+		return "Meeting [id=" + id + ", date=" + date + ", description=" + description + ", amount=" + amount + "]";
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

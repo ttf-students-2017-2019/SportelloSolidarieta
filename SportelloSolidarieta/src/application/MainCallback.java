@@ -36,7 +36,4 @@ public interface MainCallback
 	
 	public void setSelectedAssisted(Assisted assisted);
 	
-	public Meeting getSelectedMeeting();
-	
-	public void setSelectedMeeting(Meeting meeting);
 }

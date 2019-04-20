@@ -30,7 +30,6 @@ import javafx.geometry.Rectangle2D;
 public class Main extends Application implements MainCallback {
 
 	private Assisted selectedAssisted = null;
-	private Meeting selectedMeeting = null;
 
 	public Assisted getSelectedAssisted() {
 		return selectedAssisted;
@@ -38,14 +37,6 @@ public class Main extends Application implements MainCallback {
 
 	public void setSelectedAssisted(Assisted selectedAssisted) {
 		this.selectedAssisted = selectedAssisted;
-	}
-
-	public Meeting getSelectedMeeting() {
-		return selectedMeeting;
-	}
-
-	public void setSelectedMeeting(Meeting selectedMeeting) {
-		this.selectedMeeting = selectedMeeting;
 	}
 
 	@Override
