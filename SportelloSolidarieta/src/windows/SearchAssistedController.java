@@ -22,7 +22,6 @@ import javafx.scene.input.MouseEvent;
 import application.MainCallback;
 import dal.DbUtil;
 import model.Assisted;
-import model.Meeting;
 
 public class SearchAssistedController {
 	
@@ -110,26 +109,28 @@ public class SearchAssistedController {
     	interfaceMain.setSelectedAssisted(selectedAssisted); // set selectedAssisted in the main
     	System.out.println("PASSING ASSISTED: " + this.selectedAssisted);	 //TODO change with a proper logging
     	
-    	DbUtil.closeEntityManager(this.em);
-    	interfaceMain.switchScene(MainCallback.Pages.AssistedDetail);	
+    	if (em.isOpen()) {
+    		DbUtil.closeEntityManager(em);
+    	}
+    	interfaceMain.switchScene(MainCallback.Page.ASSISTED_DETAIL, null);	
     }
 
     @FXML
     void toReport(ActionEvent event) {
     	DbUtil.closeEntityManager(this.em);
-    	interfaceMain.switchScene(MainCallback.Pages.Report);
+    	interfaceMain.switchScene(MainCallback.Page.REPORT, null);
     }
 
     @FXML
     void toSettings(ActionEvent event) {
     	//DbUtil.closeEntityManager(this.em);	NOTE do *not* do this here, because the scene itsn't reloaded at the exit of "settings", therefore there won't be any EnitityManager
-    	interfaceMain.switchScene(MainCallback.Pages.Settings);
+    	interfaceMain.switchScene(MainCallback.Page.SETTINGS, null);
     }
     
     @FXML
     void toCalendar(ActionEvent event) {
     	DbUtil.closeEntityManager(this.em);
-    	interfaceMain.switchScene(MainCallback.Pages.Calendar);
+    	interfaceMain.switchScene(MainCallback.Page.CALENDAR, null);
     }
     
     @FXML

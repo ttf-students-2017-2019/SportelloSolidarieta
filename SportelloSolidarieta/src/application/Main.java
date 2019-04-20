@@ -1,5 +1,5 @@
 package application;
-	
+
 import java.io.IOException;
 import java.net.URL;
 
@@ -10,10 +10,10 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.Assisted;
 import model.Meeting;
-import windows.MeetingDetailController;
+import windows.MeetingDetailsController;
 import windows.AssistedDetailsController;
 import windows.CalendarController;
-import windows.MeetingDetailController;
+import windows.MeetingDetailsController;
 import windows.ReportController;
 import windows.ScheduleController;
 import windows.SearchAssistedController;
@@ -27,12 +27,11 @@ import javafx.scene.layout.GridPane;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 
-
 public class Main extends Application implements MainCallback {
-	
+
 	private Assisted selectedAssisted = null;
 	private Meeting selectedMeeting = null;
-	
+
 	public Assisted getSelectedAssisted() {
 		return selectedAssisted;
 	}
@@ -40,7 +39,7 @@ public class Main extends Application implements MainCallback {
 	public void setSelectedAssisted(Assisted selectedAssisted) {
 		this.selectedAssisted = selectedAssisted;
 	}
-	
+
 	public Meeting getSelectedMeeting() {
 		return selectedMeeting;
 	}
@@ -51,164 +50,154 @@ public class Main extends Application implements MainCallback {
 
 	@Override
 	public void start(Stage primaryStage) {
-		try 
-		{	
+		try {
 			this.primaryStage = primaryStage;
 			this.primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
-			this.primaryStage.setMaximized(true);			
+			this.primaryStage.setMaximized(true);
 			showScene(createSplashScreen());
-			
-		} catch(Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
-	public void switchScene(MainCallback.Pages requiredPage) 
-	{
-		Platform.runLater(() -> 
-		{	
-			try
-			{
-				switch (requiredPage)
-				{	
-				case SearchPerson:
+
+	public void switchScene(Page requestedPage, PageCallback currentPage) {
+		Platform.runLater(() -> {
+			try {
+				switch (requestedPage) {
+				case SEARCH_ASSISTED:
 					showScene(createSearchPerson());
 					break;
 
-				case Report:
+				case REPORT:
 					showScene(createReport());
 					break;
 
-				case Schedule:
+				case SCHEDULE:
 					showScene(createSchedule());
-					break;	
-					
-				case AssistedDetail:
+					break;
+
+				case ASSISTED_DETAIL:
 					showScene(createAssistedDetailsLayout());
 					break;
-				case Calendar:
+				case CALENDAR:
 					showScene(createCalendarLayout());
-				break;
-				
-				case Settings:
+					break;
+
+				case SETTINGS:
 					showPopup(createSettingsLayout());
-				break;
-				
-				case MeetingDetail:
-					showPopup(createMeetingDetailLayout());
-				break;
+					break;
+
+				case MEETING_DETAILS:
+					showPopup(createMeetingDetailsLayout(currentPage));
+					break;
 				}
-			} 
-			catch (IOException e) 
-			{
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		});	
+		});
 	}
-	
+
 	// Create scene Splash Screen page
-	private Scene createSplashScreen() throws IOException
-	{
+	private Scene createSplashScreen() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/SplashScreen.fxml"));
-		SplashScreenController fxmlController = new SplashScreenController(this);	
+		SplashScreenController fxmlController = new SplashScreenController(this);
 		fxmlLoader.setController(fxmlController);
 		BorderPane pane = fxmlLoader.load();
-		Scene scene = new Scene(pane,Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-		
+		Scene scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(),
+				Screen.getPrimary().getVisualBounds().getHeight());
+
 		return scene;
 	}
-	
+
 	// Create scene Registry page
-	private Scene createSearchPerson() throws IOException
-	{
+	private Scene createSearchPerson() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/SearchAssisted.fxml"));
-		SearchAssistedController fxmlController = new SearchAssistedController(this);	
+		SearchAssistedController fxmlController = new SearchAssistedController(this);
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
-		Scene scene = new Scene(pane,Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-		
+		Scene scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(),
+				Screen.getPrimary().getVisualBounds().getHeight());
+
 		return scene;
 	}
-	
+
 	// Create scene Report page
-	private Scene createReport() throws IOException
-	{
+	private Scene createReport() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/Report.fxml"));
-		ReportController fxmlController = new ReportController(this);	
+		ReportController fxmlController = new ReportController(this);
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
-		Scene scene = new Scene(pane,Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-		
+		Scene scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(),
+				Screen.getPrimary().getVisualBounds().getHeight());
+
 		return scene;
-	}	
-	
+	}
+
 	// Create scene Schedule page
-	private Scene createSchedule() throws IOException
-	{
+	private Scene createSchedule() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/Schedule.fxml"));
-		ScheduleController fxmlController = new ScheduleController(this);	
+		ScheduleController fxmlController = new ScheduleController(this);
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
-		Scene scene = new Scene(pane,Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
+		Scene scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(),
+				Screen.getPrimary().getVisualBounds().getHeight());
 		return scene;
-	}	
-	
+	}
+
 	// Create scene AssistedDetailsLayout page
-	private Scene createAssistedDetailsLayout() throws IOException
-	{
+	private Scene createAssistedDetailsLayout() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/AssistedDetails.fxml"));
-		AssistedDetailsController fxmlController = new AssistedDetailsController(this);	
+		AssistedDetailsController fxmlController = new AssistedDetailsController(this);
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
-		Scene scene = new Scene(pane,Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-		
+		Scene scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(),
+				Screen.getPrimary().getVisualBounds().getHeight());
+
 		return scene;
-	}	
-	
-	// Create scene SettingsLayout 
-	private Scene createSettingsLayout() throws IOException
-	{
+	}
+
+	// Create scene SettingsLayout
+	private Scene createSettingsLayout() throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/Settings.fxml"));
-		SettingsController fxmlController = new SettingsController(this);	
+		SettingsController fxmlController = new SettingsController(this);
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, 512, 580);
-		
-		return scene;
-	}	
-	
-	// Create scene CalendarLayout page
-	private Scene createCalendarLayout() throws IOException
-	{
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/Calendar.fxml"));
-		CalendarController fxmlController = new CalendarController(this);	
-		fxmlLoader.setController(fxmlController);
-		GridPane pane = fxmlLoader.load();
-		Scene scene = new Scene(pane,Screen.getPrimary().getVisualBounds().getWidth(), Screen.getPrimary().getVisualBounds().getHeight());
-		
+
 		return scene;
 	}
-	
-	// Create scene MeetingDetailLayout 
-	private Scene createMeetingDetailLayout() throws IOException
-	{
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/MeetingDetail.fxml"));
-		MeetingDetailController fxmlController = new MeetingDetailController(this);	
+
+	// Create scene CalendarLayout page
+	private Scene createCalendarLayout() throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/Calendar.fxml"));
+		CalendarController fxmlController = new CalendarController(this);
+		fxmlLoader.setController(fxmlController);
+		GridPane pane = fxmlLoader.load();
+		Scene scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(),
+				Screen.getPrimary().getVisualBounds().getHeight());
+
+		return scene;
+	}
+
+	// Create scene MeetingDetailLayout
+	private Scene createMeetingDetailsLayout(PageCallback currentPage) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/MeetingDetails.fxml"));
+		MeetingDetailsController fxmlController = new MeetingDetailsController(this, currentPage);
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, 565, 640);
-		
+
 		return scene;
-	}	
-		
+	}
+
 	// Load a scene into the stage
-	private void showPopup(Scene scene)
-	{
+	private void showPopup(Scene scene) {
 		Stage popup = new Stage();
 		popup.getIcons().add(new Image(getClass().getResourceAsStream("../application/icon.png")));
 		popup.initModality(Modality.WINDOW_MODAL);
@@ -218,14 +207,13 @@ public class Main extends Application implements MainCallback {
 		popup.setScene(scene);
 		popup.show();
 	}
-	
+
 	// Load a scene into the stage
-	private void showScene(Scene scene)
-	{
+	private void showScene(Scene scene) {
 		primaryStage.setScene(scene);
 		primaryStage.setMaximized(true);
-		
-		// Getting the screen size accounting for the windows application bar 
+
+		// Getting the screen size accounting for the windows application bar
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		primaryStage.setX(primaryScreenBounds.getMinX());
 		primaryStage.setY(primaryScreenBounds.getMinY());
@@ -233,13 +221,13 @@ public class Main extends Application implements MainCallback {
 		primaryStage.setHeight(primaryScreenBounds.getHeight());
 		primaryStage.show();
 	}
-	
+
 	@Override
 	public Stage getStage() {
 		return primaryStage;
 	}
-	
+
 	// Application stage
 	private Stage primaryStage;
-	
+
 }

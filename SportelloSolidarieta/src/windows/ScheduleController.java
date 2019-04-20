@@ -92,7 +92,7 @@ public class ScheduleController {
 	@FXML
 	void toAssistedDetail(ActionEvent event) 
 	{
-		interfaceMain.switchScene(MainCallback.Pages.AssistedDetail);
+		interfaceMain.switchScene(MainCallback.Page.ASSISTED_DETAIL, null);
 	}
 
 	@FXML
@@ -233,7 +233,7 @@ public class ScheduleController {
 
 			@Override
 			public void handle(DialogEvent event) {
-				interfaceMain.switchScene(MainCallback.Pages.SearchPerson);
+				interfaceMain.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
 			}
 
 		});
@@ -245,12 +245,12 @@ public class ScheduleController {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Messaggio di errore");
 		alert.setHeaderText("Errore di connessione al database");
-		alert.setContentText("Riprovare più tardi");
+		alert.setContentText("Riprovare piï¿½ tardi");
 		alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
 
 			@Override
 			public void handle(DialogEvent event) {
-				interfaceMain.switchScene(MainCallback.Pages.SearchPerson);
+				interfaceMain.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
 			}
 
 		});

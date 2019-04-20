@@ -76,7 +76,7 @@ public class CalendarController {
     @FXML
     void toSearchPage(ActionEvent event) 
     {
-    	interfaceMain.switchScene(MainCallback.Pages.SearchPerson);	
+    	interfaceMain.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);	
     }
     
 	@FXML
@@ -232,7 +232,7 @@ public class CalendarController {
 	private void showConfirmationDialog(ObservableSlot selectedSlot) 
 	{
 		// Creating custom button
-		ButtonType yesButton = new ButtonType("Sì",ButtonData.OK_DONE);
+		ButtonType yesButton = new ButtonType("Sï¿½",ButtonData.OK_DONE);
 		ButtonType noButton = new ButtonType("No",ButtonData.CANCEL_CLOSE);
 		
 		Alert alert = new Alert(AlertType.CONFIRMATION, null, yesButton, noButton);
@@ -266,12 +266,12 @@ public class CalendarController {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Messaggio di errore");
 		alert.setHeaderText("Errore di connessione al database");
-		alert.setContentText("Riprovare più tardi");
+		alert.setContentText("Riprovare piï¿½ tardi");
 		alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
 
 			@Override
 			public void handle(DialogEvent event) {
-				interfaceMain.switchScene(MainCallback.Pages.SearchPerson);
+				interfaceMain.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
 			}
 
 		});
