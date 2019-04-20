@@ -18,15 +18,12 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import model.Appointment;
-import model.Assisted;
-import model.Meeting;
 import schedule.DailyPlan;
 import schedule.ObservableSlot;
 import utilities.Formatter;
@@ -223,7 +220,7 @@ public class CalendarController {
 	private void showConfirmationDialog(ObservableSlot selectedSlot) 
 	{
 		// Creating custom button
-		ButtonType yesButton = new ButtonType("Sì",ButtonData.OK_DONE);
+		ButtonType yesButton = new ButtonType("SÃ¬",ButtonData.OK_DONE);
 		ButtonType noButton = new ButtonType("No",ButtonData.CANCEL_CLOSE);
 		
 		Alert alert = new Alert(AlertType.CONFIRMATION, null, yesButton, noButton);
@@ -253,7 +250,7 @@ public class CalendarController {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Messaggio di errore");
 		alert.setHeaderText("Errore di connessione al database");
-		alert.setContentText("Riprovare più tardi");
+		alert.setContentText("Riprovare piÃ¹ tardi");
 		alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
 
 			@Override
@@ -304,4 +301,3 @@ public class CalendarController {
 	}
 
 }
-

@@ -103,12 +103,13 @@ public class DbUtil {
 		return managed;
 	}
 	
-	public static void saveMeeting(Meeting toSave) {
+	public static Meeting saveMeeting(Meeting detached) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-		em.merge(toSave);
+		Meeting managed = em.merge(detached);
 		em.getTransaction().commit();
 		em.close();
+		return managed;
 	}
 
 	// If no result, doesn't return null but returns an empty list

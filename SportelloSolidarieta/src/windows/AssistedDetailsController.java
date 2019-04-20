@@ -30,33 +30,25 @@ import model.Assisted;
 
 public class AssistedDetailsController implements PageCallback {
 
-	// Interface to callback the main class
-	private MainCallback interfaceMain;
-	
-	// Selected meeting and task to perform
-	private Meeting selectedMeeting = null;
-	private Boolean meetingToMofify = null;
-	
-	public Meeting getSelectedMeeting() {
-		return selectedMeeting;
+	public enum Operation {
+		CREATE, UPDATE
 	}
 
-	public void setSelectedMeeting(Meeting selectedMeeting) {
-		this.selectedMeeting = selectedMeeting;
-	}
+	/*
+	 * MEMBERS
+	 */
 
-	public Boolean getMeetingtoModify() {
-		return meetingToMofify;
-	}
-
-	public void setMeetingToMofify(Boolean meetingToMofify) {
-		this.meetingToMofify = meetingToMofify;
-	}
-	
+	private MainCallback main; // Interface to callback the main class
+	private Meeting selectedMeeting;
+	private Operation operation;
 	private Assisted assisted;
 	private ObservableList<Meeting> meetings;
 	private ObservableList<Character> dropBoxValue = (FXCollections.observableArrayList('M', 'F', 'T'));
-	
+
+	/*
+	 * JAVAFX COMPONENTS
+	 */
+
 	@FXML
 	private TextField textfield_name;
 	@FXML
@@ -82,36 +74,55 @@ public class AssistedDetailsController implements PageCallback {
 	private TableColumn<Meeting, Float> amount;
 	@FXML
 	private TableColumn<Meeting, String> description;
-	
+
 	@FXML
 	private Button button_save;
-    @FXML
-    private Button button_meeting_detail;
-    @FXML
-    private Button button_meeting_add;
-    @FXML
-    private Button button_meeting_remove;
-    
-	//
-	// Instance constructor
-	//
-	// parameters
-	// interfaceMain interface to callback the main class
-	//
-	// returned
-	// none
-	//
-	public AssistedDetailsController(MainCallback interfaceMain) {
-		this.interfaceMain = interfaceMain;
-		assisted = interfaceMain.getSelectedAssisted();
+	@FXML
+	private Button button_meeting_detail;
+	@FXML
+	private Button button_meeting_add;
+	@FXML
+	private Button button_meeting_remove;
+
+	/*
+	 * CONSTRUCTOR
+	 */
+
+	public AssistedDetailsController(MainCallback main) {
+		this.main = main;
+		assisted = main.getSelectedAssisted();
 	}
-	
+
+	/*
+	 * GETTERS AND SETTERS
+	 */
+
+	public Meeting getSelectedMeeting() {
+		return selectedMeeting;
+	}
+
+	public void setSelectedMeeting(Meeting selectedMeeting) {
+		this.selectedMeeting = selectedMeeting;
+	}
+
+	public Operation getOperation() {
+		return operation;
+	}
+
+	public void setOperation(Operation operation) {
+		this.operation = operation;
+	}
+
+	/*
+	 * SCENE INITIALIZATION
+	 */
+
 	@FXML
 	public void initialize() {
 		dropdown_sex.setItems(dropBoxValue);
 		button_meeting_detail.setDisable(true);
 		button_meeting_remove.setDisable(true);
-		
+
 		// disable dates in the future for the date picker
 		final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
 			@Override
@@ -129,7 +140,7 @@ public class AssistedDetailsController implements PageCallback {
 			}
 		};
 		datepicker_birthdate.setDayCellFactory(dayCellFactory);
-		
+
 		// bind text fields to assisted properties
 		textfield_name.setText(assisted.getName());
 		textbox_surname.setText(assisted.getSurname());
@@ -139,47 +150,51 @@ public class AssistedDetailsController implements PageCallback {
 		checkbox_wentbackhome.setSelected(assisted.getIsReunitedWithFamily());
 		checkbox_rejected.setSelected((assisted.getIsRefused()));
 		textfield_familycomposition.setText(assisted.getFamilyComposition());
-		
+
 		// bind columns to meeting properties
 		date.setCellValueFactory(new PropertyValueFactory<Meeting, LocalDate>("date"));
-    	date.setCellFactory(cellData -> new TableCell<Meeting, LocalDate>() {
-    	    @Override
-    	    protected void updateItem(LocalDate date, boolean isEmpty) {
-    	        super.updateItem(date, isEmpty);
-    	        if (isEmpty) {
-    	            setText(null);
-    	        } else {
-    	            setText(utilities.Formatter.formatDate(date));
-    	        }
-    	    }
-    	});
-    	description.setCellValueFactory(new PropertyValueFactory<Meeting, String>("description"));
+		date.setCellFactory(cellData -> new TableCell<Meeting, LocalDate>() {
+			@Override
+			protected void updateItem(LocalDate date, boolean isEmpty) {
+				super.updateItem(date, isEmpty);
+				if (isEmpty) {
+					setText(null);
+				} else {
+					setText(utilities.Formatter.formatDate(date));
+				}
+			}
+		});
+		description.setCellValueFactory(new PropertyValueFactory<Meeting, String>("description"));
 		amount.setCellValueFactory(new PropertyValueFactory<Meeting, Float>("amount"));
 		amount.setCellFactory(cellData -> new TableCell<Meeting, Float>() {
-    	    @Override
-    	    protected void updateItem(Float amount, boolean isEmpty) {
-    	        super.updateItem(amount, isEmpty);
-    	        if (isEmpty) {
-    	            setText(null);
-    	        } else {
-    	            setText(utilities.Formatter.formatNumber(amount));
-    	        }
-    	    }
-    	});
-		
+			@Override
+			protected void updateItem(Float amount, boolean isEmpty) {
+				super.updateItem(amount, isEmpty);
+				if (isEmpty) {
+					setText(null);
+				} else {
+					setText(utilities.Formatter.formatNumber(amount));
+				}
+			}
+		});
+
 		// bind table to meetings
 		meetings = FXCollections.observableArrayList(assisted.getMeetings());
 		table.setItems(meetings);
 	}
-	    
+
+	/*
+	 * JAVAFX ACTIONS
+	 */
+
 	@FXML
 	void toSearchAssisted(ActionEvent event) {
-		interfaceMain.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
+		main.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
 	}
 
 	@FXML
 	void toSchedule(ActionEvent event) {
-		interfaceMain.switchScene(MainCallback.Page.SCHEDULE, null);
+		main.switchScene(MainCallback.Page.SCHEDULE, null);
 	}
 
 	@FXML
@@ -200,50 +215,51 @@ public class AssistedDetailsController implements PageCallback {
 		}
 	}
 
-    @FXML
-    void onRowSelected(MouseEvent event) {
-    	if (event.isPrimaryButtonDown())
-    	{
-    		Meeting selectedMeeting = table.getSelectionModel().getSelectedItem();
-    		setSelectedMeeting(table.getSelectionModel().getSelectedItem());
-    		System.out.println("SELECTED MEETING: " + selectedMeeting);	 //TODO change with a proper logging
-    		if (selectedMeeting != null)	//note: it selects a null Meeting if I click in the empty area of the Table, so I need this one
-    			button_meeting_detail.setDisable(false);
-    			button_meeting_remove.setDisable(false);
-    	}
-    }
+	@FXML
+	void onRowSelected(MouseEvent event) {
+		if (event.isPrimaryButtonDown()) {
+			Meeting selectedMeeting = table.getSelectionModel().getSelectedItem();
+			setSelectedMeeting(table.getSelectionModel().getSelectedItem());
+			System.out.println("SELECTED MEETING: " + selectedMeeting); // TODO change with a proper logging
+			if (selectedMeeting != null) // note: it selects a null Meeting if I click in the empty area of the Table,
+											// so I need this one
+				button_meeting_detail.setDisable(false);
+			button_meeting_remove.setDisable(false);
+		}
+	}
 
+	@FXML
+	void toMeetingDetails(ActionEvent event) {
+		if (event.getSource() == button_meeting_add) {
+			Meeting meeting = new Meeting();
+			meeting.setDate(LocalDate.now());
+			meeting.setDescription("");
+			meeting.setAmount(0);
+			meeting.setAssisted(assisted);
+			setSelectedMeeting(meeting);
+			setOperation(Operation.CREATE);
+		} else if (event.getSource() == button_meeting_detail) {
+			setSelectedMeeting(table.getSelectionModel().getSelectedItem());
+			setOperation(Operation.UPDATE);
+		}
+		main.switchScene(Page.MEETING_DETAILS, this);
+	}
 
-    @FXML
-    void toMeetingDetails(ActionEvent event) {
-    	if (event.getSource() == button_meeting_add) {
-    		Meeting meeting = new Meeting();
-    		meeting.setDate(LocalDate.now());
-    		meeting.setDescription("");
-    		meeting.setAmount(0);
-    		meeting.setAssisted(assisted);
-    		setSelectedMeeting(meeting);
-    		setMeetingToMofify(false);
-    	} else if (event.getSource() == button_meeting_detail) {
-    		setSelectedMeeting(table.getSelectionModel().getSelectedItem());
-    		setMeetingToMofify(true);
-    	}
-    	interfaceMain.switchScene(Page.MEETING_DETAILS, this);
-    }
-	
-    @FXML
-    void removeMeeting(ActionEvent event) {
-    	
-    }
-        
+	@FXML
+	void removeMeeting(ActionEvent event) {
+
+	}
+
+	/*
+	 * OTHER METHODS
+	 */
+
 	private boolean isValid() {
 		return assisted != null && textfield_name.getText() != "" && textbox_surname.getText() != "";
 	}
-	
+
 	public void refresh() {
-		meetings = FXCollections.observableArrayList();
-		meetings.clear();
-		meetings.addAll(assisted.getMeetings());
+		meetings = FXCollections.observableArrayList(assisted.getMeetings());
 		table.setItems(meetings);
 	}
 

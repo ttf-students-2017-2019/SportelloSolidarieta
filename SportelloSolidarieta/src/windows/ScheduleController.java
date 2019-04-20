@@ -1,6 +1,5 @@
 package windows;
 
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -23,7 +22,6 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
 import model.Appointment;
@@ -216,7 +214,7 @@ public class ScheduleController {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Messaggio di errore");
 		alert.setHeaderText("Errore di connessione al database");
-		alert.setContentText("Riprovare più tardi");
+		alert.setContentText("Riprovare piÃ¹ tardi");
 		alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
 
 			@Override
