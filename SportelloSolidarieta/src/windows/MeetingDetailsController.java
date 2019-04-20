@@ -28,6 +28,7 @@ public class MeetingDetailsController {
 	private PageCallback previousPage;
 
 	private Meeting meeting;
+	private Boolean meetingToMofify;
 
 	public MeetingDetailsController(MainCallback interfaceMain, PageCallback currentPage) {
 		this.interfaceMain = interfaceMain;
@@ -63,9 +64,10 @@ public class MeetingDetailsController {
 		};
 		date.setDayCellFactory(dayCellFactory);
 
-		// getting selected meeting
-		meeting = interfaceMain.getSelectedMeeting();
-
+		// getting selected meeting and kind of action: add or modify
+		meeting = previousPage.getSelectedMeeting();
+		meetingToMofify = previousPage.getMeetingtoModify();
+		
 		// binding the meeting to layout
 		descriptionText.setText(meeting.getDescription());
 		value.setText(Formatter.formatNumber(meeting.getAmount()));
@@ -78,10 +80,13 @@ public class MeetingDetailsController {
 		if (descriptionText.getText().length() <= 1000) {
 			meeting.setDescription(descriptionText.getText());
 			try {
-				meeting.setAmount(Float.valueOf(value.getText()));
+				meeting.setAmount(Float.valueOf(Formatter.reverseFormatNumber(value.getText())));
 				DbUtil.saveMeeting(meeting);
 				showAlertAddedMeetingToAssistedDetail();
-				meeting.getAssisted().getMeetings().add(meeting);
+
+				if (meetingToMofify == false)
+					meeting.getAssisted().getMeetings().add(meeting);
+
 				previousPage.refresh();
 				meeting = null;
 			} catch (Exception e) {
