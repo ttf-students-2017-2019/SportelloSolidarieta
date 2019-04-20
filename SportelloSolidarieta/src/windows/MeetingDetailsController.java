@@ -76,6 +76,9 @@ public class MeetingDetailsController {
 
 	@FXML
 	void saveMeeting(ActionEvent event) {
+		
+		int meetingIndex = meeting.getAssisted().getMeetings().indexOf(meeting);
+		
 		meeting.setDate(date.getValue());
 		if (descriptionText.getText().length() <= 1000) {
 			meeting.setDescription(descriptionText.getText());
@@ -86,7 +89,15 @@ public class MeetingDetailsController {
 
 				if (meetingToMofify == false)
 					meeting.getAssisted().getMeetings().add(meeting);
-
+				else 
+				{
+					//meeting.getAssisted().getMeetings().set(meetingIndex, meeting);
+					meeting.getAssisted().getMeetings().remove(meetingIndex);
+					meeting.getAssisted().getMeetings().add(meetingIndex, meeting);
+					System.out.println(meeting.getAssisted().getMeetings().toString());
+				}
+					
+					
 				previousPage.refresh();
 				meeting = null;
 			} catch (Exception e) {
