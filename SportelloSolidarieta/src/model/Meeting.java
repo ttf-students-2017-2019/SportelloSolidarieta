@@ -13,9 +13,9 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "Meeting.findMeetings", query = "SELECT m FROM Meeting m WHERE m.assisted.surname <> :donationString AND m.date BETWEEN :from AND :to ORDER BY m.date"),
-	@NamedQuery(name = "Meeting.findDonations", query = "SELECT m FROM Meeting m WHERE m.assisted.surname = :donationString AND m.date BETWEEN :from AND :to ORDER BY m.date"),
-	@NamedQuery(name = "Meeting.findMeetingsAndDonations", query = "SELECT m FROM Meeting m WHERE m.date BETWEEN :from AND :to ORDER BY m.date")
+	@NamedQuery(name = "Meeting.findMeetings", query = "SELECT m FROM Meeting m WHERE m.fDeleted = false AND m.assisted.surname <> :donationString AND m.date BETWEEN :from AND :to ORDER BY m.date"),
+	@NamedQuery(name = "Meeting.findDonations", query = "SELECT m FROM Meeting m WHERE m.fDeleted = false AND m.assisted.surname = :donationString AND m.date BETWEEN :from AND :to ORDER BY m.date"),
+	@NamedQuery(name = "Meeting.findMeetingsAndDonations", query = "SELECT m FROM Meeting m WHERE m.fDeleted = false AND m.date BETWEEN :from AND :to ORDER BY m.date")
 })
 public class Meeting {
 
@@ -28,6 +28,7 @@ public class Meeting {
 	private Assisted assisted;
 	private String description;
 	private float amount;
+	private boolean fDeleted;
 
 	public Long getId() {
 		return id;
@@ -77,9 +78,17 @@ public class Meeting {
 		this.amount = amount;
 	}
 	
+	public boolean isfDeleted() {
+		return fDeleted;
+	}
+
+	public void setfDeleted(boolean fDeleted) {
+		this.fDeleted = fDeleted;
+	}
+
 	@Override
 	public String toString() {
-		return "Meeting [id=" + id + ", date=" + date + ", description=" + description + ", amount=" + amount + "]";
+		return "Meeting [deleted=" + fDeleted +  ", id=" + id + ", date=" + date + ", description=" + description + ", amount=" + amount + "]";
 	}
 
 }

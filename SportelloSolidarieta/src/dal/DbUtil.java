@@ -17,6 +17,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import model.Meeting;
 import report.ObservableMeeting;
+import model.Appointment;
 import model.Assisted;
 
 public class DbUtil {
@@ -102,7 +103,7 @@ public class DbUtil {
 		em.close();
 		return managed;
 	}
-	
+
 	public static Meeting saveMeeting(Meeting detached) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();

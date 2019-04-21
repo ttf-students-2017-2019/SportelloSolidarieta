@@ -9,6 +9,7 @@ import javafx.scene.control.DialogEvent;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -33,6 +34,9 @@ public class MeetingDetailsController {
 	 * JAVAFX COMPONENTS
 	 */
 
+    @FXML
+    private Button button_save;
+    
 	@FXML
 	private TextField value;
 
@@ -79,6 +83,12 @@ public class MeetingDetailsController {
 		descriptionText.setText(main.getSelectedMeeting().getDescription());
 		value.setText(Formatter.formatNumber(main.getSelectedMeeting().getAmount()));
 		date.setValue(main.getSelectedMeeting().getDate());
+		
+		// disable editing if  
+		if (main.getSelectedAssisted().getIsRefused() || main.getSelectedAssisted().getIsReunitedWithFamily())
+		{
+			button_save.setDisable(true);
+		}
 	}
 
 	/*
