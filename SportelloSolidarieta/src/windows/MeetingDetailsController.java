@@ -94,7 +94,14 @@ public class MeetingDetailsController {
 		if (descriptionText.getText().length() <= 1000) {
 			main.getSelectedMeeting().setDescription(descriptionText.getText());
 			try {
-				main.getSelectedMeeting().setAmount(Float.valueOf(Formatter.reverseFormatNumber(value.getText())));
+				Float valueToSave = Float.valueOf(Formatter.reverseFormatNumber(value.getText()));
+				// Check for two digits after comma
+				String toCheck = String.valueOf(valueToSave);
+				if (toCheck.substring(toCheck.indexOf(".")+1).length() <=2)
+					main.getSelectedMeeting().setAmount(valueToSave);
+				else 
+					throw new IllegalArgumentException();
+				
 				main.setSelectedMeeting(DbUtil.saveMeeting(main.getSelectedMeeting()));
 				showAlertAddedMeetingToAssistedDetail();
 
@@ -109,8 +116,21 @@ public class MeetingDetailsController {
 					break;
 				}
 				previousPage.refresh();
-			} catch (NumberFormatException e) {
-				showAlertValueError();
+				main.setSelectedMeeting(null);
+			} catch (Exception e) {
+				
+				String message = "";
+				
+				if (e instanceof java.lang.NumberFormatException) 
+				{
+					message = "Inserire un numero valido";
+				}
+				else if (e instanceof java.lang.IllegalArgumentException) 
+				{
+					message = "Numero massimo di decimali: 2";
+				}
+
+				showAlertValueError(message);
 			}
 		} else {
 			showAlertMaxCharacterError();
@@ -156,11 +176,11 @@ public class MeetingDetailsController {
 	}
 
 	// Error alert for invalid value
-	private void showAlertValueError() {
+	private void showAlertValueError(String message) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Messaggio di errore");
 		alert.setHeaderText("Valore elemosina non corretto");
-		alert.setContentText("Inserire un numero valido");
+		alert.setContentText(message);
 		alert.showAndWait();
 	}
 
