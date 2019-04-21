@@ -1,7 +1,6 @@
 package windows;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import application.MainCallback;
 import application.PageCallback;
@@ -37,7 +36,6 @@ public class AssistedDetailsController implements PageCallback {
 	 */
 
 	private MainCallback main; // Interface to callback the main class
-	private ObservableList<Meeting> meetings;
 	private ObservableList<Character> dropBoxValue = (FXCollections.observableArrayList('M', 'F', 'T'));
 
 	/*
@@ -169,15 +167,14 @@ public class AssistedDetailsController implements PageCallback {
 		});
 
 		// bind table to meetings
-		meetings = FXCollections.observableArrayList(main.getSelectedAssisted().getMeetings());
-		table.setItems(meetings);		
+		table.setItems(FXCollections.observableArrayList(main.getSelectedAssisted().getMeetings()));		
 
 		button_meeting_detail.setDisable(true);
 		button_meeting_remove.setDisable(true);
 		
 		// if assisted is not persisted disable meeting management
 		if (main.getSelectedAssisted().getId() == null ) {
-			table.setPlaceholder(new Label("Prima di aggiungere un nuovo incontro è necessario salvare l'anagrafica dell'assistito"));
+			table.setPlaceholder(new Label("Prima di aggiungere un nuovo incontro ï¿½ necessario salvare l'anagrafica dell'assistito"));
 			button_meeting_add.setDisable(true);
 			button_new_appointment.setDisable(true);
 		}
@@ -261,8 +258,7 @@ public class AssistedDetailsController implements PageCallback {
 	 */
 
 	public void refresh() {
-		meetings = FXCollections.observableArrayList(main.getSelectedAssisted().getMeetings());
-		table.setItems(meetings);
+		table.setItems(FXCollections.observableArrayList(main.getSelectedAssisted().getMeetings()));
 		table.getSelectionModel().clearSelection();
 		main.setSelectedMeeting(null);
 		button_meeting_detail.setDisable(true);

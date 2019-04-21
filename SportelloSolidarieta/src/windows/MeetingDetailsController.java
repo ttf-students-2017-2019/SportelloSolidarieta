@@ -97,10 +97,11 @@ public class MeetingDetailsController {
 				Float valueToSave = Float.valueOf(Formatter.reverseFormatNumber(value.getText()));
 				// Check for two digits after comma
 				String toCheck = String.valueOf(valueToSave);
-				if (toCheck.substring(toCheck.indexOf(".") + 1).length() <= 2)
+				if (toCheck.substring(toCheck.indexOf(".") + 1).length() <= 2) {
 					main.getSelectedMeeting().setAmount(valueToSave);
-				else
+				} else {
 					throw new IllegalArgumentException();
+				}
 
 				main.setSelectedMeeting(DbUtil.saveMeeting(main.getSelectedMeeting()));
 				showAlertAddedMeetingToAssistedDetail();
@@ -112,7 +113,6 @@ public class MeetingDetailsController {
 
 				case UPDATE:
 					main.getSelectedAssisted().getMeetings().set(meetingIndex, main.getSelectedMeeting());
-					System.out.println(main.getSelectedMeeting().getAssisted().getMeetings().toString());
 					break;
 				}
 				previousPage.refresh();
