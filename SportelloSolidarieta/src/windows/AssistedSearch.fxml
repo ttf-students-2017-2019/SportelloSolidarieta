@@ -38,12 +38,12 @@
             <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="btn_detailsAssisted" disable="true" mnemonicParsing="false" onAction="#toDetail" text="DETTAGLI ASSISTITO SELEZIONATO" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <Button fx:id="btn_detailsAssisted" disable="true" mnemonicParsing="false" onAction="#toAssistedDetails" text="DETTAGLI ASSISTITO SELEZIONATO" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="btn_addAssisted" mnemonicParsing="false" onAction="#toDetail" text="AGGIUNGI NUOVO ASSISTITO" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <Button fx:id="btn_addAssisted" mnemonicParsing="false" onAction="#toAssistedDetails" text="AGGIUNGI NUOVO ASSISTITO" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
@@ -116,7 +116,7 @@
                   <Button fx:id="btn_settings" maxWidth="125.0" mnemonicParsing="false" onAction="#toSettings" prefWidth="125.0" text="IMPOSTAZIONI" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
                </children>
             </GridPane>
-            <TableView fx:id="resultTable" minHeight="388.0" minWidth="312.0" onMousePressed="#rowSelected" prefHeight="388.0" prefWidth="624.0" GridPane.columnIndex="1">
+            <TableView fx:id="resultTable" minHeight="388.0" minWidth="312.0" onMousePressed="#onRowSelected" prefHeight="388.0" prefWidth="624.0" GridPane.columnIndex="1">
                <placeholder>
                   <Label text="Nessun risultato" />
                </placeholder>

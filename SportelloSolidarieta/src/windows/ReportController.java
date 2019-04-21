@@ -35,11 +35,17 @@ import utilities.PdfUtil.ReportType;
 
 public class ReportController {
 
-	// Interface to callback the main class
-	private MainCallback interfaceMain;
+	/*
+	 * MEMBERS
+	 */
 
+	private MainCallback main; // Interface to callback the main class
 	private List<Meeting> meetings;
 	private ObservableList<ObservableMeeting> observableMeetings;
+
+	/*
+	 * JAVAFX COMPONENTS
+	 */
 
 	@FXML
 	private RadioButton outgoingsOnly;
@@ -97,19 +103,18 @@ public class ReportController {
 
 	@FXML
 	private Label balanceValue;
-	
-	//
-	// Instance constructor
-	//
-	// parameters
-	// interfaceMain interface to callback the main class
-	//
-	// returned
-	// none
-	//
-	public ReportController(MainCallback interfaceMain) {
-		this.interfaceMain = interfaceMain;
+
+	/*
+	 * CONSTRUCTOR
+	 */
+
+	public ReportController(MainCallback main) {
+		this.main = main;
 	}
+
+	/*
+	 * SCENE INITIALIZATION
+	 */
 
 	@FXML
 	private void initialize() {
@@ -146,18 +151,18 @@ public class ReportController {
 		surname.setCellValueFactory(cellData -> cellData.getValue().getAssistedSurname());
 		name.setCellValueFactory(cellData -> cellData.getValue().getAssistedName());
 //		date.setCellValueFactory(cellData -> cellData.getValue().getDate());
-    	date.setCellValueFactory(new PropertyValueFactory<ObservableMeeting, LocalDate>("date"));
-    	date.setCellFactory(cellData -> new TableCell<ObservableMeeting, LocalDate>() {
-    	    @Override
-    	    protected void updateItem(LocalDate date, boolean isEmpty) {
-    	        super.updateItem(date, isEmpty);
-    	        if (isEmpty) {
-    	            setText(null);
-    	        } else {
-    	            setText(utilities.Formatter.formatDate(date));
-    	        }
-    	    }
-    	});    	
+		date.setCellValueFactory(new PropertyValueFactory<ObservableMeeting, LocalDate>("date"));
+		date.setCellFactory(cellData -> new TableCell<ObservableMeeting, LocalDate>() {
+			@Override
+			protected void updateItem(LocalDate date, boolean isEmpty) {
+				super.updateItem(date, isEmpty);
+				if (isEmpty) {
+					setText(null);
+				} else {
+					setText(utilities.Formatter.formatDate(date));
+				}
+			}
+		});
 		outgoings.setCellValueFactory(cellData -> cellData.getValue().getOutgoings());
 		incomes.setCellValueFactory(cellData -> cellData.getValue().getIncomes());
 
@@ -172,9 +177,13 @@ public class ReportController {
 		balanceValue.setVisible(false);
 	}
 
+	/*
+	 * JAVAFX ACTIONS
+	 */
+
 	@FXML
 	void toRegistry(ActionEvent event) {
-		interfaceMain.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
+		main.switchScene(MainCallback.Page.ASSISTED_SEARCH, null);
 	}
 
 	@FXML
@@ -215,51 +224,52 @@ public class ReportController {
 		if ((from.getValue() == null) || (to.getValue() == null)) {
 			return;
 		}
-		
+
 		// clear table results so placeholder is shown in case of error
 		observableMeetings.clear();
 
 		if (from.getValue().isAfter(to.getValue())) {
-			Label label = new Label("Errore! La data di inizio ï¿½ successiva alla data di fine");
+			Label label = new Label("Errore! La data di inizio è successiva alla data di fine");
 			label.setTextFill(Color.web("#ff0000"));
 			table.setPlaceholder(label);
 		} else {
-			
+
 			// formatter needed to display totals
 			NumberFormat numberFormat = NumberFormat.getInstance(Locale.ITALIAN);
 			numberFormat.setMinimumFractionDigits(2);
-			
+
 			// load data into model (view updates automatically)
 			if (outgoingsOnly.isSelected()) {
 				meetings = DbUtil.getMeetings(from.getValue(), to.getValue());
 
-				// total outgoings value is in the first position of the results array 
+				// total outgoings value is in the first position of the results array
 				Float outgoings = calculateTotals().get(0);
-				
+
 				// display total outgoings
-				totalOutgoingsValue.setText(utilities.Formatter.formatNumber(outgoings));		
+				totalOutgoingsValue.setText(utilities.Formatter.formatNumber(outgoings));
 			} else if (incomesOnly.isSelected()) {
 				meetings = DbUtil.getDonations(from.getValue(), to.getValue());
-				
-				// total incomes value is in the first position of the results array 
+
+				// total incomes value is in the first position of the results array
 				Float incomes = calculateTotals().get(1);
-				
+
 				// display total incomes
-				totalIncomesValue.setText(utilities.Formatter.formatNumber(incomes));	
+				totalIncomesValue.setText(utilities.Formatter.formatNumber(incomes));
 			} else if (outgoingsAndIncomes.isSelected()) {
 				meetings = DbUtil.getMeetingsAndDonations(from.getValue(), to.getValue());
-				
-				// total outgoings value is in the first position of the results array, incomes in the second 
+
+				// total outgoings value is in the first position of the results array, incomes
+				// in the second
 				Float outgoings = calculateTotals().get(0);
 				Float incomes = calculateTotals().get(1);
-				
-				// display totals 
+
+				// display totals
 				totalOutgoingsValue.setText(utilities.Formatter.formatNumber(outgoings));
-				totalIncomesValue.setText(utilities.Formatter.formatNumber(incomes));	
-				balanceValue.setText(utilities.Formatter.formatNumber(incomes-outgoings));
+				totalIncomesValue.setText(utilities.Formatter.formatNumber(incomes));
+				balanceValue.setText(utilities.Formatter.formatNumber(incomes - outgoings));
 			}
 			populateObservableList(meetings);
-			
+
 			if (observableMeetings.isEmpty()) {
 				table.setPlaceholder(new Label("Nessun risultato"));
 			}
@@ -270,49 +280,56 @@ public class ReportController {
 	void onExportClicked(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
-		File file = fileChooser.showSaveDialog(interfaceMain.getStage());
+		File file = fileChooser.showSaveDialog(main.getStage());
 		if (file != null) {
 			try {
 				if (outgoingsOnly.isSelected()) {
-					PdfUtil.export(ReportType.OutgoingsOnly, observableMeetings, from.getValue(), to.getValue(), totalOutgoingsValue.getText(), null, null, file.getCanonicalPath());
+					PdfUtil.export(ReportType.OutgoingsOnly, observableMeetings, from.getValue(), to.getValue(),
+							totalOutgoingsValue.getText(), null, null, file.getCanonicalPath());
 				} else if (incomesOnly.isSelected()) {
-					PdfUtil.export(ReportType.IncomesOnly, observableMeetings, from.getValue(), to.getValue(), null, totalIncomesValue.getText(), null, file.getCanonicalPath());
+					PdfUtil.export(ReportType.IncomesOnly, observableMeetings, from.getValue(), to.getValue(), null,
+							totalIncomesValue.getText(), null, file.getCanonicalPath());
 				} else if (outgoingsAndIncomes.isSelected()) {
-					PdfUtil.export(ReportType.OutgoingsAndIncomes, observableMeetings, from.getValue(), to.getValue(), totalOutgoingsValue.getText(), totalIncomesValue.getText(), balanceValue.getText(), file.getCanonicalPath());
+					PdfUtil.export(ReportType.OutgoingsAndIncomes, observableMeetings, from.getValue(), to.getValue(),
+							totalOutgoingsValue.getText(), totalIncomesValue.getText(), balanceValue.getText(),
+							file.getCanonicalPath());
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
+	
+    /*
+     * OTHER METHODS
+     */
 
 	private void populateObservableList(List<Meeting> meetings) {
 		for (Meeting m : meetings) {
-			ObservableMeeting om = new ObservableMeeting(m,Page.REPORT);
+			ObservableMeeting om = new ObservableMeeting(m, Page.REPORT);
 			observableMeetings.add(om);
 		}
 	}
 
-	// calculate total outgoings and incomes results contains outgoings and incomes in this order 
-	private List<Float> calculateTotals() 
-	{
+	// calculate total outgoings and incomes results contains outgoings and incomes
+	// in this order
+	private List<Float> calculateTotals() {
 		List<Float> results = new ArrayList<Float>();
-		
+
 		float totalOutgoings = 0;
 		float totalIncomes = 0;
-		
-		for (Meeting m : meetings) 
-		{
+
+		for (Meeting m : meetings) {
 			if (m.getAssistedSurname().equals(ObservableMeeting.DONATION_STRING))
 				totalIncomes += m.getAmount();
 			else
 				totalOutgoings += m.getAmount();
 		}
-				
+
 		// adding in order outgoings, incomes
 		results.add(totalOutgoings);
 		results.add(totalIncomes);
-		
+
 		return results;
 	}
 

@@ -12,7 +12,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import model.Meeting;
 import utilities.Formatter;
 
 import java.time.LocalDate;
@@ -23,17 +22,16 @@ import dal.DbUtil;
 
 public class MeetingDetailsController {
 
-	// Interface to callback the main class
-	private MainCallback interfaceMain;
+	/*
+	 * MEMBERS
+	 */
+
+	private MainCallback main; // Interface to callback the main class
 	private PageCallback previousPage;
 
-	private Meeting meeting;
-	private Boolean meetingToMofify;
-
-	public MeetingDetailsController(MainCallback interfaceMain, PageCallback currentPage) {
-		this.interfaceMain = interfaceMain;
-		previousPage = currentPage;
-	}
+	/*
+	 * JAVAFX COMPONENTS
+	 */
 
 	@FXML
 	private TextField value;
@@ -43,6 +41,19 @@ public class MeetingDetailsController {
 
 	@FXML
 	private DatePicker date;
+
+	/*
+	 * CONSTRUCTOR
+	 */
+
+	public MeetingDetailsController(MainCallback main, PageCallback currentPage) {
+		this.main = main;
+		previousPage = currentPage;
+	}
+
+	/*
+	 * SCENE INITIALIZATION
+	 */
 
 	@FXML
 	private void initialize() {
@@ -64,44 +75,54 @@ public class MeetingDetailsController {
 		};
 		date.setDayCellFactory(dayCellFactory);
 
-		// getting selected meeting and kind of action: add or modify
-		meeting = previousPage.getSelectedMeeting();
-		meetingToMofify = previousPage.getMeetingtoModify();
-		
 		// binding the meeting to layout
-		descriptionText.setText(meeting.getDescription());
-		value.setText(Formatter.formatNumber(meeting.getAmount()));
-		date.setValue(meeting.getDate());
+		descriptionText.setText(main.getSelectedMeeting().getDescription());
+		value.setText(Formatter.formatNumber(main.getSelectedMeeting().getAmount()));
+		date.setValue(main.getSelectedMeeting().getDate());
 	}
+
+	/*
+	 * JAVAFX ACTIONS
+	 */
 
 	@FXML
 	void saveMeeting(ActionEvent event) {
-		
-		int meetingIndex = meeting.getAssisted().getMeetings().indexOf(meeting);
-		
-		meeting.setDate(date.getValue());
+
+		int meetingIndex = main.getSelectedAssisted().getMeetings().indexOf(main.getSelectedMeeting());
+
+		main.getSelectedMeeting().setDate(date.getValue());
 		if (descriptionText.getText().length() <= 1000) {
-			meeting.setDescription(descriptionText.getText());
+			main.getSelectedMeeting().setDescription(descriptionText.getText());
 			try {
-				meeting.setAmount(Float.valueOf(Formatter.reverseFormatNumber(value.getText())));
-				DbUtil.saveMeeting(meeting);
+				Float valueToSave = Float.valueOf(Formatter.reverseFormatNumber(value.getText()));
+				// Check for two digits after comma
+				String toCheck = String.valueOf(valueToSave);
+				if (toCheck.substring(toCheck.indexOf(".") + 1).length() <= 2)
+					main.getSelectedMeeting().setAmount(valueToSave);
+				else
+					throw new IllegalArgumentException();
+
+				main.setSelectedMeeting(DbUtil.saveMeeting(main.getSelectedMeeting()));
 				showAlertAddedMeetingToAssistedDetail();
 
-				if (meetingToMofify == false)
-					meeting.getAssisted().getMeetings().add(meeting);
-				else 
-				{
-					//meeting.getAssisted().getMeetings().set(meetingIndex, meeting);
-					meeting.getAssisted().getMeetings().remove(meetingIndex);
-					meeting.getAssisted().getMeetings().add(meetingIndex, meeting);
-					System.out.println(meeting.getAssisted().getMeetings().toString());
+				switch (main.getRequestedOperation()) {
+				case CREATE:
+					main.getSelectedAssisted().getMeetings().add(main.getSelectedMeeting());
+					break;
+
+				case UPDATE:
+					main.getSelectedAssisted().getMeetings().set(meetingIndex, main.getSelectedMeeting());
+					System.out.println(main.getSelectedMeeting().getAssisted().getMeetings().toString());
+					break;
 				}
-					
-					
 				previousPage.refresh();
-				meeting = null;
-			} catch (Exception e) {
-				showAlertValueError();
+				main.setSelectedMeeting(null);
+			} catch (java.lang.NumberFormatException e) {
+				String message = "Inserire un numero valido";
+				showAlertValueError(message);
+			} catch (java.lang.IllegalArgumentException e) {
+				String message = "Numero massimo di decimali: 2";
+				showAlertValueError(message);
 			}
 		} else {
 			showAlertMaxCharacterError();
@@ -109,11 +130,15 @@ public class MeetingDetailsController {
 	}
 
 	@FXML
-	void toAssistedDetail(ActionEvent event) {
+	void toAssistedDetails(ActionEvent event) {
+		previousPage.refresh();
 		Stage stage = (Stage) descriptionText.getParent().getScene().getWindow();
 		stage.close();
-		meeting = null;
 	}
+
+	/*
+	 * OTHER METHODS
+	 */
 
 	// Alerts
 
@@ -143,11 +168,11 @@ public class MeetingDetailsController {
 	}
 
 	// Error alert for invalid value
-	private void showAlertValueError() {
+	private void showAlertValueError(String message) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Messaggio di errore");
 		alert.setHeaderText("Valore elemosina non corretto");
-		alert.setContentText("Inserire un numero valido");
+		alert.setContentText(message);
 		alert.showAndWait();
 	}
 
