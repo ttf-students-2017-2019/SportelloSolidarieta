@@ -212,4 +212,8 @@ public class Assisted {
 		return res.get(0);
 	}
 	
+	public boolean isValid() {
+		return !surname.equals("") && !name.equals("");
+	}
+	
 }

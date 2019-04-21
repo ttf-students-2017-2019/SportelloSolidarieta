@@ -10,13 +10,17 @@ public interface MainCallback
 	// Identifiers for all application pages
 	public enum Page
 	{
-		SEARCH_ASSISTED,	// User interface page where search for a assisted
+		ASSISTED_SEARCH,	// User interface page where search for a assisted
 		REPORT,				// User interface page to create reports
 		SCHEDULE,			// User interface page to schedule an appointment
-		ASSISTED_DETAIL,	// User interface page to show assisted details
+		ASSISTED_DETAILS,	// User interface page to show assisted details
 		SETTINGS,			// User interface page to show settings detail
 		CALENDAR,			// User interface page to show calendar
 		MEETING_DETAILS,	// User interface page to show meeting details
+	}
+	
+	public enum Operation {
+		CREATE, UPDATE
 	}
 	
 	//
@@ -28,12 +32,17 @@ public interface MainCallback
 	// returned
 	//		none
 	//	
-	public void switchScene(Page requestedPage, PageCallback currentPage);
+	void switchScene(Page requestedPage, PageCallback currentPage);
 	
-	public Stage getStage();
+	Stage getStage();
 	
-	public Assisted getSelectedAssisted();
+	Assisted getSelectedAssisted();
+	void setSelectedAssisted(Assisted selectedAssisted);
 	
-	public void setSelectedAssisted(Assisted assisted);
+	Meeting getSelectedMeeting();
+	void setSelectedMeeting(Meeting selectedMeeting);
+	
+	Operation getRequestedOperation();
+	void setRequestedOperation(Operation requestedOperation);
 	
 }

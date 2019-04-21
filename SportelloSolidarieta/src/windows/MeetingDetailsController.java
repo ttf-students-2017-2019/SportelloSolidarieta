@@ -12,9 +12,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import model.Meeting;
 import utilities.Formatter;
-import windows.AssistedDetailsController.Operation;
 
 import java.time.LocalDate;
 
@@ -30,8 +28,6 @@ public class MeetingDetailsController {
 
 	private MainCallback main; // Interface to callback the main class
 	private PageCallback previousPage;
-	private Meeting meeting;
-	private Operation operation;
 
 	/*
 	 * JAVAFX COMPONENTS
@@ -79,14 +75,10 @@ public class MeetingDetailsController {
 		};
 		date.setDayCellFactory(dayCellFactory);
 
-		// getting selected meeting and kind of operation: create or update
-		meeting = previousPage.getSelectedMeeting();
-		operation = previousPage.getOperation();
-
 		// binding the meeting to layout
-		descriptionText.setText(meeting.getDescription());
-		value.setText(Formatter.formatNumber(meeting.getAmount()));
-		date.setValue(meeting.getDate());
+		descriptionText.setText(main.getSelectedMeeting().getDescription());
+		value.setText(Formatter.formatNumber(main.getSelectedMeeting().getAmount()));
+		date.setValue(main.getSelectedMeeting().getDate());
 	}
 
 	/*
@@ -96,37 +88,35 @@ public class MeetingDetailsController {
 	@FXML
 	void saveMeeting(ActionEvent event) {
 
-		int meetingIndex = meeting.getAssisted().getMeetings().indexOf(meeting);
+		int meetingIndex = main.getSelectedAssisted().getMeetings().indexOf(main.getSelectedMeeting());
 
-		meeting.setDate(date.getValue());
+		main.getSelectedMeeting().setDate(date.getValue());
 		if (descriptionText.getText().length() <= 1000) {
-			meeting.setDescription(descriptionText.getText());
+			main.getSelectedMeeting().setDescription(descriptionText.getText());
 			try {
 				Float valueToSave = Float.valueOf(Formatter.reverseFormatNumber(value.getText()));
 				// Check for two digits after comma
 				String toCheck = String.valueOf(valueToSave);
 				if (toCheck.substring(toCheck.indexOf(".")+1).length() <=2)
-					meeting.setAmount(valueToSave);
+					main.getSelectedMeeting().setAmount(valueToSave);
 				else 
 					throw new IllegalArgumentException();
 				
-				meeting = DbUtil.saveMeeting(meeting);
+				main.setSelectedMeeting(DbUtil.saveMeeting(main.getSelectedMeeting()));
 				showAlertAddedMeetingToAssistedDetail();
 
-				switch (operation) {
+				switch (main.getRequestedOperation()) {
 				case CREATE:
-					meeting.getAssisted().getMeetings().add(meeting);
+					main.getSelectedAssisted().getMeetings().add(main.getSelectedMeeting());
 					break;
 
 				case UPDATE:
-					meeting.getAssisted().getMeetings().set(meetingIndex, meeting);
-					System.out.println(meeting.getAssisted().getMeetings().toString());
+					main.getSelectedAssisted().getMeetings().set(meetingIndex, main.getSelectedMeeting());
+					System.out.println(main.getSelectedMeeting().getAssisted().getMeetings().toString());
 					break;
 				}
-
-				System.out.println("REFRESH");
 				previousPage.refresh();
-				meeting = null;
+				main.setSelectedMeeting(null);
 			} catch (Exception e) {
 				
 				String message = "";
@@ -148,10 +138,10 @@ public class MeetingDetailsController {
 	}
 
 	@FXML
-	void toAssistedDetail(ActionEvent event) {
+	void toAssistedDetails(ActionEvent event) {
+		previousPage.refresh();
 		Stage stage = (Stage) descriptionText.getParent().getScene().getWindow();
 		stage.close();
-		meeting = null;
 	}
 
     /*
