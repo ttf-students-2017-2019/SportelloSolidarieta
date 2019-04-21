@@ -165,7 +165,7 @@ public class ScheduleController {
 
 	@FXML
 	void toAssistedDetail(ActionEvent event) {
-		interfaceMain.switchScene(MainCallback.Page.ASSISTED_DETAIL, null);
+		interfaceMain.switchScene(MainCallback.Page.ASSISTED_DETAILS, null);
 	}
 
 	@FXML
@@ -283,7 +283,7 @@ public class ScheduleController {
 
 			@Override
 			public void handle(DialogEvent event) {
-				interfaceMain.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
+				interfaceMain.switchScene(MainCallback.Page.ASSISTED_SEARCH, null);
 			}
 
 		});
@@ -300,7 +300,7 @@ public class ScheduleController {
 
 			@Override
 			public void handle(DialogEvent event) {
-				interfaceMain.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
+				interfaceMain.switchScene(MainCallback.Page.ASSISTED_SEARCH, null);
 			}
 
 		});

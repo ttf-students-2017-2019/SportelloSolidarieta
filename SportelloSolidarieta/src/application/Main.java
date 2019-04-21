@@ -1,7 +1,6 @@
 package application;
 
 import java.io.IOException;
-import java.net.URL;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -13,10 +12,9 @@ import model.Meeting;
 import windows.MeetingDetailsController;
 import windows.AssistedDetailsController;
 import windows.CalendarController;
-import windows.MeetingDetailsController;
 import windows.ReportController;
 import windows.ScheduleController;
-import windows.SearchAssistedController;
+import windows.AssistedSearchController;
 import windows.SettingsController;
 import windows.SplashScreenController;
 
@@ -28,15 +26,45 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 
 public class Main extends Application implements MainCallback {
-
-	private Assisted selectedAssisted = null;
-
+	
+	private Stage primaryStage; // Application stage
+	private Assisted selectedAssisted;
+	private Meeting selectedMeeting;
+	private Operation requestedOperation;
+	
+	@Override
+	public Stage getStage() {
+		return primaryStage;
+	}
+	
+	@Override
 	public Assisted getSelectedAssisted() {
 		return selectedAssisted;
 	}
 
+	@Override
 	public void setSelectedAssisted(Assisted selectedAssisted) {
 		this.selectedAssisted = selectedAssisted;
+	}
+
+	@Override
+	public Meeting getSelectedMeeting() {
+		return selectedMeeting;
+	}
+	
+	@Override
+	public void setSelectedMeeting(Meeting selectedMeeting) {
+		this.selectedMeeting = selectedMeeting;
+	}
+
+	@Override
+	public Operation getRequestedOperation() {
+		return requestedOperation;
+	}
+
+	@Override
+	public void setRequestedOperation(Operation requestedOperation) {
+		this.requestedOperation = requestedOperation;
 	}
 
 	@Override
@@ -60,7 +88,7 @@ public class Main extends Application implements MainCallback {
 		Platform.runLater(() -> {
 			try {
 				switch (requestedPage) {
-				case SEARCH_ASSISTED:
+				case ASSISTED_SEARCH:
 					showScene(createSearchPerson());
 					break;
 
@@ -72,7 +100,7 @@ public class Main extends Application implements MainCallback {
 					showScene(createSchedule());
 					break;
 
-				case ASSISTED_DETAIL:
+				case ASSISTED_DETAILS:
 					showScene(createAssistedDetailsLayout());
 					break;
 				case CALENDAR:
@@ -108,8 +136,8 @@ public class Main extends Application implements MainCallback {
 
 	// Create scene Registry page
 	private Scene createSearchPerson() throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/SearchAssisted.fxml"));
-		SearchAssistedController fxmlController = new SearchAssistedController(this);
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../windows/AssistedSearch.fxml"));
+		AssistedSearchController fxmlController = new AssistedSearchController(this);
 		fxmlLoader.setController(fxmlController);
 		GridPane pane = fxmlLoader.load();
 		Scene scene = new Scene(pane, Screen.getPrimary().getVisualBounds().getWidth(),
@@ -212,13 +240,5 @@ public class Main extends Application implements MainCallback {
 		primaryStage.setHeight(primaryScreenBounds.getHeight());
 		primaryStage.show();
 	}
-
-	@Override
-	public Stage getStage() {
-		return primaryStage;
-	}
-
-	// Application stage
-	private Stage primaryStage;
 
 }

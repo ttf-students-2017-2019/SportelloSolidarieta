@@ -38,7 +38,7 @@ public class SplashScreenController {
             @Override
             public void run() 
             {
-                main.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
+                main.switchScene(MainCallback.Page.ASSISTED_SEARCH, null);
             }
         }, 1500);      
     }

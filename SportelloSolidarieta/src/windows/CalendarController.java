@@ -123,7 +123,7 @@ public class CalendarController {
 
 	@FXML
 	void toSearchPage(ActionEvent event) {
-		interfaceMain.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
+		interfaceMain.switchScene(MainCallback.Page.ASSISTED_SEARCH, null);
 	}
 
 	@FXML
@@ -251,7 +251,7 @@ public class CalendarController {
 
 			@Override
 			public void handle(DialogEvent event) {
-				interfaceMain.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
+				interfaceMain.switchScene(MainCallback.Page.ASSISTED_SEARCH, null);
 			}
 
 		});

@@ -183,7 +183,7 @@ public class ReportController {
 
 	@FXML
 	void toRegistry(ActionEvent event) {
-		main.switchScene(MainCallback.Page.SEARCH_ASSISTED, null);
+		main.switchScene(MainCallback.Page.ASSISTED_SEARCH, null);
 	}
 
 	@FXML

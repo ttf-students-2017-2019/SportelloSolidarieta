@@ -94,7 +94,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Button id="button_goback" mnemonicParsing="false" onAction="#toSearchAssisted" text="INDIETRO" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button id="button_goback" mnemonicParsing="false" onAction="#toAssistedSearch" text="INDIETRO" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <Button id="button_tocalendar" mnemonicParsing="false" onAction="#toSchedule" text="FISSA APPUNTAMENTO" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
          </children>
       </GridPane>

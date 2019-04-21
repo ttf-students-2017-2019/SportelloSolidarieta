@@ -50,7 +50,7 @@ public class DbUtil {
 		}
 	}
 
-	// used by SearchAssistedController
+	// used by AssistedSearchController
 	public static EntityManager getEntityManager() throws Exception {
 		EntityManager em = null;
 		try {
@@ -63,7 +63,7 @@ public class DbUtil {
 		return em;
 	}
 
-	// used by SearchAssistedController
+	// used by AssistedSearchController
 	public static void closeEntityManager(EntityManager em) {
 		em.close();
 	}
