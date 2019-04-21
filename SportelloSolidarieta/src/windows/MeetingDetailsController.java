@@ -97,11 +97,11 @@ public class MeetingDetailsController {
 				Float valueToSave = Float.valueOf(Formatter.reverseFormatNumber(value.getText()));
 				// Check for two digits after comma
 				String toCheck = String.valueOf(valueToSave);
-				if (toCheck.substring(toCheck.indexOf(".")+1).length() <=2)
+				if (toCheck.substring(toCheck.indexOf(".") + 1).length() <= 2)
 					main.getSelectedMeeting().setAmount(valueToSave);
-				else 
+				else
 					throw new IllegalArgumentException();
-				
+
 				main.setSelectedMeeting(DbUtil.saveMeeting(main.getSelectedMeeting()));
 				showAlertAddedMeetingToAssistedDetail();
 
@@ -117,19 +117,11 @@ public class MeetingDetailsController {
 				}
 				previousPage.refresh();
 				main.setSelectedMeeting(null);
-			} catch (Exception e) {
-				
-				String message = "";
-				
-				if (e instanceof java.lang.NumberFormatException) 
-				{
-					message = "Inserire un numero valido";
-				}
-				else if (e instanceof java.lang.IllegalArgumentException) 
-				{
-					message = "Numero massimo di decimali: 2";
-				}
-
+			} catch (java.lang.NumberFormatException e) {
+				String message = "Inserire un numero valido";
+				showAlertValueError(message);
+			} catch (java.lang.IllegalArgumentException e) {
+				String message = "Numero massimo di decimali: 2";
 				showAlertValueError(message);
 			}
 		} else {
@@ -144,10 +136,10 @@ public class MeetingDetailsController {
 		stage.close();
 	}
 
-    /*
-     * OTHER METHODS
-     */
-	
+	/*
+	 * OTHER METHODS
+	 */
+
 	// Alerts
 
 	// Meeting added to assisted detail

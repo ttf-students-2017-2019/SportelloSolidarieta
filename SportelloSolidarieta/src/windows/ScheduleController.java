@@ -295,7 +295,7 @@ public class ScheduleController {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Messaggio di errore");
 		alert.setHeaderText("Errore di connessione al database");
-		alert.setContentText("Riprovare piÃ¹ tardi");
+		alert.setContentText("Riprovare più tardi");
 		alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
 
 			@Override

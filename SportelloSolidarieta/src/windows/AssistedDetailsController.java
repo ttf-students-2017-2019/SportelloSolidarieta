@@ -79,7 +79,10 @@ public class AssistedDetailsController implements PageCallback {
 	
 	@FXML
 	private TableColumn<Meeting, String> description;
-
+	
+    @FXML
+    private Button button_new_appointment;
+    
 	@FXML
 	private Button button_save;
 	
@@ -174,8 +177,9 @@ public class AssistedDetailsController implements PageCallback {
 		
 		// if assisted is not persisted disable meeting management
 		if (main.getSelectedAssisted().getId() == null ) {
-			table.setPlaceholder(new Label("Prima di aggiungere un nuovo incontro Ã¨ necessario salvare l'anagrafica dell'assistito"));
+			table.setPlaceholder(new Label("Prima di aggiungere un nuovo incontro è necessario salvare l'anagrafica dell'assistito"));
 			button_meeting_add.setDisable(true);
+			button_new_appointment.setDisable(true);
 		}
 	}
 
@@ -211,6 +215,7 @@ public class AssistedDetailsController implements PageCallback {
 			// once assisted has been persisted activate meeting management
 			table.setPlaceholder(new Label("Nessun risultato"));
 			button_meeting_add.setDisable(false);
+			button_new_appointment.setDisable(false);
 		} else {
 			Alert alert = new Alert(AlertType.ERROR, "Inserire cognome e nome", ButtonType.OK);
 			alert.showAndWait();

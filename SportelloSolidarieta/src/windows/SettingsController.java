@@ -391,7 +391,7 @@ public class SettingsController {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Messaggio di errore");
 		alert.setHeaderText("Errore di connessione al database");
-		alert.setContentText("Riprovare piï¿½ tardi");
+		alert.setContentText("Riprovare più tardi");
 		alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
 
 			@Override
@@ -408,9 +408,9 @@ public class SettingsController {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Messaggio di errore");
 		alert.setHeaderText(
-				"Il numero massimo di appuntamenti della giornata ï¿½ maggiore del piï¿½ alto valore consentito");
+				"Il numero massimo di appuntamenti della giornata è maggiore del più alto valore consentito");
 		alert.setContentText(
-				"Il numero massimo di appuntamenti con le impostazioni correnti ï¿½: " + maxAllowedAppointment);
+				"Il numero massimo di appuntamenti con le impostazioni correnti è " + maxAllowedAppointment);
 		alert.showAndWait();
 	}
 
@@ -418,7 +418,7 @@ public class SettingsController {
 	private void showAlertNotANumberMaxAppointmentError() {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Messaggio di errore");
-		alert.setHeaderText("Il numero massimo di appuntamenti non ï¿½ un numero");
+		alert.setHeaderText("Il numero massimo di appuntamenti non è un numero");
 		alert.setContentText("Inserire un numero");
 		alert.showAndWait();
 	}
