@@ -244,21 +244,16 @@ public class AssistedDetailsController implements PageCallback {
 			if (main.getSelectedAssisted().getIsRefused() || main.getSelectedAssisted().getIsReunitedWithFamily()) 
 			{
 				// disable assisted detail management
-				enableOrDisableAssistedDetailManagement(true);
-				
-				// disable meeting removal 
-				button_meeting_remove.setDisable(true);
-				
+				enableOrDisableAssistedDetailManagement(true);		
 			}			
 			else
 			{
 				// enable assisted detail management
-				enableOrDisableAssistedDetailManagement(false);
-				
-				// if enable appointment removal
-				if (table.getSelectionModel().getSelectedItem() != null)
-					button_meeting_remove.setDisable(false);		
+				enableOrDisableAssistedDetailManagement(false);	
 			}
+			
+			// reload the meeting list 
+			refresh();
 			
 		} else {
 			Alert alert = new Alert(AlertType.ERROR, "Inserire cognome e nome", ButtonType.OK);
