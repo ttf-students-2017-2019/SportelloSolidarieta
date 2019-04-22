@@ -220,7 +220,7 @@ public class CalendarController {
 	// Alerts
 	private void showConfirmationDialog(ObservableSlot selectedSlot) {
 		// Creating custom button
-		ButtonType yesButton = new ButtonType("Sì", ButtonData.OK_DONE);
+		ButtonType yesButton = new ButtonType("SÃ¬", ButtonData.OK_DONE);
 		ButtonType noButton = new ButtonType("No", ButtonData.CANCEL_CLOSE);
 
 		Alert alert = new Alert(AlertType.CONFIRMATION, null, yesButton, noButton);
@@ -246,7 +246,7 @@ public class CalendarController {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Messaggio di errore");
 		alert.setHeaderText("Errore di connessione al database");
-		alert.setContentText("Riprovare più tardi");
+		alert.setContentText("Riprovare piÃ¹ tardi");
 		alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
 
 			@Override

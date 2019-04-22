@@ -1,6 +1,7 @@
 package windows;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import application.MainCallback;
 import application.PageCallback;
@@ -10,7 +11,6 @@ import dal.DbUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -19,7 +19,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -30,9 +29,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
-import model.Appointment;
 import model.Meeting;
-import schedule.ObservableSlot;
 
 public class AssistedDetailsController implements PageCallback {
 
@@ -41,6 +38,7 @@ public class AssistedDetailsController implements PageCallback {
 	 */
 
 	private MainCallback main; // Interface to callback the main class
+	private ObservableList<Meeting> meetings;
 	private ObservableList<Character> dropBoxValue = (FXCollections.observableArrayList('M', 'F', 'T'));
 
 	/*
@@ -191,7 +189,7 @@ public class AssistedDetailsController implements PageCallback {
 
 		// if assisted is not persisted disable meeting management
 		if (main.getSelectedAssisted().getId() == null ) {
-			table.setPlaceholder(new Label("Prima di aggiungere un nuovo incontro � necessario salvare l'anagrafica dell'assistito"));
+			table.setPlaceholder(new Label("Prima di aggiungere un nuovo incontro è necessario salvare l'anagrafica dell'assistito"));
 			button_meeting_add.setDisable(true);
 			button_new_appointment.setDisable(true);
 		}
@@ -318,7 +316,7 @@ public class AssistedDetailsController implements PageCallback {
 
 	private void showRemoveConfirmationDialog() {
 		// Creating custom button
-		ButtonType yesButton = new ButtonType("S�", ButtonData.OK_DONE);
+		ButtonType yesButton = new ButtonType("Sì", ButtonData.OK_DONE);
 		ButtonType noButton = new ButtonType("No", ButtonData.CANCEL_CLOSE);
 
 		Alert alert = new Alert(AlertType.CONFIRMATION, null, yesButton, noButton);

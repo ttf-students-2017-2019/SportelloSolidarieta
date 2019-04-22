@@ -229,7 +229,7 @@ public class ReportController {
 		observableMeetings.clear();
 
 		if (from.getValue().isAfter(to.getValue())) {
-			Label label = new Label("Errore! La data di inizio è successiva alla data di fine");
+			Label label = new Label("Errore! La data di inizio Ã¨ successiva alla data di fine");
 			label.setTextFill(Color.web("#ff0000"));
 			table.setPlaceholder(label);
 		} else {

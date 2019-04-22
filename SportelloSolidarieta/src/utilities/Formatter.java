@@ -34,19 +34,19 @@ public class Formatter {
 		String dayString = "";
 		switch (dayOfWeek) {
 		case Calendar.MONDAY:
-			dayString = "lunedì";
+			dayString = "lunedÃ¬";
 			break;
 		case Calendar.TUESDAY:
-			dayString = "martedì";
+			dayString = "martedÃ¬";
 			break;
 		case Calendar.WEDNESDAY:
-			dayString = "mercoledì";
+			dayString = "mercoledÃ¬";
 			break;
 		case Calendar.THURSDAY:
-			dayString = "giovedì";
+			dayString = "giovedÃ¬";
 			break;
 		case Calendar.FRIDAY:
-			dayString = "venerdì";
+			dayString = "venerdÃ¬";
 			break;
 		case Calendar.SATURDAY:
 			dayString = "sabato";
@@ -64,19 +64,19 @@ public class Formatter {
 		String dayString = "";
 		switch (dayOfWeek) {
 		case Calendar.MONDAY:
-			dayString = "Lunedì";
+			dayString = "LunedÃ¬";
 			break;
 		case Calendar.TUESDAY:
-			dayString = "Martedì";
+			dayString = "MartedÃ¬";
 			break;
 		case Calendar.WEDNESDAY:
-			dayString = "Mercoledì";
+			dayString = "MercoledÃ¬";
 			break;
 		case Calendar.THURSDAY:
-			dayString = "Giovedì";
+			dayString = "GiovedÃ¬";
 			break;
 		case Calendar.FRIDAY:
-			dayString = "Venerdì";
+			dayString = "VenerdÃ¬";
 			break;
 		case Calendar.SATURDAY:
 			dayString = "Sabato";
