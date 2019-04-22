@@ -15,31 +15,31 @@ public class ObservableWeekDay {
 		switch (dayOfWeek) {
 		  case Calendar.MONDAY:
 		  {
-				this.dayName.set("Lunedì");
+				this.dayName.set("LunedÃ¬");
 		        this.weekDay = Calendar.MONDAY;
 				break;
 		  }  
 		  case Calendar.TUESDAY:
 		  {
-			  	this.dayName.set("Martedì");
+			  	this.dayName.set("MartedÃ¬");
 			  	this.weekDay = Calendar.TUESDAY;
 		        break;
 		  }
 		  case Calendar.WEDNESDAY:
 		  {
-			  	this.dayName.set("Mercoledì");
+			  	this.dayName.set("MercoledÃ¬");
 			  	this.weekDay = Calendar.WEDNESDAY;
 		        break;
 		  }
 		  case Calendar.THURSDAY:
 		  {
-				this.dayName.set("Giovedì");
+				this.dayName.set("GiovedÃ¬");
 				this.weekDay = Calendar.THURSDAY;
 		        break;
 		  }  
 		  case Calendar.FRIDAY:
 		  {
-			  	this.dayName.set("Venerdì");
+			  	this.dayName.set("VenerdÃ¬");
 			  	this.weekDay = Calendar.FRIDAY;
 		        break; 
 		  }

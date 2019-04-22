@@ -1,6 +1,8 @@
 package windows;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Optional;
 
 import application.MainCallback;
@@ -30,6 +32,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import model.Meeting;
+import schedule.ObservableSlot;
 
 public class AssistedDetailsController implements PageCallback {
 
@@ -181,9 +184,17 @@ public class AssistedDetailsController implements PageCallback {
 			}
 				
 		}
+		meetings.sort(new Comparator<Meeting>() 
+		{
+	        @Override
+	        public int compare(Meeting firstMeeting, Meeting secondMeeting)
+	        {
+	            return  firstMeeting.getDate().compareTo(secondMeeting.getDate());
+	        }
+	    });
 		
 		table.setItems(meetings);
-    
+		table.scrollTo(meetings.size()-1);
 		button_meeting_detail.setDisable(true);
 		button_meeting_remove.setDisable(true);
 
@@ -307,8 +318,18 @@ public class AssistedDetailsController implements PageCallback {
 				meetings.add(m);
 		}
 		
+		meetings.sort(new Comparator<Meeting>() 
+		{
+	        @Override
+	        public int compare(Meeting firstMeeting, Meeting secondMeeting)
+	        {
+	            return  firstMeeting.getDate().compareTo(secondMeeting.getDate());
+	        }
+	    });
+		
 		table.setItems(meetings);
 		table.getSelectionModel().clearSelection();
+		table.scrollTo(meetings.size()-1);
 		main.setSelectedMeeting(null);
 		button_meeting_detail.setDisable(true);
 		button_meeting_remove.setDisable(true);
