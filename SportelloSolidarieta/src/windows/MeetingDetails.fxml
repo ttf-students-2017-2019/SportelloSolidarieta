@@ -41,7 +41,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#saveMeeting" prefWidth="150.0" text="SALVA" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Button fx:id="button_save" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#saveMeeting" prefWidth="150.0" text="SALVA" GridPane.columnIndex="3" GridPane.rowIndex="1" />
             <Button maxWidth="150.0" mnemonicParsing="false" onAction="#toAssistedDetails" prefWidth="150.0" text="ANNULLA" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
