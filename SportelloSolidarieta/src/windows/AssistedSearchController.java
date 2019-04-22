@@ -31,7 +31,6 @@ public class AssistedSearchController {
 
 	private MainCallback main; // Interface to callback the main class
 	private EntityManager em;
-	private Assisted selectedAssisted;
 
 	/*
 	 * JAVAFX COMPONENTS
@@ -101,16 +100,13 @@ public class AssistedSearchController {
 	@FXML
 	void toAssistedDetails(ActionEvent event) {
 		if (event.getSource().equals(btn_addAssisted)) { // if ADD button create a new Assisted with the Name and Surname in the search fields
-			selectedAssisted = new Assisted();
-			selectedAssisted.setName(tfield_name.getText());
-			selectedAssisted.setSurname(tfield_surname.getText());
+			Assisted assisted = new Assisted();
+			assisted.setName(tfield_name.getText());
+			assisted.setSurname(tfield_surname.getText());
+			main.setSelectedAssisted(assisted); // set selectedAssisted in the main
 		}
-		main.setSelectedAssisted(selectedAssisted); // set selectedAssisted in the main
-		System.out.println("PASSING ASSISTED: " + this.selectedAssisted); // TODO change with a proper logging
-
-		if (em.isOpen()) {
-			DbUtil.closeEntityManager(em);
-		}
+		System.out.println("PASSING ASSISTED: " + main.getSelectedAssisted()); // TODO change with a proper logging
+		DbUtil.closeEntityManager(em);
 		main.switchScene(MainCallback.Page.ASSISTED_DETAILS, null);
 	}
 
@@ -137,7 +133,7 @@ public class AssistedSearchController {
 	@FXML
 	public void searchAssisted(KeyEvent event) {
 		btn_detailsAssisted.setDisable(true); // disables "toDetail" button when a new search is made
-		selectedAssisted = null; // resets the previously selected assisted
+		main.setSelectedAssisted(null);; // resets the previously selected assisted
 		List<Assisted> assistedsFound = DbUtil.searchAssisted(em, tfield_surname.getText(), tfield_name.getText());
 		if (assistedsFound == null || assistedsFound.isEmpty()) {
 			resultTable.setDisable(true);
@@ -150,10 +146,9 @@ public class AssistedSearchController {
 	@FXML
 	void onRowSelected(MouseEvent event) {
 		if (event.isPrimaryButtonDown()) {
-			Assisted selectedAssited = resultTable.getSelectionModel().getSelectedItem();
-			this.selectedAssisted = selectedAssited;
-			System.out.println("SELECTED ASSISTED: " + this.selectedAssisted); // TODO change with a proper logging
-			if (selectedAssited != null) // note: it selects a null Assisted if I click in the empty area of the Table, so I need this one
+			main.setSelectedAssisted(resultTable.getSelectionModel().getSelectedItem());
+			System.out.println("SELECTED ASSISTED: " + main.getSelectedAssisted()); // TODO change with a proper logging
+			if (main.getSelectedAssisted() != null) // note: it selects a null Assisted if I click in the empty area of the Table, so I need this one
 				btn_detailsAssisted.setDisable(false); // activate "toDetail" button
 		}
 	}

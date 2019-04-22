@@ -1,8 +1,6 @@
 package windows;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Optional;
 
 import application.MainCallback;
 import application.PageCallback;
@@ -43,7 +41,6 @@ public class AssistedDetailsController implements PageCallback {
 	 */
 
 	private MainCallback main; // Interface to callback the main class
-	private ObservableList<Meeting> meetings;
 	private ObservableList<Character> dropBoxValue = (FXCollections.observableArrayList('M', 'F', 'T'));
 
 	/*
@@ -188,14 +185,13 @@ public class AssistedDetailsController implements PageCallback {
 		}
 		
 		table.setItems(meetings);
-
+    
 		button_meeting_detail.setDisable(true);
 		button_meeting_remove.setDisable(true);
 
 		// if assisted is not persisted disable meeting management
-		if (main.getSelectedAssisted().getId() == null) {
-			table.setPlaceholder(new Label(
-					"Prima di aggiungere un nuovo incontro è necessario salvare l'anagrafica dell'assistito"));
+		if (main.getSelectedAssisted().getId() == null ) {
+			table.setPlaceholder(new Label("Prima di aggiungere un nuovo incontro ï¿½ necessario salvare l'anagrafica dell'assistito"));
 			button_meeting_add.setDisable(true);
 			button_new_appointment.setDisable(true);
 		}
@@ -303,6 +299,7 @@ public class AssistedDetailsController implements PageCallback {
 	 */
 
 	public void refresh() {
+
 		meetings = FXCollections.observableArrayList();
 		
 		// add to the observable list only not deleted meetings
@@ -321,7 +318,7 @@ public class AssistedDetailsController implements PageCallback {
 
 	private void showRemoveConfirmationDialog() {
 		// Creating custom button
-		ButtonType yesButton = new ButtonType("Sì", ButtonData.OK_DONE);
+		ButtonType yesButton = new ButtonType("Sï¿½", ButtonData.OK_DONE);
 		ButtonType noButton = new ButtonType("No", ButtonData.CANCEL_CLOSE);
 
 		Alert alert = new Alert(AlertType.CONFIRMATION, null, yesButton, noButton);

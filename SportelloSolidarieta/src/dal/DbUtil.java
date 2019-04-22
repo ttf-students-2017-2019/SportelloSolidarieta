@@ -115,7 +115,7 @@ public class DbUtil {
 
 	// If no result, doesn't return null but returns an empty list
 	public static List<Assisted> searchAssisted(EntityManager em, String surname, String name) {
-
+		
 		Query query;
 		List<Assisted> assisteds;
 
