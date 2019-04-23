@@ -111,7 +111,7 @@
             <TableView fx:id="table" maxHeight="263.0" maxWidth="624.0" minHeight="263.0" minWidth="624.0" onMousePressed="#onRowSelected" prefHeight="263.0" prefWidth="624.0" GridPane.columnIndex="1">
                <columns>
                   <TableColumn fx:id="date" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Data" />
-                  <TableColumn fx:id="description" maxWidth="424.0" minWidth="424.0" prefWidth="424.0" text="Descrizione" />
+                  <TableColumn fx:id="description" maxWidth="409.0" minWidth="409.0" prefWidth="409.0" text="Descrizione" />
                   <TableColumn fx:id="amount" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: CENTER-RIGHT;" text="€ Elemosina" />
                </columns>
             </TableView>
