@@ -71,7 +71,7 @@ public class Main extends Application implements MainCallback {
 	public void start(Stage primaryStage) {
 		try {
 			this.primaryStage = primaryStage;
-			this.primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
+			this.primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("../images/icon.png")));
 			this.primaryStage.setMaximized(true);
 			showScene(createSplashScreen());
 
@@ -218,7 +218,7 @@ public class Main extends Application implements MainCallback {
 	// Load a scene into the stage
 	private void showPopup(Scene scene) {
 		Stage popup = new Stage();
-		popup.getIcons().add(new Image(getClass().getResourceAsStream("../application/icon.png")));
+		popup.getIcons().add(new Image(getClass().getResourceAsStream("../images/icon.png")));
 		popup.initModality(Modality.WINDOW_MODAL);
 		popup.initOwner(primaryStage);
 		popup.setResizable(false);
