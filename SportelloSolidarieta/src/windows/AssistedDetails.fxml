@@ -112,7 +112,7 @@
                <columns>
                   <TableColumn fx:id="date" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Data" />
                   <TableColumn fx:id="description" maxWidth="424.0" minWidth="424.0" prefWidth="424.0" text="Descrizione" />
-                  <TableColumn fx:id="amount" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="€ Elemosina" />
+                  <TableColumn fx:id="amount" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" style="-fx-alignment: CENTER-RIGHT;" text="€ Elemosina" />
                </columns>
             </TableView>
          </children>
