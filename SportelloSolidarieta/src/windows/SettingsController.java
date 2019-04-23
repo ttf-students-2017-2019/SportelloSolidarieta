@@ -3,10 +3,10 @@ package windows;
 import application.MainCallback;
 
 import model.Setting;
-import setting.ObservableAppointmentLength;
-import setting.ObservableHour;
-import setting.ObservableMinute;
-import setting.ObservableWeekDay;
+import settings.ObservableAppointmentLength;
+import settings.ObservableHour;
+import settings.ObservableMinute;
+import settings.ObservableWeekDay;
 
 import java.sql.Time;
 import java.util.ArrayList;

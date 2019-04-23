@@ -1,12 +1,15 @@
 package model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -18,6 +21,8 @@ import javax.persistence.NamedQuery;
 	@NamedQuery(name = "Meeting.findMeetingsAndDonations", query = "SELECT m FROM Meeting m WHERE m.fDeleted = false AND m.date BETWEEN :from AND :to ORDER BY m.date")
 })
 public class Meeting {
+	
+	public static final String DONATION_STRING = "Donazioni";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +31,10 @@ public class Meeting {
 	@ManyToOne
 	@JoinColumn(name = "PERSON_ID")
 	private Assisted assisted;
+	@Lob
 	private String description;
-	private float amount;
+	@Column(precision=38, scale=2)
+	private BigDecimal amount;
 	private boolean fDeleted;
 
 	public Long getId() {
@@ -69,15 +76,15 @@ public class Meeting {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public float getAmount() {
+	
+	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public void setAmount(float amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-	
+
 	public boolean isfDeleted() {
 		return fDeleted;
 	}

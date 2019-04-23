@@ -1,22 +1,18 @@
 package utilities;
 
 import java.text.DateFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import model.Assisted;
 
 public class Formatter {
 
-	public static String formatNumber(float number) {
-		NumberFormat numberFormat = NumberFormat.getInstance(Locale.ITALIAN);
-		numberFormat.setMinimumFractionDigits(2);
-		return numberFormat.format(number);
+	public static String formatNumber(String numberString) {
+		return numberString.replace('.', ',');	
 	}
 	
 	public static String reverseFormatNumber(String numberString) {
@@ -25,7 +21,7 @@ public class Formatter {
 		
 	public static String formatDate(LocalDate date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		return date == null ? "-Data mancante-" : formatter.format(date);
+		return date == null ? "" : formatter.format(date);
 	}
 
 	// Get lowerCase day of the week

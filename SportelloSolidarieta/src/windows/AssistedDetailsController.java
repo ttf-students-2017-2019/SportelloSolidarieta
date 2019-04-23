@@ -1,7 +1,7 @@
 package windows;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 
@@ -32,7 +32,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import model.Meeting;
-import schedule.ObservableSlot;
 
 public class AssistedDetailsController implements PageCallback {
 
@@ -79,7 +78,7 @@ public class AssistedDetailsController implements PageCallback {
 	private TableColumn<Meeting, LocalDate> date;
 
 	@FXML
-	private TableColumn<Meeting, Float> amount;
+	private TableColumn<Meeting, BigDecimal> amount;
 
 	@FXML
 	private TableColumn<Meeting, String> description;
@@ -159,15 +158,15 @@ public class AssistedDetailsController implements PageCallback {
 			}
 		});
 		description.setCellValueFactory(new PropertyValueFactory<Meeting, String>("description"));
-		amount.setCellValueFactory(new PropertyValueFactory<Meeting, Float>("amount"));
-		amount.setCellFactory(cellData -> new TableCell<Meeting, Float>() {
+		amount.setCellValueFactory(new PropertyValueFactory<Meeting, BigDecimal>("amount"));
+		amount.setCellFactory(cellData -> new TableCell<Meeting, BigDecimal>() {
 			@Override
-			protected void updateItem(Float amount, boolean isEmpty) {
+			protected void updateItem(BigDecimal amount, boolean isEmpty) {
 				super.updateItem(amount, isEmpty);
 				if (isEmpty) {
 					setText(null);
 				} else {
-					setText(utilities.Formatter.formatNumber(amount));
+					setText(utilities.Formatter.formatNumber(amount.toString()));
 				}
 			}
 		});
@@ -199,15 +198,14 @@ public class AssistedDetailsController implements PageCallback {
 		button_meeting_remove.setDisable(true);
 
 		// if assisted is not persisted disable meeting management
-		if (main.getSelectedAssisted().getId() == null ) {
+		if (main.getSelectedAssisted().getId() == null) {
 			table.setPlaceholder(new Label("Prima di aggiungere un nuovo incontro è necessario salvare l'anagrafica dell'assistito"));
 			button_meeting_add.setDisable(true);
 			button_new_appointment.setDisable(true);
 		}
 		
 		// if assisted is rejected or joined with family disable assisted detail management		
-		if (checkbox_rejected.isSelected() || checkbox_wentbackhome.isSelected()) 
-		{
+		if (checkbox_rejected.isSelected() || checkbox_wentbackhome.isSelected()) {
 			enableOrDisableAssistedDetailManagement(true); 
 		}
 	}
@@ -287,7 +285,7 @@ public class AssistedDetailsController implements PageCallback {
 			Meeting meeting = new Meeting();
 			meeting.setDate(LocalDate.now());
 			meeting.setDescription("");
-			meeting.setAmount(0);
+			meeting.setAmount(new BigDecimal("0.00"));
 			meeting.setAssisted(main.getSelectedAssisted());
 			main.setSelectedMeeting(meeting);
 			main.setRequestedOperation(Operation.CREATE);

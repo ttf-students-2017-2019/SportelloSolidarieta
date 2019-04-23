@@ -18,7 +18,7 @@
 			<property name="javax.persistence.jdbc.password" value="password" />
 
 			<property name="javax.persistence.jdbc.url"
-				value="jdbc:mysql://localhost:3306/sportellosolidarieta?useTimezone=true&amp;serverTimezone=CET" />
+				value="jdbc:mysql://localhost:3306/sportellosolidarieta?serverTimezone=CET" />
 			<property name="javax.persistence.jdbc.driver"
 				value="com.mysql.jdbc.Driver" />
 			<property name="eclipselink.jdbc.cache-statements"

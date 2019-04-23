@@ -2,6 +2,7 @@ package windows;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import java.util.List;
 import java.util.Locale;
 
 import application.MainCallback;
-import application.MainCallback.Page;
 import dal.DbUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,7 +29,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import model.Meeting;
-import report.ObservableMeeting;
+import report.Row;
+import utilities.Formatter;
 import utilities.PdfUtil;
 import utilities.PdfUtil.ReportType;
 
@@ -41,7 +42,7 @@ public class ReportController {
 
 	private MainCallback main; // Interface to callback the main class
 	private List<Meeting> meetings;
-	private ObservableList<ObservableMeeting> observableMeetings;
+	private ObservableList<Row> rows;
 
 	/*
 	 * JAVAFX COMPONENTS
@@ -63,22 +64,22 @@ public class ReportController {
 	private DatePicker to;
 
 	@FXML
-	private TableView<ObservableMeeting> table;
+	private TableView<Row> table;
 
 	@FXML
-	private TableColumn<ObservableMeeting, String> name;
+	private TableColumn<Row, String> name;
 
 	@FXML
-	private TableColumn<ObservableMeeting, String> surname;
+	private TableColumn<Row, String> surname;
 
 	@FXML
-	private TableColumn<ObservableMeeting, LocalDate> date;
+	private TableColumn<Row, LocalDate> date;
 
 	@FXML
-	private TableColumn<ObservableMeeting, String> outgoings;
+	private TableColumn<Row, String> outgoings;
 
 	@FXML
-	private TableColumn<ObservableMeeting, String> incomes;
+	private TableColumn<Row, String> incomes;
 
 	@FXML
 	private Button export;
@@ -148,27 +149,26 @@ public class ReportController {
 		table.setPlaceholder(new Label("Nessun risultato"));
 
 		// bind columns to bean properties
-		surname.setCellValueFactory(cellData -> cellData.getValue().getAssistedSurname());
-		name.setCellValueFactory(cellData -> cellData.getValue().getAssistedName());
-//		date.setCellValueFactory(cellData -> cellData.getValue().getDate());
-		date.setCellValueFactory(new PropertyValueFactory<ObservableMeeting, LocalDate>("date"));
-		date.setCellFactory(cellData -> new TableCell<ObservableMeeting, LocalDate>() {
+		surname.setCellValueFactory(new PropertyValueFactory<Row, String>("assistedSurname"));
+		name.setCellValueFactory(new PropertyValueFactory<Row, String>("assistedName"));
+		date.setCellValueFactory(new PropertyValueFactory<Row, LocalDate>("date"));
+		date.setCellFactory(cellData -> new TableCell<Row, LocalDate>() {
 			@Override
 			protected void updateItem(LocalDate date, boolean isEmpty) {
 				super.updateItem(date, isEmpty);
 				if (isEmpty) {
 					setText(null);
 				} else {
-					setText(utilities.Formatter.formatDate(date));
+					setText(Formatter.formatDate(date));
 				}
 			}
 		});
-		outgoings.setCellValueFactory(cellData -> cellData.getValue().getOutgoings());
-		incomes.setCellValueFactory(cellData -> cellData.getValue().getIncomes());
+		outgoings.setCellValueFactory(new PropertyValueFactory<Row, String>("outgoings"));
+		incomes.setCellValueFactory(new PropertyValueFactory<Row, String>("incomes"));
 
 		// initialize data model and bind table
-		observableMeetings = FXCollections.observableArrayList();
-		table.setItems(observableMeetings);
+		rows = FXCollections.observableArrayList();
+		table.setItems(rows);
 
 		// hide incomes labels. The default report is for outgoings
 		totalIncomesLabel.setVisible(false);
@@ -226,7 +226,7 @@ public class ReportController {
 		}
 
 		// clear table results so placeholder is shown in case of error
-		observableMeetings.clear();
+		rows.clear();
 
 		if (from.getValue().isAfter(to.getValue())) {
 			Label label = new Label("Errore! La data di inizio è successiva alla data di fine");
@@ -238,39 +238,39 @@ public class ReportController {
 			NumberFormat numberFormat = NumberFormat.getInstance(Locale.ITALIAN);
 			numberFormat.setMinimumFractionDigits(2);
 
-			// load data into model (view updates automatically)
+			// load data into model
 			if (outgoingsOnly.isSelected()) {
 				meetings = DbUtil.getMeetings(from.getValue(), to.getValue());
 
 				// total outgoings value is in the first position of the results array
-				Float outgoings = calculateTotals().get(0);
+				BigDecimal totalOutgoings = calculateTotals().get(0);
 
 				// display total outgoings
-				totalOutgoingsValue.setText(utilities.Formatter.formatNumber(outgoings));
+				totalOutgoingsValue.setText(Formatter.formatNumber(totalOutgoings.toString()));
 			} else if (incomesOnly.isSelected()) {
 				meetings = DbUtil.getDonations(from.getValue(), to.getValue());
 
-				// total incomes value is in the first position of the results array
-				Float incomes = calculateTotals().get(1);
+				// total incomes value is in the second position of the results array
+				BigDecimal totalIncomes = calculateTotals().get(1);
 
 				// display total incomes
-				totalIncomesValue.setText(utilities.Formatter.formatNumber(incomes));
+				totalIncomesValue.setText(Formatter.formatNumber(totalIncomes.toString()));
 			} else if (outgoingsAndIncomes.isSelected()) {
 				meetings = DbUtil.getMeetingsAndDonations(from.getValue(), to.getValue());
 
 				// total outgoings value is in the first position of the results array, incomes
 				// in the second
-				Float outgoings = calculateTotals().get(0);
-				Float incomes = calculateTotals().get(1);
+				BigDecimal totalOutgoings = calculateTotals().get(0);
+				BigDecimal totalIncomes = calculateTotals().get(1);
 
 				// display totals
-				totalOutgoingsValue.setText(utilities.Formatter.formatNumber(outgoings));
-				totalIncomesValue.setText(utilities.Formatter.formatNumber(incomes));
-				balanceValue.setText(utilities.Formatter.formatNumber(incomes - outgoings));
+				totalOutgoingsValue.setText(Formatter.formatNumber(totalOutgoings.toString()));
+				totalIncomesValue.setText(Formatter.formatNumber(totalIncomes.toString()));
+				balanceValue.setText(Formatter.formatNumber(totalIncomes.subtract(totalOutgoings).toString()));
 			}
 			populateObservableList(meetings);
 
-			if (observableMeetings.isEmpty()) {
+			if (rows.isEmpty()) {
 				table.setPlaceholder(new Label("Nessun risultato"));
 			}
 		}
@@ -284,13 +284,13 @@ public class ReportController {
 		if (file != null) {
 			try {
 				if (outgoingsOnly.isSelected()) {
-					PdfUtil.export(ReportType.OutgoingsOnly, observableMeetings, from.getValue(), to.getValue(),
+					PdfUtil.export(ReportType.OutgoingsOnly, rows, from.getValue(), to.getValue(),
 							totalOutgoingsValue.getText(), null, null, file.getCanonicalPath());
 				} else if (incomesOnly.isSelected()) {
-					PdfUtil.export(ReportType.IncomesOnly, observableMeetings, from.getValue(), to.getValue(), null,
+					PdfUtil.export(ReportType.IncomesOnly, rows, from.getValue(), to.getValue(), null,
 							totalIncomesValue.getText(), null, file.getCanonicalPath());
 				} else if (outgoingsAndIncomes.isSelected()) {
-					PdfUtil.export(ReportType.OutgoingsAndIncomes, observableMeetings, from.getValue(), to.getValue(),
+					PdfUtil.export(ReportType.OutgoingsAndIncomes, rows, from.getValue(), to.getValue(),
 							totalOutgoingsValue.getText(), totalIncomesValue.getText(), balanceValue.getText(),
 							file.getCanonicalPath());
 				}
@@ -305,32 +305,32 @@ public class ReportController {
      */
 
 	private void populateObservableList(List<Meeting> meetings) {
-		for (Meeting m : meetings) {
-			ObservableMeeting om = new ObservableMeeting(m, Page.REPORT);
-			observableMeetings.add(om);
+		for (Meeting meeting : meetings) {
+			Row row = new Row(meeting);
+			rows.add(row);
 		}
 	}
 
 	// calculate total outgoings and incomes results contains outgoings and incomes
 	// in this order
-	private List<Float> calculateTotals() {
-		List<Float> results = new ArrayList<Float>();
+	private List<BigDecimal> calculateTotals() {
+		List<BigDecimal> totals = new ArrayList<BigDecimal>();
 
-		float totalOutgoings = 0;
-		float totalIncomes = 0;
+		BigDecimal totalOutgoings = new BigDecimal("0");
+		BigDecimal totalIncomes = new BigDecimal("0");
 
 		for (Meeting m : meetings) {
-			if (m.getAssistedSurname().equals(ObservableMeeting.DONATION_STRING))
-				totalIncomes += m.getAmount();
+			if (m.getAssistedSurname().equals(Meeting.DONATION_STRING))
+				totalIncomes = totalIncomes.add(m.getAmount());
 			else
-				totalOutgoings += m.getAmount();
+				totalOutgoings = totalOutgoings.add(m.getAmount());
 		}
 
 		// adding in order outgoings, incomes
-		results.add(totalOutgoings);
-		results.add(totalIncomes);
+		totals.add(totalOutgoings);
+		totals.add(totalIncomes);
 
-		return results;
+		return totals;
 	}
 
 }

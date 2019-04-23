@@ -14,7 +14,7 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
-import report.ObservableMeeting;
+import report.Row;
 
 public class PdfUtil {
 	
@@ -37,17 +37,17 @@ public class PdfUtil {
 	private static int currentPage;
 	private static int currentLine;
 	
-	public static void export(ReportType requestedReportType, List<ObservableMeeting> meetings, LocalDate from, LocalDate to, String totalOutgoings, String totalIncomes, String balanceValue, String path) {
+	public static void export(ReportType requestedReportType, List<Row> rows, LocalDate from, LocalDate to, String totalOutgoings, String totalIncomes, String balance, String path) {
 		reportType = requestedReportType;
 		document = new PDDocument();
 		newPage(from, to);
-	    for (ObservableMeeting m : meetings) {
+	    for (Row row : rows) {
 	    	if (currentLine > linesPerPage - 2) {
 	    		newPage(true);
 	    	} 
-	    	writeRow(m);
+	    	writeRow(row);
 	    }
-	    closeDocument(totalOutgoings, totalIncomes, balanceValue, path);
+	    closeDocument(totalOutgoings, totalIncomes, balance, path);
 	}
 	
 	private static void newPage(LocalDate from, LocalDate to) {
@@ -113,9 +113,9 @@ public class PdfUtil {
 		}
 	}
 	
-	private static void writeRow(ObservableMeeting m) {
+	private static void writeRow(Row row) {
 		try {
-			contentStream.showText(m.getAssistedSurname().get() + StringUtils.repeat(" ", (charsPerLine - 30) / 2 - m.getAssistedSurname().get().length()) + m.getAssistedName().get() + StringUtils.repeat(" ",  (charsPerLine - 30) / 2 - m.getAssistedName().get().length()) + Formatter.formatDate(m.getDate()) + StringUtils.repeat(" ", 10 - m.getOutgoings().get().length()) + m.getOutgoings().get() + StringUtils.repeat(" ", 10 - m.getIncomes().get().length()) + m.getIncomes().get());
+			contentStream.showText(row.getAssistedSurname() + StringUtils.repeat(" ", (charsPerLine - 30) / 2 - row.getAssistedSurname().length()) + row.getAssistedName() + StringUtils.repeat(" ",  (charsPerLine - 30) / 2 - row.getAssistedName().length()) + Formatter.formatDate(row.getDate()) + StringUtils.repeat(" ", 10 - row.getOutgoings().length()) + row.getOutgoings() + StringUtils.repeat(" ", 10 - row.getIncomes().length()) + row.getIncomes());
 			contentStream.newLine();
 			currentLine++;
     	} catch (IOException e) {
@@ -192,9 +192,9 @@ public class PdfUtil {
 		}
 	}
 	
-	private static void closeDocument(String totalOutgoings, String totalIncomes, String balanceValue, String path) {
+	private static void closeDocument(String totalOutgoings, String totalIncomes, String balance, String path) {
 		try {
-			writeTotal(totalOutgoings, totalIncomes, balanceValue);
+			writeTotal(totalOutgoings, totalIncomes, balance);
 			writeFooter();
 			contentStream.endText();
 			contentStream.close();

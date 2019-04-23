@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import utilities.Formatter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import application.MainCallback;
@@ -81,7 +82,7 @@ public class MeetingDetailsController {
 
 		// binding the meeting to layout
 		descriptionText.setText(main.getSelectedMeeting().getDescription());
-		value.setText(Formatter.formatNumber(main.getSelectedMeeting().getAmount()));
+		value.setText(Formatter.formatNumber(main.getSelectedMeeting().getAmount().toString()));
 		date.setValue(main.getSelectedMeeting().getDate());
 		
 		// disable editing if  
@@ -104,11 +105,10 @@ public class MeetingDetailsController {
 		if (descriptionText.getText().length() <= 1000) {
 			main.getSelectedMeeting().setDescription(descriptionText.getText());
 			try {
-				Float valueToSave = Float.valueOf(Formatter.reverseFormatNumber(value.getText()));
+				String valueToSave = Formatter.reverseFormatNumber(value.getText());
 				// Check for two digits after comma
-				String toCheck = String.valueOf(valueToSave);
-				if (toCheck.substring(toCheck.indexOf(".") + 1).length() <= 2) {
-					main.getSelectedMeeting().setAmount(valueToSave);
+				if (valueToSave.indexOf(".") == -1 || valueToSave.substring(valueToSave.indexOf(".") + 1).length() <= 2) {
+					main.getSelectedMeeting().setAmount(new BigDecimal(valueToSave).setScale(2));
 				} else {
 					throw new IllegalArgumentException();
 				}
@@ -127,10 +127,10 @@ public class MeetingDetailsController {
 				}
 				previousPage.refresh();
 				main.setSelectedMeeting(null);
-			} catch (java.lang.NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				String message = "Inserire un numero valido";
 				showAlertValueError(message);
-			} catch (java.lang.IllegalArgumentException e) {
+			} catch (IllegalArgumentException e) {
 				String message = "Numero massimo di decimali: 2";
 				showAlertValueError(message);
 			}

@@ -16,8 +16,6 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import model.Meeting;
-import report.ObservableMeeting;
-import model.Appointment;
 import model.Assisted;
 
 public class DbUtil {
@@ -72,7 +70,7 @@ public class DbUtil {
 	public static List<Meeting> getMeetings(LocalDate from, LocalDate to) {
 		EntityManager em = emf.createEntityManager();
 		List<Meeting> meetings = em.createNamedQuery("Meeting.findMeetings", Meeting.class)
-				.setParameter("donationString", ObservableMeeting.DONATION_STRING).setParameter("from", from)
+				.setParameter("donationString", Meeting.DONATION_STRING).setParameter("from", from)
 				.setParameter("to", to).getResultList();
 		em.close();
 		return meetings;
@@ -81,7 +79,7 @@ public class DbUtil {
 	public static List<Meeting> getDonations(LocalDate from, LocalDate to) {
 		EntityManager em = emf.createEntityManager();
 		List<Meeting> meetings = em.createNamedQuery("Meeting.findDonations", Meeting.class)
-				.setParameter("donationString", ObservableMeeting.DONATION_STRING).setParameter("from", from)
+				.setParameter("donationString", Meeting.DONATION_STRING).setParameter("from", from)
 				.setParameter("to", to).getResultList();
 		em.close();
 		return meetings;
