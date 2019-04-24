@@ -320,7 +320,7 @@ public class ReportController {
 		BigDecimal totalIncomes = new BigDecimal("0");
 
 		for (Meeting m : meetings) {
-			if (m.getAssistedSurname().equals(Meeting.DONATION_STRING))
+			if (m.getAssistedSurname().equals(Meeting.DONATION_STRING_1) || m.getAssistedSurname().equals(Meeting.DONATION_STRING_2))
 				totalIncomes = totalIncomes.add(m.getAmount());
 			else
 				totalOutgoings = totalOutgoings.add(m.getAmount());

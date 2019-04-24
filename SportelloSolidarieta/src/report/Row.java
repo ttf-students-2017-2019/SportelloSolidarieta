@@ -13,7 +13,7 @@ public class Row {
 		
 	public Row(Meeting meeting) {
 		this.meeting = meeting;
-		if (meeting.getAssistedSurname().equals(Meeting.DONATION_STRING)) {
+		if (meeting.getAssistedSurname().equals(Meeting.DONATION_STRING_1) || meeting.getAssistedSurname().equals(Meeting.DONATION_STRING_2)) {
 			incomes = Formatter.formatNumber(meeting.getAmount().toString());
 		} else {
 			outgoings = Formatter.formatNumber(meeting.getAmount().toString());

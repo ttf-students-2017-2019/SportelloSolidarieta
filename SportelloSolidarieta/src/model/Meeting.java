@@ -16,13 +16,14 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "Meeting.findMeetings", query = "SELECT m FROM Meeting m WHERE m.fDeleted = false AND m.assisted.surname <> :donationString AND m.date BETWEEN :from AND :to ORDER BY m.date"),
-	@NamedQuery(name = "Meeting.findDonations", query = "SELECT m FROM Meeting m WHERE m.fDeleted = false AND m.assisted.surname = :donationString AND m.date BETWEEN :from AND :to ORDER BY m.date"),
+	@NamedQuery(name = "Meeting.findMeetings", query = "SELECT m FROM Meeting m WHERE m.fDeleted = false AND m.assisted.surname <> :donationString1 AND m.assisted.surname <> :donationString2 AND m.date BETWEEN :from AND :to ORDER BY m.date"),
+	@NamedQuery(name = "Meeting.findDonations", query = "SELECT m FROM Meeting m WHERE m.fDeleted = false AND (m.assisted.surname = :donationString1 OR m.assisted.surname = :donationString2) AND m.date BETWEEN :from AND :to ORDER BY m.date"),
 	@NamedQuery(name = "Meeting.findMeetingsAndDonations", query = "SELECT m FROM Meeting m WHERE m.fDeleted = false AND m.date BETWEEN :from AND :to ORDER BY m.date")
 })
 public class Meeting {
 	
-	public static final String DONATION_STRING = "offerte";
+	public static final String DONATION_STRING_1 = "Offerte fuori";
+	public static final String DONATION_STRING_2 = "Don Lidio";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

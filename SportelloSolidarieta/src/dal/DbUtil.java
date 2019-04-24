@@ -70,7 +70,8 @@ public class DbUtil {
 	public static List<Meeting> getMeetings(LocalDate from, LocalDate to) {
 		EntityManager em = emf.createEntityManager();
 		List<Meeting> meetings = em.createNamedQuery("Meeting.findMeetings", Meeting.class)
-				.setParameter("donationString", Meeting.DONATION_STRING).setParameter("from", from)
+				.setParameter("donationString1", Meeting.DONATION_STRING_1)
+				.setParameter("donationString2", Meeting.DONATION_STRING_2).setParameter("from", from)
 				.setParameter("to", to).getResultList();
 		em.close();
 		return meetings;
@@ -79,7 +80,8 @@ public class DbUtil {
 	public static List<Meeting> getDonations(LocalDate from, LocalDate to) {
 		EntityManager em = emf.createEntityManager();
 		List<Meeting> meetings = em.createNamedQuery("Meeting.findDonations", Meeting.class)
-				.setParameter("donationString", Meeting.DONATION_STRING).setParameter("from", from)
+				.setParameter("donationString1", Meeting.DONATION_STRING_1)
+				.setParameter("donationString2", Meeting.DONATION_STRING_2).setParameter("from", from)
 				.setParameter("to", to).getResultList();
 		em.close();
 		return meetings;
@@ -113,7 +115,7 @@ public class DbUtil {
 
 	// If no result, doesn't return null but returns an empty list
 	public static List<Assisted> searchAssisted(EntityManager em, String surname, String name) {
-		
+
 		Query query;
 		List<Assisted> assisteds;
 
