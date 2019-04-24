@@ -22,7 +22,7 @@ import javax.persistence.NamedQuery;
 })
 public class Meeting {
 	
-	public static final String DONATION_STRING = "Donazioni";
+	public static final String DONATION_STRING = "offerte";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
