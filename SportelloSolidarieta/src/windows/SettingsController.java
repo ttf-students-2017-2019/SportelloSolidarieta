@@ -107,7 +107,7 @@ public class SettingsController {
 			bindHourAndSelectDeafult(toHourList, id_hour_to);
 			// Minutes
 			ObservableList<ObservableMinute> toMinuteList = setupMinuteList();
-			bindMinuteAndSelectDeafult(fromMinuteList, id_minutes_to);
+			bindMinuteAndSelectDeafult(toMinuteList, id_minutes_to);
 
 			// Setting up the appointment length combo-box
 			ObservableList<ObservableAppointmentLength> appointmentLengthList = setupAppointmentLengthList();
@@ -304,7 +304,7 @@ public class SettingsController {
 		Calendar cal = Calendar.getInstance();
 
 		// Determine the kind of combo-box
-		if (currentComboBox.getId().equals("id_minute_from"))
+		if (currentComboBox.getId().equals("id_minutes_from"))
 			cal.setTimeInMillis(settings.getHStart().getTime());
 		else
 			cal.setTimeInMillis(settings.getHEnd().getTime());
